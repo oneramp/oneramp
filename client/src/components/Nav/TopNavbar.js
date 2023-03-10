@@ -114,7 +114,12 @@ export default function TopNavbar() {
           </UlWrapper>
           <UlWrapperRight className='flexNullCenter'>
             <li className='semiBold font15 pointer'>
-              <a href='/' style={{ padding: "10px 30px 10px 0" }}>
+              <a
+                target='_blank'
+                rel='noopener noreferrer'
+                href='https://oneramp.gitbook.io/oneramp-docs/'
+                style={{ padding: "10px 30px 10px 0" }}
+              >
                 API Docs
               </a>
             </li>
