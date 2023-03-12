@@ -1,34 +1,34 @@
-import React from "react";
-import styled from "styled-components";
+import React from "react"
+import styled from "styled-components"
 // Components
-import FullButton from "../Buttons/FullButton";
+import FullButton from "../Buttons/FullButton"
 // Assets
-import HeaderImage from "../../assets/svg/crypto-portfolio.svg";
-import QuotesIcon from "../../assets/svg/Quotes";
-import Dots from "../../assets/svg/Dots";
-import Transfer from "../../assets/svg/Transfer";
-import { Box } from "@mui/system";
-import { Button, TextField, ThemeProvider } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
-import { theme } from "../../Theme";
-import CryptoConverter from "../Converter/CryptoConverter";
+// import HeaderImage from "../../assets/svg/crypto-portfolio.svg";
+// import QuotesIcon from "../../assets/svg/Quotes";
+import Dots from "../../assets/svg/Dots"
+// import Transfer from "../../assets/svg/Transfer";
+import { Box } from "@mui/system"
+// import { Button, TextField, ThemeProvider } from "@mui/material";
+// import InputLabel from "@mui/material/InputLabel";
+// import { theme } from "../../Theme";
+import CryptoConverter from "../Converter/CryptoConverter"
 
 export default function Header() {
   return (
-    <Wrapper id="home" className="container flexSpaceCenter">
-      <LeftSide className="flexCenter">
+    <Wrapper id='home' className='container flexSpaceCenter'>
+      <LeftSide className='flexCenter'>
         <div>
-          <div data-aos="fade-up" data-aos-delay="300" data-aos-duration="1500">
-            <h1 className="extraBold font60">Welcome to OneRamp.</h1>
+          <div data-aos='fade-up' data-aos-delay='300' data-aos-duration='1500'>
+            <h1 className='extraBold font60'>Welcome to OneRamp.</h1>
           </div>
-          <div data-aos="fade-up" data-aos-duration="1500" data-aos-delay="600">
+          <div data-aos='fade-up' data-aos-duration='1500' data-aos-delay='600'>
             <Box sx={{ fontSize: 20 }}>
               Your <b>One-Stop</b> Crypto On- and Off-Ramping Solution
             </Box>
           </div>
 
-          <div data-aos="fade-up" data-aos-duration="1500" data-aos-delay="800">
-            <HeaderP className="font13 semiBold">
+          <div data-aos='fade-up' data-aos-duration='1500' data-aos-delay='800'>
+            <HeaderP className='font13 semiBold'>
               At OneRamp, we believe in making crypto accessible to everyone.
               That's why we've created a seamless, user-friendly platform that
               makes it easy to buy, and sell your crypto assets.
@@ -36,13 +36,13 @@ export default function Header() {
           </div>
 
           <div
-            data-aos="fade-up"
-            data-aos-duration="1500"
-            data-aos-delay="1000"
+            data-aos='fade-up'
+            data-aos-duration='1500'
+            data-aos-delay='1000'
             // data-aos-offset="150"
           >
             <BtnWrapper>
-              <FullButton title="Get Started" />
+              <FullButton title='Get Started' />
             </BtnWrapper>
           </div>
         </div>
@@ -107,7 +107,7 @@ export default function Header() {
         />
       </RightSide>
     </Wrapper>
-  );
+  )
 }
 
 const Wrapper = styled.section`
@@ -117,7 +117,7 @@ const Wrapper = styled.section`
   @media (max-width: 960px) {
     flex-direction: column;
   }
-`;
+`
 const LeftSide = styled.div`
   width: 50%;
   height: 100%;
@@ -130,7 +130,7 @@ const LeftSide = styled.div`
   @media (max-width: 560px) {
     margin: 80px 0 50px 0;
   }
-`;
+`
 const RightSide = styled.div`
   width: 50%;
   height: 100%;
@@ -140,7 +140,7 @@ const RightSide = styled.div`
     margin-top: 30px;
     margin-bottom: 50px;
   }
-`;
+`
 const HeaderP = styled.div`
   max-width: 470px;
   padding: 15px 0 50px 0;
@@ -150,13 +150,13 @@ const HeaderP = styled.div`
     text-align: center;
     max-width: 100%;
   }
-`;
+`
 const BtnWrapper = styled.div`
   max-width: 190px;
   @media (max-width: 960px) {
     margin: 0 auto;
   }
-`;
+`
 const GreyDiv = styled.div`
   width: 30%;
   height: 700px;
@@ -167,7 +167,7 @@ const GreyDiv = styled.div`
   @media (max-width: 960px) {
     display: none;
   }
-`;
+`
 const ImageWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -177,32 +177,32 @@ const ImageWrapper = styled.div`
     width: 100%;
     justify-content: center;
   }
-`;
-const Img = styled.img`
-  @media (max-width: 560px) {
-    width: 80%;
-    height: auto;
-  }
-`;
-const QuoteWrapper = styled.div`
-  position: absolute;
-  left: 0;
-  bottom: 50px;
-  max-width: 330px;
-  padding: 30px;
-  z-index: 99;
-  @media (max-width: 960px) {
-    left: 20px;
-  }
-  @media (max-width: 560px) {
-    bottom: -50px;
-  }
-`;
-const QuotesWrapper = styled.div`
-  position: absolute;
-  left: -20px;
-  top: -10px;
-`;
+`
+// const Img = styled.img`
+//   @media (max-width: 560px) {
+//     width: 80%;
+//     height: auto;
+//   }
+// `
+// const QuoteWrapper = styled.div`
+//   position: absolute;
+//   left: 0;
+//   bottom: 50px;
+//   max-width: 330px;
+//   padding: 30px;
+//   z-index: 99;
+//   @media (max-width: 960px) {
+//     left: 20px;
+//   }
+//   @media (max-width: 560px) {
+//     bottom: -50px;
+//   }
+// `
+// const QuotesWrapper = styled.div`
+//   position: absolute;
+//   left: -20px;
+//   top: -10px;
+// `
 const DotsWrapper = styled.div`
   position: absolute;
   right: -100px;
@@ -214,4 +214,4 @@ const DotsWrapper = styled.div`
   @media (max-width: 560px) {
     display: none;
   }
-`;
+`
