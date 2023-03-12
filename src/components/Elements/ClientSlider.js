@@ -2,7 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
 // Assets
-import ClientLogo01 from "../../assets/img/clients/logo01.svg"
+import ClientLogo01 from "../../assets/img/clients/logo01.svg";
 import ClientLogo02 from "../../assets/img/clients/logo02.svg";
 import ClientLogo03 from "../../assets/img/clients/logo03.svg";
 import ClientLogo04 from "../../assets/img/clients/logo04.svg";
@@ -12,9 +12,10 @@ import ClientLogo06 from "../../assets/img/clients/logo06.svg";
 export default function ClientSlider() {
   const settings = {
     infinite: true,
-    speed: 500,
+    speed: 1000,
     slidesToShow: 6,
     slidesToScroll: 2,
+    autoplay: true,
     arrows: false,
     responsive: [
       {

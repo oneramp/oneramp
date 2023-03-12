@@ -7,11 +7,13 @@ const dimWhite = "#f2f2f2";
 
 const theme = createTheme({
   palette: {
+    mode: "dark",
     primary: {
-      main: primaryColor,
+      main: "#fff",
     },
   },
   typography: {
+    fontFamily: "Khula",
     button: {
       textTransform: "none",
     },

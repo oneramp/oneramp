@@ -9,7 +9,7 @@ function SvgComponent(props) {
       viewBox="0 0 186.223 249.21"
       {...props}
     >
-      <g data-name="Group 102" fill="#bebdce">
+      <g data-name="Group 102" fill="#ffffff40">
         <g data-name="Group 60" transform="translate(35.419)">
           <circle data-name="Ellipse 8" cx={4.565} cy={4.565} r={4.565} />
           <circle

@@ -5,10 +5,8 @@ import ClientSlider from "../Elements/ClientSlider";
 import ServiceBox from "../Elements/ServiceBox";
 import FullButton from "../Buttons/FullButton";
 // Assets
-import AddImage1 from "../../assets/img/add/1.png";
-import AddImage2 from "../../assets/img/add/2.png";
-import AddImage3 from "../../assets/img/add/3.png";
-import AddImage4 from "../../assets/img/add/4.png";
+import HeaderImage from "../../assets/svg/crypto-portfolio.svg";
+import Image1 from "../../assets/svg/illustration3.svg";
 
 export default function Features() {
   return (
@@ -140,6 +138,17 @@ export default function Features() {
               <AddRight>
                 <AddRightInner>
                   <div className="flexNullCenter">
+                    <AddImgWrapper
+                      data-aos="fade-up"
+                      data-aos-duration="1500"
+                      data-aos-delay="1000"
+                    >
+                      <img src={HeaderImage} alt="office" />
+                    </AddImgWrapper>
+                  </div>
+                </AddRightInner>
+                {/* <AddRightInner>
+                  <div className="flexNullCenter">
                     <AddImgWrapp1 className="flexCenter">
                       <img src={AddImage1} alt="office" />
                     </AddImgWrapp1>
@@ -155,7 +164,7 @@ export default function Features() {
                       <img src={AddImage4} alt="office" />
                     </AddImgWrapp4>
                   </div>
-                </AddRightInner>
+                </AddRightInner> */}
               </AddRight>
             </Advertising>
           </div>
@@ -240,51 +249,21 @@ const AddRight = styled.div`
 const AddRightInner = styled.div`
   width: 100%;
 `;
-const AddImgWrapp1 = styled.div`
-  width: 48%;
+
+const AddImgWrapper = styled.div`
+  width: 100%;
   margin: 0 6% 10px 6%;
   img {
     width: 100%;
     height: auto;
-    border-radius: 1rem;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
   }
 `;
-const AddImgWrapp2 = styled.div`
-  width: 30%;
-  margin: 0 5% 10px 5%;
+
+const AddImgWrapper2 = styled.div`
+  width: 50%;
+  margin-top: 30%;
   img {
     width: 100%;
     height: auto;
-    border-radius: 1rem;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-  }
-`;
-const AddImgWrapp3 = styled.div`
-  width: 20%;
-  margin-left: 40%;
-  img {
-    width: 100%;
-    height: auto;
-    border-radius: 1rem;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-  }
-`;
-const AddImgWrapp4 = styled.div`
-  width: 30%;
-  margin: 0 5%auto;
-  img {
-    width: 100%;
-    height: auto;
-    border-radius: 1rem;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
   }
 `;
