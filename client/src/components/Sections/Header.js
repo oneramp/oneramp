@@ -6,7 +6,12 @@ import FullButton from "../Buttons/FullButton";
 import HeaderImage from "../../assets/svg/crypto-portfolio.svg";
 import QuotesIcon from "../../assets/svg/Quotes";
 import Dots from "../../assets/svg/Dots";
+import Transfer from "../../assets/svg/Transfer";
 import { Box } from "@mui/system";
+import { Button, TextField, ThemeProvider } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import { theme } from "../../Theme";
+import CryptoConverter from "../Converter/CryptoConverter";
 
 export default function Header() {
   return (
@@ -34,7 +39,7 @@ export default function Header() {
             data-aos="fade-up"
             data-aos-duration="1500"
             data-aos-delay="1000"
-            data-aos-offset="150"
+            // data-aos-offset="150"
           >
             <BtnWrapper>
               <FullButton title="Get Started" />
@@ -44,11 +49,11 @@ export default function Header() {
       </LeftSide>
       <RightSide>
         <ImageWrapper>
-          <Img
+          {/* <Img
             data-aos="fade-up"
             data-aos-duration="1500"
             data-aos-delay="2000"
-            data-aos-offset="300"
+            data-aos-offset="-150"
             backgroundColor="white"
             className="radius8"
             src={HeaderImage}
@@ -78,12 +83,15 @@ export default function Header() {
                 Let's start today!
               </p>
             </div>
-          </QuoteWrapper>
+          </QuoteWrapper> */}
+
+          <CryptoConverter />
+
           <DotsWrapper>
             <Dots />
           </DotsWrapper>
         </ImageWrapper>
-        <GreyDiv style={{ backgroundColor: "#3b3b3b" }}></GreyDiv>
+        <GreyDiv style={{ backgroundColor: "#191919" }}></GreyDiv>
 
         <Box
           sx={{
@@ -115,7 +123,7 @@ const LeftSide = styled.div`
   height: 100%;
   @media (max-width: 960px) {
     width: 100%;
-    order: 2;
+    order: 1;
     margin: 50px 0;
     text-align: center;
   }
@@ -128,8 +136,9 @@ const RightSide = styled.div`
   height: 100%;
   @media (max-width: 960px) {
     width: 100%;
-    order: 1;
+    order: 2;
     margin-top: 30px;
+    margin-bottom: 50px;
   }
 `;
 const HeaderP = styled.div`
