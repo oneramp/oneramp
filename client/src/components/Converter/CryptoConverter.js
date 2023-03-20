@@ -1,12 +1,10 @@
-import React, { useState } from "react"
-// import styled from "styled-components";÷
-// Components
-import FullButton from "../Buttons/FullButton"
-import Transfer from "../../assets/svg/Transfer"
-import { Box } from "@mui/system"
-import { TextField, ThemeProvider } from "@mui/material"
-
-import { theme } from "../../Theme"
+import React, { useState } from "react";
+import FullButton from "../Buttons/FullButton";
+import Transfer from "../../assets/svg/Transfer";
+import { Box } from "@mui/system";
+import { TextField, ThemeProvider } from "@mui/material";
+import { theme } from "../../Theme";
+import TabView from "./TabPanel";
 
 const currencies = [
   {
@@ -25,27 +23,133 @@ const currencies = [
     value: "CELO",
     label: "¥ CELO",
   },
-]
+];
 
 export default function CryptoConverter() {
-  const [rate] = useState(3700)
-  const [value, setValue] = useState(rate)
+  const [rate] = useState(3700);
+  const [value, setValue] = useState(rate);
 
   const handleChange = (event) => {
     // 👇 Get input value from "event"
-    let n = (event.target.value * rate).toLocaleString() // add separator
-    setValue(n)
+    let n = (event.target.value * rate).toLocaleString(); // add separator
+    setValue(n);
+  };
+  var n = 34523453.345;
+  console.log(n.toLocaleString());
+
+  function BuyView() {
+    return (
+      <div className="flexCenter flexColumn">
+        <ThemeProvider theme={theme}>
+          <Box fontSize={12} marginBottom={1}>
+            You Buy
+          </Box>
+
+          <TextField
+            fullWidth
+            onChange={handleChange}
+            className="inputRounded"
+            defaultValue={1}
+            type="number"
+            variant="outlined"
+          />
+
+          <Box sx={{ height: 20, width: 20, m: 2 }}>
+            <Transfer />
+          </Box>
+
+          <Box fontSize={12} marginBottom={1}>
+            Select Your Currency
+          </Box>
+
+          <TextField
+            className="inputRounded"
+            select
+            fullWidth
+            type="number"
+            defaultValue="ETH"
+            SelectProps={{
+              native: true,
+            }}
+            variant="outlined"
+          >
+            {currencies.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </TextField>
+
+          <Box sx={{ fontSize: 20, textAlign: "center", py: 2 }}>
+            1BTC = <b>UGX {value}</b>
+          </Box>
+
+          <FullButton title="Approve" />
+        </ThemeProvider>
+      </div>
+    );
   }
-  var n = 34523453.345
-  console.log(n.toLocaleString())
+
+  function SellView() {
+    return (
+      <div className="flexCenter flexColumn">
+        <ThemeProvider theme={theme}>
+          <Box fontSize={12} marginBottom={1}>
+            Select Your Currency
+          </Box>
+
+          <TextField
+            className="inputRounded"
+            select
+            fullWidth
+            type="number"
+            defaultValue="ETH"
+            SelectProps={{
+              native: true,
+            }}
+            variant="outlined"
+          >
+            {currencies.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </TextField>
+
+          <Box sx={{ height: 20, width: 20, m: 2 }}>
+            <Transfer />
+          </Box>
+
+          <Box fontSize={12} marginBottom={1}>
+            You Sell
+          </Box>
+
+          <TextField
+            fullWidth
+            onChange={handleChange}
+            className="inputRounded"
+            defaultValue={1}
+            type="number"
+            variant="outlined"
+          />
+
+          <Box sx={{ fontSize: 20, textAlign: "center", py: 2 }}>
+            1BTC = <b>UGX {value}</b>
+          </Box>
+
+          <FullButton title="Approve" />
+        </ThemeProvider>
+      </div>
+    );
+  }
 
   return (
     <>
       <Box
-        data-aos='fade-up'
-        data-aos-duration='1500'
-        data-aos-delay='2000'
-        className='gradient-border'
+        data-aos="fade-up"
+        data-aos-duration="1500"
+        data-aos-delay="2000"
+        className="gradient-border"
         sx={{
           height: 500,
           backgroundColor: "#1a1a1a",
@@ -68,52 +172,15 @@ export default function CryptoConverter() {
             px: "15%",
           }}
         >
-          <ThemeProvider theme={theme}>
-            <Box fontSize={12}>You Buy</Box>
+          {/* ----- */}
 
-            <TextField
-              fullWidth
-              onChange={handleChange}
-              className='inputRounded'
-              defaultValue={1}
-              type='number'
-              variant='outlined'
-            />
+          <TabView children={[BuyView(), SellView()]} />
 
-            <Box sx={{ height: 20, width: 20, m: 2 }}>
-              <Transfer />
-            </Box>
-
-            <Box fontSize={12}>Select Your Currency</Box>
-
-            <TextField
-              className='inputRounded'
-              select
-              fullWidth
-              type='number'
-              defaultValue='ETH'
-              SelectProps={{
-                native: true,
-              }}
-              variant='outlined'
-            >
-              {currencies.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </TextField>
-
-            <Box sx={{ fontSize: 20, textAlign: "center" }}>
-              1BTC = <b>UGX {value}</b>
-            </Box>
-
-            <FullButton title='Approve' />
-          </ThemeProvider>
-          <div className='blue_gradient' />
+          {/* ----- */}
+          <div className="blue_gradient" />
         </Box>
       </Box>
-      <div className='blue_gradient' />
+      <div className="blue_gradient" />
     </>
-  )
+  );
 }

@@ -1,121 +1,82 @@
-import React from "react"
-import styled from "styled-components"
+import React from "react";
+import styled from "styled-components";
 // Components
-import ClientSlider from "../Elements/ClientSlider"
-import ServiceBox from "../Elements/ServiceBox"
-import FullButton from "../Buttons/FullButton"
+import ClientSlider from "../Elements/ClientSlider";
+import ServiceBox from "../Elements/ServiceBox";
+import FullButton from "../Buttons/FullButton";
 // Assets
-import AddImage1 from "../../assets/img/add/1.png"
-import AddImage2 from "../../assets/img/add/2.png"
-import AddImage3 from "../../assets/img/add/3.png"
-import AddImage4 from "../../assets/img/add/4.png"
+import HeaderImage from "../../assets/svg/crypto-portfolio.svg";
+import { featuresData } from "../../data/FeaturesData";
 
 export default function Features() {
   return (
-    <Wrapper id='services'>
-      <div className='lightBg' style={{ padding: "50px 0" }}>
-        <div className='container'>
+    <Wrapper>
+      <div className="lightBg" style={{ padding: "50px 0" }}>
+        <div className="container">
           <ClientSlider />
         </div>
       </div>
-      <div className='whiteBg' style={{ padding: "60px 0" }}>
-        <div className='container'>
+      {/* Features */}
+      <div className="whiteBg" style={{ padding: "60px 0" }}>
+        <div className="container" id="features">
           <HeaderInfo>
-            <div data-aos='fade-up' data-aos-duration='1500'>
-              <h1 className='font40 extraBold'>Our Features</h1>
+            <div data-aos="fade-up" data-aos-duration="1500">
+              <h1 className="font40 extraBold">Our Features</h1>
             </div>
             <div
-              data-aos='fade-up'
-              data-aos-duration='1500'
-              data-aos-delay='200'
+              data-aos="fade-up"
+              data-aos-duration="1500"
+              data-aos-delay="200"
             >
-              <p className='font13'>
+              <p className="font13">
                 Launch the <b>OneRamp</b> APP today and start ramping your
                 crypto!
               </p>
             </div>
           </HeaderInfo>
 
-          <ServiceBoxRow className='flex'>
-            <ServiceBoxWrapper>
-              <ServiceBox
-                icon='monitor'
-                title='API Integration with your Dapps'
-                subtitle='You can easily connect your Dapps to our crypto on and off-ramping solution, giving you access to the best exchange rates and a wide range of supported cryptocurrencies.'
-              />
-            </ServiceBoxWrapper>
-            <ServiceBoxWrapper>
-              <ServiceBox
-                icon='monitor'
-                title='Fast & Secure Transactions'
-                subtitle='Need to buy or sell crypto quickly? No problem! Our platform is designed for speed and efficiency, so you can complete your transactions in seconds.'
-              />
-            </ServiceBoxWrapper>
-
-            <ServiceBoxWrapper>
-              <ServiceBox
-                icon='printer'
-                title='Competitive exchange rates'
-                subtitle="Don't settle for less. Our platform offers highly competitive exchange rates, ensuring that you get the most value for your money when buying or selling cryptocurrencies."
-              />
-            </ServiceBoxWrapper>
-          </ServiceBoxRow>
-
-          <ServiceBoxRow className='flex'>
-            <ServiceBoxWrapper>
-              <ServiceBox
-                icon='roller'
-                title='Simple & Intuitive Interface'
-                subtitle="One click, and you're done! That's how easy it is to use our platform. We've eliminated unnecessary steps and streamlined the experience, so you can focus on your transactions, not the interface."
-              />
-            </ServiceBoxWrapper>
-            <ServiceBoxWrapper>
-              <ServiceBox
-                icon='browser'
-                title='Wide Range of Supported Cryptocurrencies'
-                subtitle='We offer a wide range of cryptocurrencies, ensuring that you can on and off ramp any digital asset you need.'
-              />
-            </ServiceBoxWrapper>
-
-            <ServiceBoxWrapper>
-              <ServiceBox
-                icon='printer'
-                title='24/7 Support'
-                subtitle='Our dedicated support team is available 24/7 to help you with any questions or issues you may have while using our crypto on and off-ramping solution.'
-              />
-            </ServiceBoxWrapper>
+          <ServiceBoxRow className="flex">
+            {featuresData.map((val, i) => {
+              const { icon, title, subtitle } = val;
+              return (
+                <ServiceBoxWrapper>
+                  <ServiceBox icon={icon} title={title} subtitle={subtitle} />
+                </ServiceBoxWrapper>
+              );
+            })}
           </ServiceBoxRow>
         </div>
-        <div className='lightBg'>
-          <div className='container'>
-            <Advertising className='flexSpaceCenter'>
+        {/* About section */}
+        <div className="lightBg" id="about">
+          <div className="container">
+            <Advertising className="flexSpaceCenter">
               <AddLeft>
                 <div
-                  data-aos='fade-up'
-                  data-aos-duration='1500'
-                  data-aos-offset='300'
+                  data-aos="fade-up"
+                  data-aos-duration="1500"
+                  data-aos-offset="300"
                 >
-                  <h4 className='font15 semiBold'>
+                  <h4 className="font15 semiBold">
                     OneRamp is the <b>Perfect</b> Solution
                   </h4>
                 </div>
 
                 <div
-                  data-aos='fade-up'
-                  data-aos-duration='1500'
-                  data-aos-delay='200'
-                  data-aos-offset='300'
+                  data-aos="fade-up"
+                  data-aos-duration="1500"
+                  data-aos-delay="200"
+                  data-aos-offset="300"
                 >
-                  <h2 className='font40 extraBold'>How it Works</h2>
+                  <h2 className="font40 extraBold">How it Works</h2>
                 </div>
 
                 <div
-                  data-aos='fade-up'
-                  data-aos-duration='1500'
-                  data-aos-delay='200'
-                  data-aos-offset='300'
+                  data-aos="fade-up"
+                  data-aos-duration="1500"
+                  data-aos-delay="200"
+                  data-aos-offset="300"
                 >
-                  <p className='font12'>
+                  <p className="font12">
                     OneRamp is easy to use. Simply connect your wallet and
                     you're ready to buy or sell crypto in minutes. Our platform
                     is designed to make it simple and straightforward to manage
@@ -125,12 +86,12 @@ export default function Features() {
                 </div>
 
                 <ButtonsRow
-                  className='flexNullCenter'
+                  className="flexNullCenter"
                   style={{ margin: "30px 0" }}
                 >
                   <div style={{ width: "190px" }}>
                     <FullButton
-                      title='Get Started'
+                      title="Get Started"
                       action={() => alert("clicked")}
                     />
                   </div>
@@ -139,21 +100,14 @@ export default function Features() {
               </AddLeft>
               <AddRight>
                 <AddRightInner>
-                  <div className='flexNullCenter'>
-                    <AddImgWrapp1 className='flexCenter'>
-                      <img src={AddImage1} alt='office' />
-                    </AddImgWrapp1>
-                    <AddImgWrapp2>
-                      <img src={AddImage2} alt='office' />
-                    </AddImgWrapp2>
-                  </div>
-                  <div className='flexNullCenter'>
-                    <AddImgWrapp3>
-                      <img src={AddImage3} alt='office' />
-                    </AddImgWrapp3>
-                    <AddImgWrapp4>
-                      <img src={AddImage4} alt='office' />
-                    </AddImgWrapp4>
+                  <div className="flexNullCenter">
+                    <AddImgWrapper
+                      data-aos="fade-up"
+                      data-aos-duration="1500"
+                      data-aos-delay="1000"
+                    >
+                      <img src={HeaderImage} alt="office" />
+                    </AddImgWrapper>
                   </div>
                 </AddRightInner>
               </AddRight>
@@ -162,19 +116,20 @@ export default function Features() {
         </div>
       </div>
     </Wrapper>
-  )
+  );
 }
 
 const Wrapper = styled.section`
   width: 100%;
-`
+`;
 const ServiceBoxRow = styled.div`
+  flex-wrap: wrap;
   @media (max-width: 860px) {
     flex-direction: column;
   }
-`
+`;
 const ServiceBoxWrapper = styled.div`
-  width: 20%;
+  width: 27%;
   margin-right: 5%;
   padding: 80px 0;
   @media (max-width: 860px) {
@@ -182,12 +137,12 @@ const ServiceBoxWrapper = styled.div`
     text-align: center;
     padding: 40px 0;
   }
-`
+`;
 const HeaderInfo = styled.div`
   @media (max-width: 860px) {
     text-align: center;
   }
-`
+`;
 const Advertising = styled.div`
   margin: 80px 0;
   padding: 100px 0;
@@ -200,12 +155,12 @@ const Advertising = styled.div`
     padding: 0 0 30px 0;
     margin: 80px 0 0px 0;
   }
-`
+`;
 const ButtonsRow = styled.div`
   @media (max-width: 860px) {
     justify-content: space-between;
   }
-`
+`;
 const AddLeft = styled.div`
   color: #000;
   width: 50%;
@@ -224,7 +179,7 @@ const AddLeft = styled.div`
       margin: 0 auto;
     }
   }
-`
+`;
 const AddRight = styled.div`
   width: 50%;
   position: absolute;
@@ -236,55 +191,15 @@ const AddRight = styled.div`
     order: 1;
     top: -40px;
   }
-`
+`;
 const AddRightInner = styled.div`
   width: 100%;
-`
-const AddImgWrapp1 = styled.div`
-  width: 48%;
+`;
+const AddImgWrapper = styled.div`
+  width: 100%;
   margin: 0 6% 10px 6%;
   img {
     width: 100%;
     height: auto;
-    border-radius: 1rem;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
   }
-`
-const AddImgWrapp2 = styled.div`
-  width: 30%;
-  margin: 0 5% 10px 5%;
-  img {
-    width: 100%;
-    height: auto;
-    border-radius: 1rem;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-  }
-`
-const AddImgWrapp3 = styled.div`
-  width: 20%;
-  margin-left: 40%;
-  img {
-    width: 100%;
-    height: auto;
-    border-radius: 1rem;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-  }
-`
-const AddImgWrapp4 = styled.div`
-  width: 30%;
-  margin: 0 5%auto;
-  img {
-    width: 100%;
-    height: auto;
-    border-radius: 1rem;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-  }
-`
+`;
