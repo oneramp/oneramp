@@ -1,0 +1,24 @@
+{
+  "name": "hardhat",
+  "version": "1.0.0",
+  "description": "hardhat repo to run tests on the api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oneramp/oneramp.git"
+  },
+  "author": "eliashezron",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oneramp/oneramp/issues"
+  },
+  "homepage": "https://github.com/oneramp/oneramp#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-foundry": "^1.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^1.0.2",
+    "hardhat": "^2.13.0"
+  }
+}
