@@ -5,6 +5,7 @@ import { Box } from "@mui/system";
 import { TextField, ThemeProvider } from "@mui/material";
 import { theme } from "../../Theme";
 import TabView from "./TabPanel";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const currencies = [
   {
@@ -26,8 +27,17 @@ const currencies = [
 ];
 
 export default function CryptoConverter() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [rate] = useState(3700);
   const [value, setValue] = useState(rate);
+
+  function handleClick() {
+    if (location.pathname !== "/converter") {
+      navigate("/converter");
+    }
+  }
 
   const handleChange = (event) => {
     // 👇 Get input value from "event"
@@ -84,7 +94,7 @@ export default function CryptoConverter() {
             1BTC = <b>UGX {value}</b>
           </Box>
 
-          <FullButton title="Approve" />
+          <FullButton title="Approve" action={handleClick} />
         </ThemeProvider>
       </div>
     );
@@ -148,7 +158,7 @@ export default function CryptoConverter() {
       <Box
         data-aos="fade-up"
         data-aos-duration="1500"
-        data-aos-delay="2000"
+        data-aos-delay="1000"
         className="gradient-border"
         sx={{
           height: 500,
