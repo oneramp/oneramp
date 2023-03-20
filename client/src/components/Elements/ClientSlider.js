@@ -2,12 +2,10 @@ import React from "react"
 import Slider from "react-slick"
 import styled from "styled-components"
 // Assets
-import ClientLogo01 from "../../assets/img/clients/logo01.svg"
-import ClientLogo02 from "../../assets/img/clients/logo02.svg"
-import ClientLogo03 from "../../assets/img/clients/logo03.svg"
-import ClientLogo04 from "../../assets/img/clients/logo04.svg"
-import ClientLogo05 from "../../assets/img/clients/logo05.svg"
-import ClientLogo06 from "../../assets/img/clients/logo06.svg"
+import ClientLogo01 from "../../assets/img/clients/celo-logo.png"
+import ClientLogo02 from "../../assets/img/clients/bnb-bnb-logo.png"
+import ClientLogo03 from "../../assets/img/clients/ethlogo.png"
+import ClientLogo04 from "../../assets/img/clients/polygon-matic-logo.png"
 
 export default function ClientSlider() {
   const settings = {
@@ -43,7 +41,9 @@ export default function ClientSlider() {
   }
   return (
     <div>
-      <h1>built with</h1>
+      <div style={{ justifyContent: "center" }}>
+        <h1>built on</h1>
+      </div>
       <Slider {...settings}>
         <LogoWrapper className='flexCenter'>
           <ImgStyle src={ClientLogo01} alt='client logo' />
@@ -58,22 +58,16 @@ export default function ClientSlider() {
           <ImgStyle src={ClientLogo04} alt='client logo' />
         </LogoWrapper>
         <LogoWrapper className='flexCenter'>
-          <ImgStyle src={ClientLogo05} alt='client logo' />
+          <ImgStyle src={ClientLogo01} alt='client logo' />
         </LogoWrapper>
         <LogoWrapper className='flexCenter'>
-          <ImgStyle src={ClientLogo06} alt='client logo' />
+          <ImgStyle src={ClientLogo02} alt='client logo' />
         </LogoWrapper>
         <LogoWrapper className='flexCenter'>
           <ImgStyle src={ClientLogo03} alt='client logo' />
         </LogoWrapper>
         <LogoWrapper className='flexCenter'>
           <ImgStyle src={ClientLogo04} alt='client logo' />
-        </LogoWrapper>
-        <LogoWrapper className='flexCenter'>
-          <ImgStyle src={ClientLogo01} alt='client logo' />
-        </LogoWrapper>
-        <LogoWrapper className='flexCenter'>
-          <ImgStyle src={ClientLogo02} alt='client logo' />
         </LogoWrapper>
       </Slider>
     </div>
