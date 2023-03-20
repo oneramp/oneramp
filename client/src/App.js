@@ -6,6 +6,8 @@ import { ThemeProvider } from "styled-components";
 // Screens
 import Landing from "./screens/Landing.js";
 import { theme } from "./Theme.js";
+import { Navigate, Route, Routes } from "react-router-dom";
+import Converter from "./screens/Converter.js";
 
 export default function App() {
   useEffect(() => {
@@ -24,7 +26,11 @@ export default function App() {
             rel="stylesheet"
           />
         </Helmet>
-        <Landing />
+        <Routes>
+          <Route path="/" exact={true} element={<Landing />} />
+
+          <Route path="/converter" exact={true} element={<Converter />} />
+        </Routes>
       </>
     </ThemeProvider>
   );
