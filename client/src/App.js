@@ -29,7 +29,7 @@ export default function App() {
         <Routes>
           <Route path='/' exact={true} element={<Landing />} />
 
-          <Route path='/converter' exact={true} element={<Converter />} />
+          <Route path='/ramp' exact={true} element={<Converter />} />
         </Routes>
       </>
     </ThemeProvider>

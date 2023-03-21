@@ -1,0 +1,29 @@
+{
+  "name": "fiatconnect",
+  "version": "1.0.0",
+  "description": "implementation of fiat connect",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oneramp/oneramp.git"
+  },
+  "keywords": [
+    "fiat",
+    "connect"
+  ],
+  "author": "elias hezron",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oneramp/oneramp/issues"
+  },
+  "homepage": "https://github.com/oneramp/oneramp#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "ethers": "^5.5.1",
+    "express": "^4.18.2",
+    "siwe": "^1.1.6"
+  }
+}
