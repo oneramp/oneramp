@@ -13,14 +13,14 @@ module.exports = {
   },
   networks: {
     alfajores: {
-      // url: "https://alfajores-forno.celo-testnet.org",
-      url: "https://celo-hackathon.lavanet.xyz/celo-alfajores/http",
+      url: "https://alfajores-forno.celo-testnet.org",
+      // url: "https://celo-hackathon.lavanet.xyz/celo-alfajores/http",
       accounts: [process.env.PRIVATE_KEY],
       chainId: 44787,
     },
     celo: {
-      // url: "https://forno.celo.org",
-      url: "https://celo-hackathon.lavanet.xyz/celo/http",
+      url: "https://forno.celo.org",
+      // url: "https://celo-hackathon.lavanet.xyz/celo/http",
       accounts: [process.env.PRIVATE_KEY],
       chainId: 42220,
     },
@@ -50,7 +50,7 @@ module.exports = {
     ],
   },
   gasReporter: {
-    enabled: true,
+    // enabled: true,
     currency: "USD",
     token: "BNB",
     coinmarketcap: process.env.COINMARKETCAP_API_KEY,

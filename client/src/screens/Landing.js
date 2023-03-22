@@ -1,10 +1,10 @@
-import React from "react";
+import React from "react"
 // Sections
-import TopNavbar from "../components/Nav/TopNavbar";
-import Header from "../components/Sections/Header";
-import Features from "../components/Sections/Features";
-import Projects from "../components/Sections/Projects";
-import Footer from "../components/Sections/Footer";
+import TopNavbar from "../components/Nav/TopNavbar"
+import Header from "../components/Sections/Header"
+import Features from "../components/Sections/Features"
+// import Projects from "../components/Sections/Projects"
+import Footer from "../components/Sections/Footer"
 
 export default function Landing() {
   return (
@@ -12,8 +12,8 @@ export default function Landing() {
       <TopNavbar />
       <Header />
       <Features />
-      <Projects />
+      {/* <Projects /> */}
       <Footer />
     </>
-  );
+  )
 }

@@ -14,6 +14,7 @@ describe("OffRampContract", function () {
     token = await ERC20TokenMock.deploy()
     token2 = await ERC20TokenMock2.deploy()
     await token.deployed()
+    await token2.deployed()
     ;[owner, depositor, withdrawer] = await ethers.getSigners()
     await token
       .connect(owner)
