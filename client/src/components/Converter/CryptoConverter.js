@@ -10,19 +10,12 @@ import { useLocation, useNavigate } from "react-router-dom"
 const currencies = [
   {
     value: "CUSD",
-    label: "$ CUSD",
+    label: "CUSD",
   },
-  {
-    value: "EUR",
-    label: "€ ETH",
-  },
-  {
-    value: "BTC",
-    label: "฿ BTC",
-  },
+
   {
     value: "CELO",
-    label: "¥ CELO",
+    label: "CELO",
   },
 ]
 
@@ -91,7 +84,7 @@ export default function CryptoConverter() {
           </TextField>
 
           <Box sx={{ fontSize: 20, textAlign: "center", py: 2 }}>
-            1BTC = <b>UGX {value}</b>
+            1CUSD = <b>UGX {value}</b>
           </Box>
 
           <FullButton title='Launch App' action={handleClick} />
