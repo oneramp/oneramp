@@ -25,11 +25,15 @@ export default function CryptoConverter() {
 
   const [rate] = useState(3700)
   const [value, setValue] = useState(rate)
+  const [selectedCurrency, setSelectedCurrency] = useState("CUSD")
 
   function handleClick() {
     if (location.pathname !== "/ramp") {
       navigate("/ramp")
     }
+  }
+  const handleCurrencyChange = (event) => {
+    setSelectedCurrency(event.target.value)
   }
 
   const handleChange = (event) => {
@@ -71,6 +75,7 @@ export default function CryptoConverter() {
             fullWidth
             type='number'
             defaultValue='ETH'
+            onChange={handleCurrencyChange}
             SelectProps={{
               native: true,
             }}
@@ -84,7 +89,7 @@ export default function CryptoConverter() {
           </TextField>
 
           <Box sx={{ fontSize: 20, textAlign: "center", py: 2 }}>
-            1CUSD = <b>UGX {value}</b>
+            1{selectedCurrency}= <b>UGX {value}</b>
           </Box>
 
           <FullButton title='Launch App' action={handleClick} />
@@ -107,6 +112,7 @@ export default function CryptoConverter() {
             fullWidth
             type='number'
             defaultValue='ETH'
+            onChange={handleCurrencyChange}
             SelectProps={{
               native: true,
             }}
@@ -137,10 +143,10 @@ export default function CryptoConverter() {
           />
 
           <Box sx={{ fontSize: 20, textAlign: "center", py: 2 }}>
-            1BTC = <b>UGX {value}</b>
+            1{selectedCurrency} = <b>UGX {value}</b>
           </Box>
 
-          <FullButton title='Approve' />
+          <FullButton title='Launch App' action={handleClick} />
         </ThemeProvider>
       </div>
     )
