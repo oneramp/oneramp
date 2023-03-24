@@ -25,6 +25,7 @@ export default function CryptoConverter() {
 
   const [rate] = useState(3700)
   const [value, setValue] = useState(rate)
+  const [number, setNumber] = useState(1)
   const [selectedCurrency, setSelectedCurrency] = useState("CUSD")
 
   function handleClick() {
@@ -40,6 +41,7 @@ export default function CryptoConverter() {
     // 👇 Get input value from "event"
     let n = (event.target.value * rate).toLocaleString() // add separator
     setValue(n)
+    setNumber(event.target.value)
   }
   var n = 34523453.345
   console.log(n.toLocaleString())
@@ -89,7 +91,8 @@ export default function CryptoConverter() {
           </TextField>
 
           <Box sx={{ fontSize: 20, textAlign: "center", py: 2 }}>
-            1{selectedCurrency}= <b>UGX {value}</b>
+            {number}
+            {selectedCurrency}= <b>UGX {value}</b>
           </Box>
 
           <FullButton title='Launch App' action={handleClick} />
