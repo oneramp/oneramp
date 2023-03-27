@@ -100,4 +100,17 @@ describe("OffRampContract", function () {
         )
     ).to.be.revertedWith("token currently allowed")
   })
+  it("should not allow the owner to withdraw more than available", async function () {
+    const disallowedTokenAddress = "0x0000000000000000000000000000000000000001"
+    const depositAmount = ethers.utils.parseUnits("100", 18)
+    await expect(
+      offRampContract
+        .connect(owner)
+        .withdrawToken(
+          withdrawer.address,
+          disallowedTokenAddress,
+          depositAmount
+        )
+    ).to.be.revertedWith("token currently allowed")
+  })
 })
