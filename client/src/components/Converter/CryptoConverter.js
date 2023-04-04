@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import FullButton from "../Buttons/FullButton"
 import Transfer from "../../assets/svg/Transfer"
 import { Box } from "@mui/system"
@@ -35,12 +35,27 @@ export default function CryptoConverter() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [rate, setRate] = useState(3700)
-  const [value, setValue] = useState(rate)
-  const [number, setNumber] = useState(1)
+  const [rate, setRate] = useState(0)
+  const [value, setValue] = useState(0)
+  const [cvalue, setcValue] = useState(0)
+  const [cashValue, setCashValue] = useState(0)
+
+  const [cryptoValue, setCryptoValue] = useState(0)
+  // eslint-disable-next-line
+  const [exchangeRates, setExchangeRates] = useState({})
   const [selectedCurrency, setSelectedCurrency] = useState("CUSD")
   // eslint-disable-next-line
   const [selectedCountry, setSelectedCountry] = useState("UGX")
+
+  useEffect(() => {
+    fetch("https://open.er-api.com/v6/latest/USD")
+      .then((response) => response.json())
+      .then((data) => {
+        setExchangeRates(data.rates)
+        setRate(data.rates[selectedCountry].toFixed(0))
+      })
+      .catch((error) => console.error("Error fetching exchange rates:", error))
+  }, [selectedCountry])
 
   function handleClick() {
     if (location.pathname !== "/ramp") {
@@ -52,22 +67,22 @@ export default function CryptoConverter() {
   }
   const handleCountryChange = (event) => {
     setSelectedCountry(event.target.value)
-    if (event.target.value === "UGX") {
-      setRate(3700)
-    } else {
-      // Add conversion rate for other countries
-      setRate(1)
-    }
   }
 
   const handleChange = (event) => {
-    // 👇 Get input value from "event"
-    let n = (event.target.value * rate).toLocaleString() // add separator
-    setValue(n)
-    setNumber(event.target.value)
+    // Get input value from "event"
+    let inputValue = event.target.value
+    // Display USD equivalent
+    setValue(inputValue)
+    setCryptoValue((inputValue / rate).toFixed(2))
   }
-  var n = 34523453.345
-  console.log(n.toLocaleString())
+  const handleSellChange = (event) => {
+    // Get input value from "event"
+    let inputValue = event.target.value
+    // Display USD equivalent
+    setcValue(inputValue)
+    setCashValue((inputValue * rate).toFixed(2))
+  }
 
   function BuyView() {
     return (
@@ -83,8 +98,9 @@ export default function CryptoConverter() {
                 fullWidth
                 onChange={handleChange}
                 className='inputRounded'
-                defaultValue={1}
+                // defaultValue={rate ? rate : 1}
                 type='number'
+                value={value}
                 variant='outlined'
               />
             </Grid>
@@ -119,12 +135,14 @@ export default function CryptoConverter() {
           <Grid container spacing={2}>
             <Grid item xs={8}>
               <TextField
+                style={{ color: "white" }}
                 fullWidth
-                onChange={handleChange}
                 className='inputRounded'
                 defaultValue={1}
                 type='number'
+                value={cryptoValue}
                 variant='outlined'
+                disabled
               />
             </Grid>
             <Grid item xs={4}>
@@ -150,8 +168,10 @@ export default function CryptoConverter() {
           </Grid>
 
           <Box sx={{ fontSize: 20, textAlign: "center", py: 2 }}>
-            {number}
-            {selectedCurrency}= <b>UGX {value}</b>
+            1{selectedCurrency}={" "}
+            <b>
+              {selectedCountry} {rate}
+            </b>
           </Box>
 
           <FullButton title='Launch App' action={handleClick} />
@@ -191,9 +211,10 @@ export default function CryptoConverter() {
             <Grid item xs={8}>
               <TextField
                 fullWidth
-                onChange={handleChange}
+                onChange={handleSellChange}
                 className='inputRounded'
                 defaultValue={1}
+                value={cvalue}
                 type='number'
                 variant='outlined'
               />
@@ -233,15 +254,19 @@ export default function CryptoConverter() {
                 onChange={handleChange}
                 className='inputRounded'
                 defaultValue={1}
+                value={cashValue}
                 type='number'
                 variant='outlined'
+                disabled
               />
             </Grid>
           </Grid>
 
           <Box sx={{ fontSize: 20, textAlign: "center", py: 2 }}>
-            {number}
-            {selectedCurrency}= <b>UGX {value}</b>
+            1{selectedCurrency}={" "}
+            <b>
+              {selectedCountry} {rate}
+            </b>
           </Box>
 
           <FullButton title='Launch App' action={handleClick} />
