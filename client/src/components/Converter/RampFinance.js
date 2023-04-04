@@ -31,7 +31,7 @@ const countries = [
   },
 ]
 
-export default function CryptoConverter() {
+export default function RampFinance() {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -269,7 +269,7 @@ export default function CryptoConverter() {
             </b>
           </Box>
 
-          <FullButton title='Launch App' action={handleClick} />
+          <FullButton title='Approve' action={handleClick} />
         </ThemeProvider>
       </div>
     )

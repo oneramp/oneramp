@@ -7,7 +7,7 @@ import { ThemeProvider } from "styled-components"
 import Landing from "./screens/Landing.js"
 import { theme } from "./Theme.js"
 import { Route, Routes } from "react-router-dom"
-import Converter from "./screens/Converter.js"
+import Ramp from "./screens/Ramp.js"
 
 export default function App() {
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function App() {
         <Routes>
           <Route path='/' exact={true} element={<Landing />} />
 
-          <Route path='/ramp' exact={true} element={<Converter />} />
+          <Route path='/ramp' exact={true} element={<Ramp />} />
         </Routes>
       </>
     </ThemeProvider>
