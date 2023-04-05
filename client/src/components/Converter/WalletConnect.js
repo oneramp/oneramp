@@ -8,6 +8,10 @@ import Backdrop from "../Elements/Backdrop"
 import LogoIcon from "../../assets/svg/logo-light.svg"
 import BurgerIcon from "../../assets/svg/BurgerIcon"
 import { Box } from "@mui/system"
+import { useAccount, useDisconnect } from "wagmi"
+import { useConnectModal } from "@rainbow-me/rainbowkit"
+import FullButton from "../Buttons/FullButton"
+import Networks from "../../utils/networks"
 
 export default function Wallet() {
   const [y, setY] = useState(window.scrollY)
@@ -19,7 +23,10 @@ export default function Wallet() {
       window.removeEventListener("scroll", () => setY(window.scrollY))
     }
   }, [y])
+  const { address, isConnected } = useAccount()
 
+  const { disconnect } = useDisconnect()
+  const { openConnectModal } = useConnectModal()
   return (
     <>
       <Sidebar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
@@ -41,23 +48,20 @@ export default function Wallet() {
 
           <UlWrapperRight className='flexNullCenter'>
             <li className='semiBold font15 pointer'>
-              <a
-                target='_blank'
-                rel='noopener noreferrer'
-                href='https://oneramp.gitbook.io/oneramp-docs/'
-                style={{ padding: "10px 30px 10px 0" }}
-              >
-                API Docs
-              </a>
+              <Networks />
             </li>
             <li className='semiBold font15 pointer flexCenter'>
-              <a
-                href='/'
-                className='radius8 lightBg2'
-                style={{ padding: "10px 15px" }}
-              >
-                connect wallet
-              </a>
+              {address && isConnected ? (
+                <FullButton
+                  title={getEllipsisTxt(address, 5)}
+                  action={disconnect}
+                ></FullButton>
+              ) : (
+                <FullButton
+                  title='connect Wallet'
+                  action={openConnectModal}
+                ></FullButton>
+              )}
             </li>
           </UlWrapperRight>
         </NavInner>
@@ -94,3 +98,10 @@ const UlWrapperRight = styled.ul`
     display: none;
   }
 `
+
+export const getEllipsisTxt = (str, n = 6) => {
+  if (str) {
+    return `${str.slice(0, 2)}...${str.slice(str.length - n)}`
+  }
+  return ""
+}

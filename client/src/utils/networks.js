@@ -1,13 +1,13 @@
-import React, { useState, useRef, useEffect } from "react"
-import { handleNetworkSwitch } from "./switchNetwork"
-// import { chevronDown } from "../assets"÷
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
-import { useOnClickOutside } from "./helpers"
-import styles from "../styles"
-import chains from "../utils/cryptoname.json"
+import React, { useState, useEffect } from "react"
+import chains from "../utils/supportedChains.json"
 import { ethers } from "ethers"
+import { handleNetworkSwitch } from "./switchNetworks"
+import InputLabel from "@mui/material/InputLabel"
+import MenuItem from "@mui/material/MenuItem"
+import FormControl from "@mui/material/FormControl"
+import Select from "@mui/material/Select"
+
 const Networks = () => {
-  const [showList, setShowList] = useState(false)
   const [chainId, setChainId] = useState(0)
   const [activeChain, setActiveChain] = useState("Select Network")
 
@@ -15,6 +15,7 @@ const Networks = () => {
     async function getChainId() {
       const provider = new ethers.providers.getDefaultProvider()
       const network = await provider.getNetwork()
+
       const chainName = chains.find(
         (chain) => chain.chainid === network.chainId
       )
@@ -23,31 +24,22 @@ const Networks = () => {
     }
     getChainId()
   }, [chainId, activeChain])
-
-  const ref = useRef()
-
-  useOnClickOutside(ref, () => setShowList(false))
   return (
-    <div className='relative' onClick={() => setShowList(!showList)}>
-      <button className={styles.currencyButton}>
-        {activeChain}
-        <img
-          src={ExpandMoreIcon}
-          alt='cheveron-down'
-          className={`w-4 h-4 object-contain ml-2 ${
-            showList ? "rotate-180" : "rotate-0"
-          }`}
-        />
-      </button>
-
-      {showList && (
-        <ul ref={ref} className={styles.currencyList}>
+    <div>
+      <FormControl fullWidth>
+        <InputLabel id='demo-simple-select-label'>select network</InputLabel>
+        <Select
+          labelId='demo-simple-select-label'
+          id='demo-simple-select'
+          value={activeChain}
+          autoWidth
+          label='select network'
+          onChange={(event) => setActiveChain(event.target.value)}
+        >
           {chains.map(({ chainName, chainid }, index) => (
-            <li
+            <MenuItem
               key={index}
-              className={`${styles.currencyListItem} ${
-                activeChain === chainName ? "bg-site-dim2" : ""
-              } cursor-pointer`}
+              value={chainName}
               onClick={async () => {
                 if (typeof onSelect === "function");
 
@@ -57,15 +49,13 @@ const Networks = () => {
                 } else {
                   setActiveChain(chainName)
                 }
-
-                setShowList(false)
               }}
             >
               {chainName}
-            </li>
+            </MenuItem>
           ))}
-        </ul>
-      )}
+        </Select>
+      </FormControl>
     </div>
   )
 }

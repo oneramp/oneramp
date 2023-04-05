@@ -7,8 +7,9 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.0",
+    "@rainbow-me/rainbowkit": "^0.12.7",
     "aos": "^2.3.4",
-    "ethers": "^6.2.3",
+    "ethers": "^5.7.2",
     "react": "^18.2.0",
     "react-animation-on-scroll": "^5.1.0",
     "react-dom": "^18.2.0",
@@ -17,9 +18,11 @@
     "react-scripts": "^5.0.1",
     "react-scroll": "^1.8.4",
     "react-slick": "^0.28.1",
+    "react-toastify": "^9.1.2",
     "react-transition-group": "^4.4.5",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.1",
+    "wagmi": "^0.12.9",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
