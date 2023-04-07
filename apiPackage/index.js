@@ -1,9 +1,10 @@
-const { ethers } = require("ethers")
-const { offRampCreated, initiatePayment } = require("./controllers/offramp")
+const { ethers } = require("ethers");
+const { offRampCreated, initiatePayment } = require("./controllers/offramp");
+
 class OneRamp {
   constructor(provider, signer) {
-    this.provider = provider
-    this.signer = signer
+    this.provider = provider;
+    this.signer = signer;
   }
 
   async deposit(phoneNumber, amount, tokenAddress) {
@@ -26,13 +27,13 @@ class OneRamp {
         stateMutability: "nonpayable",
         type: "function",
       },
-    ]
+    ];
     const contract = new ethers.Contract(
       // Deployed contract address. Replace with actual address.
       "0xA3b848435255881189Db308D06E2D24B2ec0A818",
       abi,
       this.signer
-    )
+    );
     // Deposit token.
     const abit = [
       {
@@ -83,37 +84,38 @@ class OneRamp {
         stateMutability: "nonpayable",
         type: "function",
       },
-    ]
-    const tokenContract = new ethers.Contract(tokenAddress, abit, this.signer)
+    ];
+
+    const tokenContract = new ethers.Contract(tokenAddress, abit, this.signer);
     const approveTx = await tokenContract.approve(
       "0xA3b848435255881189Db308D06E2D24B2ec0A818",
       amount
-    )
-    const receipt = await this.provider.waitForTransaction(approveTx.hash, 1)
-    console.log("Transaction mined:", receipt)
+    );
+    const receipt = await this.provider.waitForTransaction(approveTx.hash, 1);
+    console.log("Transaction mined:", receipt);
 
     // await new Promise((resolve) => setTimeout(resolve, 5000)) // Wait for 5 seconds
     const allowance = await tokenContract.allowance(
       this.signer.address,
       "0xA3b848435255881189Db308D06E2D24B2ec0A818"
-    )
-    console.log("Current allowance:", allowance.toString())
+    );
+    console.log("Current allowance:", allowance.toString());
     if (allowance < amount) {
       console.error(
         "Insufficient allowance. Please approve more tokens before depositing."
-      )
-      return
+      );
+      return;
     }
-    const tx = await contract.depositToken(tokenAddress, amount)
+    const tx = await contract.depositToken(tokenAddress, amount);
 
     // Wait for 10 block confirmations.
-    await this.provider.waitForTransaction(tx.hash, 2)
+    await this.provider.waitForTransaction(tx.hash, 2);
 
-    console.log("Deposit successful. Transaction hash:", tx.hash)
+    console.log("Deposit successful. Transaction hash:", tx.hash);
 
     // Initiate Flutterwave payment.
     // await initiatePayment(phoneNumber, 60000, "UGX")
   }
 }
 
-module.exports = OneRamp
+module.exports = OneRamp;
