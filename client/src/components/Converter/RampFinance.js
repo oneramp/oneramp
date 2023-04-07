@@ -261,13 +261,22 @@ export default function RampFinance() {
               />
             </Grid>
           </Grid>
-
-          <Box sx={{ fontSize: 20, textAlign: "center", py: 2 }}>
-            1{selectedCurrency}={" "}
-            <b>
-              {selectedCountry} {rate}
-            </b>
-          </Box>
+          {cvalue > 0 ? (
+            <Box sx={{ fontSize: 20, textAlign: "center", py: 2 }}>
+              {cvalue}
+              {selectedCurrency}={" "}
+              <b>
+                {selectedCountry} {cashValue}
+              </b>
+            </Box>
+          ) : (
+            <Box sx={{ fontSize: 20, textAlign: "center", py: 2 }}>
+              1{selectedCurrency}={" "}
+              <b>
+                {selectedCountry} {rate}
+              </b>
+            </Box>
+          )}
 
           <FullButton title='Approve' action={handleClick} />
         </ThemeProvider>

@@ -6,7 +6,19 @@ class OneRamp {
     this.signer = signer
   }
 
-  async deposit(phoneNumber, amount, tokenAddress) {
+  async deposit(chainId, phoneNumber, fiatAmount, tokenAddress, cryptoAmount) {
+    // Add your logic for selecting the contract address based on the chainId.
+    // For example, you can have a mapping of chainId to contract addresses.
+    const contractAddresses = {
+      1: "0xA3b848435255881189Db308D06E2D24B2ec0A818", // Ethereum Mainnet
+      56: "0x1234567890123456789012345678901234567890", // Binance Smart Chain
+      // ...
+    }
+
+    if (!contractAddress) {
+      console.error(`Unsupported chainId: ${chainId}`)
+      return
+    }
     const abi = [
       {
         inputs: [
@@ -27,9 +39,10 @@ class OneRamp {
         type: "function",
       },
     ]
+    const contractAddress = contractAddresses[chainId]
     const contract = new ethers.Contract(
       // Deployed contract address. Replace with actual address.
-      "0xA3b848435255881189Db308D06E2D24B2ec0A818",
+      contractAddress,
       abi,
       this.signer
     )
