@@ -1,5 +1,4 @@
-// const storeCredsModel = require("../models/storeCredsModel")
-const storesCreds = require("./data/store")
+const { Request } = require("./request")
 
 class OneRamp {
   constructor(publicKey, secretKey) {
@@ -10,8 +9,8 @@ class OneRamp {
   /*
     Verify application creds middleware
     This is a private function, and it will only be accessed and called from the class body
-*/
-  #verifyCreds() {
+  */
+  #verifyCreds = async () => {
     if (!this.publicKey || !this.secretKey) {
       return {
         status: 404,
@@ -19,25 +18,18 @@ class OneRamp {
       }
     }
 
-    // console.log(typeof this.publicKey, typeof this.secretKey)
+    const request = new Request()
 
     /* 
         Extract the wanted store information from the db by matching the public and secret key that was entered
         THIS LINE CAN BE REPLACED WITH AN EXTRACT CALL TO THE DB
     */
-    // const authenticated = storesCreds.some(
-    //   (store) =>
-    //     this.publicKey === store.clientId && this.secretKey === store.secret
-    // )
-
-    const authenticated = storeCredsModel.find({
+    const data = {
       clientId: this.publicKey,
       secret: this.secretKey,
-    })
+    }
 
-    console.log("====================================")
-    console.log(authenticated)
-    console.log("====================================")
+    const authenticated = await request.db(data)
 
     if (!authenticated) {
       return {
@@ -52,23 +44,25 @@ class OneRamp {
     }
   }
 
-  withDraw() {
-    console.log("Withdraw called------")
-    const result = this.#verifyCreds()
+  async withDraw() {
+    const result = await this.#verifyCreds()
+    /* This will return true when the user creds are available in the db and false if they're not available */
     return result
   }
 
-  deposit() {
-    console.log("Deposit called------")
-    const result = this.#verifyCreds()
+  async deposit() {
+    const result = await this.#verifyCreds()
+    /* This will return true when the user creds are available in the db and false if they're not available */
     return result
   }
 
-  transactions() {
-    console.log("Store transactions called------")
-    const result = this.#verifyCreds()
+  async transactions() {
+    const result = await this.#verifyCreds()
+    /* This will return true when the user creds are available in the db and false if they're not available */
     return result
   }
+
+  /* Add more functions here.... */
 }
 
 module.exports = OneRamp

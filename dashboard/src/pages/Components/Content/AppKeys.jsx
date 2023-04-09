@@ -1,8 +1,33 @@
+import { APIURL } from "@/apiUrl"
+import { useQuery } from "@tanstack/react-query"
+import axios from "axios"
 import { useRef, useState } from "react"
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"
 
 const AppKeys = () => {
   const [showSecret, setShowSecret] = useState(false)
+
+  const {
+    isLoading,
+    error,
+    data: store,
+  } = useQuery(["store", localStorage.getItem("activeStore")], () =>
+    axios
+      .get(`${APIURL}/store/${localStorage.getItem("activeStore")}`)
+      .then((res) => res.data)
+      .catch((err) => err.message)
+  )
+
+  const {
+    isLoading: loadingKeys,
+    error: errorKeys,
+    data: storeKeys,
+  } = useQuery(["creds", localStorage.getItem("activeStore")], () =>
+    axios
+      .get(`${APIURL}/creds/${localStorage.getItem("activeStore")}`)
+      .then((res) => res.data)
+      .catch((err) => err.message)
+  )
 
   const [copied, setCopied] = useState(false)
 
@@ -46,27 +71,28 @@ const AppKeys = () => {
     }
   }
 
+  if (loadingKeys || isLoading) return <h2>Loading...</h2>
+  if (error || errorKeys) return <h2>error</h2>
+
   return (
-    <div className="flex flex-1 flex-col">
-      <h1 className="text-2xl">API KEYS</h1>
+    <div className="flex flex-col flex-1">
+      <h1 className="text-2xl">API KEYS for {store.storeName} </h1>
 
       <div className="flex flex-col w-1/2 my-8">
         <div className="flex flex-col">
           <label htmlFor="publicKey">Public key</label>
-          <div className="flex flex-row items-center justify-between cursor-text h-12 pl-4 outline-none w-full mt-2 rounded-md bg-neutral-100">
-            <span ref={publicKeyRef}>
-              FLWPUBK_TEST-ywefjhsdajdgkajhdkahdjkahsdj-OFF
-            </span>
+          <div className="flex flex-row items-center justify-between w-full h-12 pl-4 mt-2 rounded-md outline-none cursor-text bg-neutral-100">
+            {storeKeys && <span ref={publicKeyRef}>{storeKeys.clientId}</span>}
             <button
               onClick={() => copyText("PublicKey")}
-              className="bg-neutral-700 h-full px-4 rounded-r text-white text-sm"
+              className="h-full px-4 text-sm text-white rounded-r bg-neutral-700"
             >
               COPY
             </button>
           </div>
         </div>
 
-        <div className="flex my-8 flex-col">
+        <div className="flex flex-col my-8">
           <div
             onClick={toggleReveal}
             className="flex flex-row items-center cursor-pointer"
@@ -78,9 +104,9 @@ const AppKeys = () => {
               <AiFillEyeInvisible className="mx-4" />
             )}
           </div>
-          <div className="flex flex-row items-center justify-between cursor-text h-12 pl-4 outline-none w-full mt-2 rounded-md bg-neutral-100">
+          <div className="flex flex-row items-center justify-between w-full h-12 pl-4 mt-2 rounded-md outline-none cursor-text bg-neutral-100">
             {showSecret ? (
-              <span ref={secretKeyRef}>ywefjhsdajdgkajhdkahdjkahsdj-OFF</span>
+              storeKeys && <span ref={secretKeyRef}>{storeKeys.secret}</span>
             ) : (
               <span>*******************************</span>
             )}
@@ -88,7 +114,7 @@ const AppKeys = () => {
             <button
               disabled={!showSecret}
               onClick={() => copyText("SecretKey")}
-              className="bg-neutral-700 h-full px-4 rounded-r text-white text-sm"
+              className="h-full px-4 text-sm text-white rounded-r bg-neutral-700"
             >
               COPY
             </button>
@@ -96,7 +122,7 @@ const AppKeys = () => {
         </div>
       </div>
       {copied && (
-        <h3 className="bg-green-200 p-3 rounded-md text-center absolute right-14 shadow-sm">
+        <h3 className="absolute p-3 text-center bg-green-200 rounded-md shadow-sm right-14">
           Copied!
         </h3>
       )}
