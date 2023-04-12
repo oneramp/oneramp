@@ -1,16 +1,16 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import PropTypes from "prop-types";
+import * as React from "react"
+import { styled } from "@mui/material/styles"
+import Tabs from "@mui/material/Tabs"
+import Tab from "@mui/material/Tab"
+import Box from "@mui/material/Box"
+import PropTypes from "prop-types"
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, ...other } = props
 
   return (
     <div
-      role="tabpanel"
+      role='tabpanel'
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
@@ -18,26 +18,26 @@ function TabPanel(props) {
     >
       {children}
     </div>
-  );
+  )
 }
 
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
-};
+}
 
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
-  };
+  }
 }
 
 const StyledTabs = styled((props) => (
   <Tabs
     {...props}
-    TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
+    TabIndicatorProps={{ children: <span className='MuiTabs-indicatorSpan' /> }}
   />
 ))({
   "& .MuiTabs-indicator": {
@@ -50,7 +50,7 @@ const StyledTabs = styled((props) => (
     width: "100%",
     backgroundColor: "white",
   },
-});
+})
 
 const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
   ({ theme }) => ({
@@ -66,21 +66,21 @@ const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
       backgroundColor: "rgba(100, 95, 228, 0.32)",
     },
   })
-);
+)
 
 export default function TabView({ children }) {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(0)
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+    setValue(newValue)
+  }
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ mb: 4 }} className="flexCenter">
+      <Box sx={{ mb: 4 }} className='flexCenter'>
         <StyledTabs value={value} onChange={handleChange}>
-          <StyledTab label="You Buy" {...a11yProps(0)} />
-          <StyledTab label="You Sell" {...a11yProps(1)} />
+          <StyledTab label='You Sell' {...a11yProps(0)} />
+          <StyledTab label='You Buy' {...a11yProps(1)} />
         </StyledTabs>
       </Box>
 
@@ -90,5 +90,5 @@ export default function TabView({ children }) {
         </TabPanel>
       ))}
     </Box>
-  );
+  )
 }

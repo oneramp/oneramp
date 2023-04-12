@@ -1,36 +1,7 @@
-const { ethers } = require("ethers");
-const { offRampCreated, initiatePayment } = require("./controllers/offramp");
 
-class OneRamp {
-  constructor(provider, signer) {
-    this.provider = provider;
-    this.signer = signer;
-  }
-
-  async deposit(phoneNumber, amount, tokenAddress) {
-    const abi = [
-      {
-        inputs: [
-          {
-            internalType: "address",
-            name: "_token",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "_amount",
-            type: "uint256",
-          },
-        ],
-        name: "depositToken",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-    ];
     const contract = new ethers.Contract(
       // Deployed contract address. Replace with actual address.
-      "0xA3b848435255881189Db308D06E2D24B2ec0A818",
+      contractAddress,
       abi,
       this.signer
     );
