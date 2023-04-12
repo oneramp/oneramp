@@ -7,7 +7,9 @@ const { initiatePayment, test } = require("./controllers/offramp")
 const { errorHandler, notFound } = require("./middlewareHandlers/errorHandler")
 require("colors")
 require("dotenv").config({ path: __dirname + "/.env" })
+
 connectDB()
+
 const app = express()
 app.use(express.json())
 app.use(cors())
@@ -19,6 +21,7 @@ if (process.env.NODE_ENV === "development") {
 }
 //implementation of routing
 app.use("/api", require("./routes/offrampRoute"))
+app.use("/api", require("./routes/routes.js"))
 
 app.use(errorHandler)
 app.use(notFound)
@@ -27,9 +30,9 @@ async function testa() {
   await initiatePayment("1234567890", 60000, "UGX")
 }
 
-testa()
+// testa()
 
-test()
+// test()
 
 app.listen(
   PORT,
