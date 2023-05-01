@@ -1,6 +1,6 @@
 {
   "name": "oneramp",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "crypto on and offramping api for sub-saharan africa",
   "main": "index.js",
   "scripts": {

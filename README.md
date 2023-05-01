@@ -17,6 +17,7 @@ First, import the OneRamp class from the oneramp package:
 
 ```javascript
 const OneRamp = require("oneramp")
+
 ```
 
 Then, create a new instance of the OneRamp class by providing a provider and signer:
@@ -25,7 +26,7 @@ Then, create a new instance of the OneRamp class by providing a provider and sig
 const provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/YOUR-PROJECT-ID");
 const signer = new ethers.Wallet("YOUR-PRIVATE-KEY", provider);
 
-const oneRamp = new OneRamp(provider, signer);
+const oneRamp = new OneRamp(process.env.PUBLIC_KEY, process.env.SECRET_KEY, provider, signer);
 ```
 
 Use the deposit method to deposit tokens:
