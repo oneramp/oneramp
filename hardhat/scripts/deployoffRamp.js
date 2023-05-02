@@ -6,10 +6,23 @@
 // global scope, and execute the script.
 const hre = require("hardhat")
 const fs = require("fs")
+const {
+  DefenderRelayProvider,
+  DefenderRelaySigner,
+} = require("defender-relay-client/lib/ethers")
+
+const credentials = {
+  apiKey: process.env.CELO_ALFAJORES_RELAYER_API_KEY,
+  apiSecret: process.env.CELO_ALFAJORES_RELAYER_API_SECRET,
+}
+const provider = new DefenderRelayProvider(credentials)
+const relaySigner = new DefenderRelaySigner(credentials, provider, {
+  speed: "fast",
+})
 
 async function main() {
   const OffRampContract = await ethers.getContractFactory("OffRampContract")
-  const offRampContract = await OffRampContract.deploy()
+  const offRampContract = await OffRampContract.connect(relaySigner).deploy()
   await offRampContract.deployed()
 
   const ERC20TokenMock = await ethers.getContractFactory("ERC20TokenMock")
@@ -18,21 +31,21 @@ async function main() {
   token2 = await ERC20TokenMock2.deploy()
   await token.deployed()
   await token2.deployed()
-  await offRampContract.addAllowedToken(token.address)
-  await offRampContract.addAllowedToken(token2.address)
+  await offRampContract.connect(relaySigner).addAllowedToken(token.address)
+  await offRampContract.connect(relaySigner).addAllowedToken(token2.address)
 
-  // fs.writeFileSync(
-  //   "deployContractsCelo.json",
-  //   JSON.stringify(
-  //     {
-  //       contract: offRampContract.address,
-  //       token: token.address,
-  //       token2: token2.address,
-  //     },
-  //     null,
-  //     2
-  //   )
-  // )
+  fs.writeFileSync(
+    "deployContractsCelo.json",
+    JSON.stringify(
+      {
+        contract: offRampContract.address,
+        token: token.address,
+        token2: token2.address,
+      },
+      null,
+      2
+    )
+  )
 
   console.log(
     `contract: ${offRampContract.address} \n token: ${token.address} \n token2: ${token2.address}`
