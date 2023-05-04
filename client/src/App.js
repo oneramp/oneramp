@@ -14,7 +14,7 @@ import {
   // getDefaultWallets,
   RainbowKitProvider,
   lightTheme,
-  DisclaimerComponent,
+  // DisclaimerComponent,
 } from "@rainbow-me/rainbowkit"
 import { trustWallet } from "@rainbow-me/rainbowkit/wallets"
 import { WagmiConfig, configureChains, createClient } from "wagmi"
@@ -43,10 +43,10 @@ import {
 const { chains, provider } = configureChains(
   [mainnet, polygon, bsc, bscTestnet, celo, celoAlfajores],
   [
-    alchemyProvider({ apiKey: "EPipXybe2a8n7lGnabv01Wia92Sz5J2Y" }),
     jsonRpcProvider({
       rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }),
     }),
+    alchemyProvider({ apiKey: "EPipXybe2a8n7lGnabv01Wia92Sz5J2Y" }),
     publicProvider(),
   ]
 )
@@ -101,14 +101,6 @@ export default function App() {
     Aos.refresh()
   }, [])
 
-  const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
-    <Text>
-      By connecting your wallet, you agree to the{" "}
-      <Link href='https://termsofservice.xyz'>Terms of Service</Link> and
-      acknowledge you have read and understand the protocol{" "}
-      <Link href='https://disclaimer.xyz'>Disclaimer</Link>
-    </Text>
-  )
   return (
     <WagmiConfig client={client}>
       <RainbowKitProvider
@@ -122,7 +114,7 @@ export default function App() {
         })}
         appInfo={{
           appName: "Oneramp",
-          disclaimer: Disclaimer,
+          appIcon: "./logo-light.svg",
         }}
       >
         <ThemeProvider theme={theme}>
