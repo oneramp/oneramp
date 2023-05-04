@@ -5,10 +5,14 @@ import { Link } from "react-scroll"
 // Assets
 import LogoIcon from "../../assets/svg/logo-light.svg"
 import { Box } from "@mui/system"
-import { useAccount, useDisconnect } from "wagmi"
-import { useConnectModal } from "@rainbow-me/rainbowkit"
-import FullButton from "../Buttons/FullButton"
-import Networks from "../../utils/networks"
+import {
+  useAccount,
+  //  useDisconnect
+} from "wagmi"
+// import { useConnectModal } from "@rainbow-me/rainbowkit"
+// import FullButton from "../Buttons/FullButton"
+// import Networks from "../../utils/networks"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
 
 export default function Wallet() {
   const [y, setY] = useState(window.scrollY)
@@ -21,8 +25,8 @@ export default function Wallet() {
   }, [y])
   const { address, isConnected } = useAccount()
 
-  const { disconnect } = useDisconnect()
-  const { openConnectModal } = useConnectModal()
+  // const { disconnect } = useDisconnect()
+  // const { openConnectModal } = useConnectModal()
   return (
     <>
       <Wrapper
@@ -34,38 +38,32 @@ export default function Wallet() {
             <Box component='img' src={LogoIcon} sx={{ height: 45, m: 1 }} />
           </Link>
           <UlWrapperRight className='flexNullCenter'>
-            <li className='semiBold font15 pointer'>
+            {/* <li className='semiBold font15 pointer'>
               <Networks />
-            </li>
+            </li> */}
             <li className='semiBold font15 pointer flexCenter'>
               {address && isConnected ? (
-                <FullButton
-                  title={getEllipsisTxt(address, 5)}
-                  action={disconnect}
-                ></FullButton>
+                <ConnectButton
+                  accountStatus={{
+                    smallScreen: "avatar",
+                    largeScreen: "full",
+                  }}
+                  showBalance={false}
+                />
               ) : (
-                <FullButton
-                  title='Connect Wallet'
-                  action={openConnectModal}
-                ></FullButton>
+                <ConnectButton />
               )}
             </li>
           </UlWrapperRight>
           <MobileRightWrapper>
-            <li className='semiBold font15 pointer'>
+            {/* <li className='semiBold font15 pointer'>
               <Networks />
-            </li>
+            </li> */}
             <li className='semiBold font15 pointer flexCenter'>
               {address && isConnected ? (
-                <FullButton
-                  title={getEllipsisTxt(address, 5)}
-                  action={disconnect}
-                ></FullButton>
+                <ConnectButton accountStatus='avatar' showBalance={false} />
               ) : (
-                <FullButton
-                  title='Connect Wallet'
-                  action={openConnectModal}
-                ></FullButton>
+                <ConnectButton />
               )}
             </li>
           </MobileRightWrapper>
