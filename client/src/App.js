@@ -70,10 +70,12 @@ const suggestedWallets = [
   rainbowWallet({ projectId, chains }),
   metaMaskWallet({ projectId, chains }),
   coinbaseWallet({ chains, appName: "My RainbowKit App" }),
+  // walletConnectWallet({ projectId, chains }),
 ]
 
 if (isMobileDevice()) {
   suggestedWallets.push(trustWallet({ projectId, chains }))
+  suggestedWallets.push(walletConnectWallet({ projectId, chains }))
 } else {
   suggestedWallets.push(walletConnectWallet({ projectId, chains }))
 }

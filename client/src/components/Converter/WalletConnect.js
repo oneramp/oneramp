@@ -61,7 +61,11 @@ export default function Wallet() {
             </li> */}
             <li className='semiBold font15 pointer flexCenter'>
               {address && isConnected ? (
-                <ConnectButton accountStatus='avatar' showBalance={false} />
+                <ConnectButton
+                  accountStatus='avatar'
+                  showBalance={false}
+                  chainStatus='icon'
+                />
               ) : (
                 <ConnectButton />
               )}
