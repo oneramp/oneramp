@@ -10,10 +10,11 @@ import { Route, Routes } from "react-router-dom"
 import Ramp from "./screens/Ramp.js"
 import "@rainbow-me/rainbowkit/styles.css"
 import {
-  getDefaultWallets,
+  // getDefaultWallets,
   RainbowKitProvider,
   lightTheme,
 } from "@rainbow-me/rainbowkit"
+import { trustWallet } from "@rainbow-me/rainbowkit/wallets"
 import { WagmiConfig, configureChains, createClient } from "wagmi"
 import {
   mainnet,
@@ -26,7 +27,14 @@ import {
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
 import { publicProvider } from "wagmi/providers/public"
 // import { getDefaultProvider } from "ethers"
-
+import { connectorsForWallets } from "@rainbow-me/rainbowkit"
+import {
+  injectedWallet,
+  rainbowWallet,
+  metaMaskWallet,
+  coinbaseWallet,
+  walletConnectWallet,
+} from "@rainbow-me/rainbowkit/wallets"
 const { chains, provider } = configureChains(
   [mainnet, polygon, bsc, bscTestnet, celo, celoAlfajores],
   [
@@ -42,10 +50,40 @@ const { chains, provider } = configureChains(
 //     wallets: getWalletConnectors(chains),
 //   },
 // ])
-const { connectors } = getDefaultWallets({
-  appName: "OneRamp finance",
-  chains,
-})
+// const { connectors } = getDefaultWallets({
+//   appName: "OneRamp finance",
+//   chains,
+//   wallets: connectorsForWallets(chains),
+// })
+
+const projectId = "EPipXybe2a8n7lGnabv01Wia92Sz5J2Y"
+
+const isMobileDevice = () => {
+  const userAgent = window.navigator.userAgent
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    userAgent
+  )
+}
+
+const suggestedWallets = [
+  injectedWallet({ chains }),
+  rainbowWallet({ projectId, chains }),
+  metaMaskWallet({ projectId, chains }),
+  coinbaseWallet({ chains, appName: "My RainbowKit App" }),
+]
+
+if (isMobileDevice()) {
+  suggestedWallets.push(trustWallet({ projectId, chains }))
+} else {
+  suggestedWallets.push(walletConnectWallet({ projectId, chains }))
+}
+
+const connectors = connectorsForWallets([
+  {
+    groupName: "Suggested",
+    wallets: suggestedWallets,
+  },
+])
 const client = createClient({
   autoConnect: true,
   provider,
