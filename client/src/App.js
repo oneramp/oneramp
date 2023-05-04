@@ -9,13 +9,16 @@ import { theme } from "./Theme.js"
 import { Route, Routes } from "react-router-dom"
 import Ramp from "./screens/Ramp.js"
 import "@rainbow-me/rainbowkit/styles.css"
+import { Valora } from "@celo/rainbowkit-celo/wallets"
 import {
   // getDefaultWallets,
   RainbowKitProvider,
   lightTheme,
+  DisclaimerComponent,
 } from "@rainbow-me/rainbowkit"
 import { trustWallet } from "@rainbow-me/rainbowkit/wallets"
 import { WagmiConfig, configureChains, createClient } from "wagmi"
+import { alchemyProvider } from "wagmi/providers/alchemy"
 import {
   mainnet,
   polygon,
@@ -24,6 +27,8 @@ import {
   celo,
   celoAlfajores,
 } from "wagmi/chains"
+import { ToastContainer, Zoom, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
 import { publicProvider } from "wagmi/providers/public"
 // import { getDefaultProvider } from "ethers"
@@ -38,24 +43,13 @@ import {
 const { chains, provider } = configureChains(
   [mainnet, polygon, bsc, bscTestnet, celo, celoAlfajores],
   [
+    alchemyProvider({ apiKey: "EPipXybe2a8n7lGnabv01Wia92Sz5J2Y" }),
     jsonRpcProvider({
       rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }),
     }),
     publicProvider(),
   ]
 )
-// const connectors = connectorsForWallets([
-//   {
-//     groupName: 'Recommended for Celo chains',
-//     wallets: getWalletConnectors(chains),
-//   },
-// ])
-// const { connectors } = getDefaultWallets({
-//   appName: "OneRamp finance",
-//   chains,
-//   wallets: connectorsForWallets(chains),
-// })
-
 const projectId = "EPipXybe2a8n7lGnabv01Wia92Sz5J2Y"
 
 const isMobileDevice = () => {
@@ -64,18 +58,27 @@ const isMobileDevice = () => {
     userAgent
   )
 }
+type WalletConnector = (p: { chains: Chain[] }) => Wallet
+function withLocalIconUrl(
+  connector: WalletConnector,
+  iconUrl: string,
+  chains: Chain[]
+) {
+  return { ...connector({ chains }), iconUrl }
+}
 
 const suggestedWallets = [
   injectedWallet({ chains }),
   rainbowWallet({ projectId, chains }),
   metaMaskWallet({ projectId, chains }),
   coinbaseWallet({ chains, appName: "My RainbowKit App" }),
+  withLocalIconUrl(Valora, "./wallets/valora.svg", chains),
   // walletConnectWallet({ projectId, chains }),
 ]
 
 if (isMobileDevice()) {
   suggestedWallets.push(trustWallet({ projectId, chains }))
-  suggestedWallets.push(walletConnectWallet({ projectId, chains }))
+  // suggestedWallets.push(walletConnectWallet({ projectId, chains }))
 } else {
   suggestedWallets.push(walletConnectWallet({ projectId, chains }))
 }
@@ -98,15 +101,29 @@ export default function App() {
     Aos.refresh()
   }, [])
 
+  const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
+    <Text>
+      By connecting your wallet, you agree to the{" "}
+      <Link href='https://termsofservice.xyz'>Terms of Service</Link> and
+      acknowledge you have read and understand the protocol{" "}
+      <Link href='https://disclaimer.xyz'>Disclaimer</Link>
+    </Text>
+  )
   return (
     <WagmiConfig client={client}>
       <RainbowKitProvider
         chains={chains}
         theme={lightTheme({
           accentColor: "black",
-          borderRadius: "small",
+          accentColorForeground: "white",
+          borderRadius: "medium",
           fontStack: "system",
+          overlayBlur: "small",
         })}
+        appInfo={{
+          appName: "Oneramp",
+          disclaimer: Disclaimer,
+        }}
       >
         <ThemeProvider theme={theme}>
           <>
@@ -128,6 +145,11 @@ export default function App() {
               <Route path='/ramp' exact={true} element={<Ramp />} />
             </Routes>
           </>
+          <ToastContainer
+            transition={Zoom}
+            position={toast.POSITION.BOTTOM_RIGHT}
+            limit={2}
+          />
         </ThemeProvider>
       </RainbowKitProvider>
     </WagmiConfig>
