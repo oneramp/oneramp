@@ -78,9 +78,13 @@ const suggestedWallets = [
 
 if (isMobileDevice()) {
   suggestedWallets.push(trustWallet({ projectId, chains }))
-  // suggestedWallets.push(walletConnectWallet({ projectId, chains }))
 } else {
-  suggestedWallets.push(walletConnectWallet({ projectId, chains }))
+  suggestedWallets.push(
+    walletConnectWallet({
+      projectId,
+      chains,
+    })
+  )
 }
 
 const connectors = connectorsForWallets([
