@@ -9,10 +9,18 @@ import LogoIcon from "../../assets/svg/logo-light.svg"
 import BurgerIcon from "../../assets/svg/BurgerIcon"
 import { Box } from "@mui/system"
 import { navLinks } from "../../data/NavLinks"
-
+import { useLocation, useNavigate } from "react-router-dom"
 export default function TopNavbar() {
+  const navigate = useNavigate()
+  const location = useLocation()
   const [y, setY] = useState(window.scrollY)
   const [sidebarOpen, toggleSidebar] = useState(false)
+
+  function handleClick() {
+    if (location.pathname !== "/ramp") {
+      navigate("/ramp")
+    }
+  }
 
   useEffect(() => {
     window.addEventListener("scroll", () => setY(window.scrollY))
@@ -70,14 +78,17 @@ export default function TopNavbar() {
               </a>
             </li>
             <li className='semiBold font15 pointer flexCenter'>
-              <a
+              <li
                 className='radius8 lightBg2'
-                style={{ padding: "10px 15px" }}
-                target='_blank'
-                href='ramp'
+                style={{
+                  padding: "10px 15px",
+                  color: "#fff",
+                  backgroundColor: "#000",
+                }}
+                onClick={handleClick}
               >
                 Launch App
-              </a>
+              </li>
             </li>
           </UlWrapperRight>
         </NavInner>

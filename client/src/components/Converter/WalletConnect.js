@@ -13,8 +13,10 @@ import {
 // import FullButton from "../Buttons/FullButton"
 // import Networks from "../../utils/networks"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
-
+import { useLocation, useNavigate } from "react-router-dom"
 export default function Wallet() {
+  const navigate = useNavigate()
+  const location = useLocation()
   const [y, setY] = useState(window.scrollY)
 
   useEffect(() => {
@@ -24,6 +26,12 @@ export default function Wallet() {
     }
   }, [y])
   const { address, isConnected } = useAccount()
+
+  function handleClick() {
+    if (location.pathname !== "/") {
+      navigate("/")
+    }
+  }
 
   // const { disconnect } = useDisconnect()
   // const { openConnectModal } = useConnectModal()
@@ -35,7 +43,12 @@ export default function Wallet() {
       >
         <NavInner className='container'>
           <Link className='pointer flexNullCenter' to='home' smooth={true}>
-            <Box component='img' src={LogoIcon} sx={{ height: 45, m: 1 }} />
+            <Box
+              component='img'
+              src={LogoIcon}
+              sx={{ height: 45, m: 1 }}
+              onClick={handleClick}
+            />
           </Link>
           <UlWrapperRight className='flexNullCenter'>
             {/* <li className='semiBold font15 pointer'>
