@@ -7,6 +7,14 @@ import { TextField, ThemeProvider } from "@mui/material"
 import { theme } from "../../Theme"
 import TabView from "./TabPanel"
 import { useLocation, useNavigate } from "react-router-dom"
+import {
+  useProvider,
+  useSigner,
+  useAccount,
+  useContract,
+  useChainId,
+} from "wagmi"
+import { parseEther } from "ethers/lib/utils.js"
 
 const currencies = [
   {
@@ -34,6 +42,9 @@ const countries = [
 export default function RampFinance() {
   const navigate = useNavigate()
   const location = useLocation()
+
+  const provider = useProvider()
+  const { signer, isError, isLoading } = useSigner()
 
   const [rate, setRate] = useState(0)
   const [value, setValue] = useState(0)
