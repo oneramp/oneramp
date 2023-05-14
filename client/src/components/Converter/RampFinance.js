@@ -7,14 +7,10 @@ import { TextField, ThemeProvider } from "@mui/material"
 import { theme } from "../../Theme"
 import TabView from "./TabPanel"
 import { useLocation, useNavigate } from "react-router-dom"
-import {
-  useProvider,
-  useSigner,
-  useAccount,
-  useContract,
-  useChainId,
-} from "wagmi"
+import { useProvider, useSigner } from "wagmi"
 import { parseEther } from "ethers/lib/utils.js"
+import OneRamp from "oneramp"
+import { set } from "mongoose"
 
 const currencies = [
   {
@@ -44,7 +40,14 @@ export default function RampFinance() {
   const location = useLocation()
 
   const provider = useProvider()
-  const { signer, isError, isLoading } = useSigner()
+  const { data: signer, isError, isLoading } = useSigner()
+  const clientPub = "RMPPUBK-cacbc4ef3f9703a3429b-X"
+  const secretKey = "RMPSEC-a2fd9f528ef158d4f7e8b55741f9ce34e9bb6892-X"
+
+  const oneRamp = new OneRamp("alfajores", clientPub, secretKey)
+
+  signer && oneRamp.setSigner(signer)
+  provider && oneRamp.setProvider(provider)
 
   const [rate, setRate] = useState(0)
   const [value, setValue] = useState(0)
@@ -68,9 +71,18 @@ export default function RampFinance() {
       .catch((error) => console.error("Error fetching exchange rates:", error))
   }, [selectedCountry])
 
-  function handleClick() {
-    if (location.pathname !== "/ramp") {
-      navigate("/ramp")
+  async function handleClick() {
+    try {
+      // Attempt to deposit 1000 units of the specified token
+      const tx = await oneRamp.deposit(
+        "0xc0EBB770F2c9CA7eD0dDeBa58Af101695Cf1BDc1",
+        34500000000
+      )
+      // If successful, log the transaction
+      console.log(tx)
+    } catch (error) {
+      // If an error occurs, log it
+      console.error("Error depositing:", error)
     }
   }
   const handleCurrencyChange = (event) => {
