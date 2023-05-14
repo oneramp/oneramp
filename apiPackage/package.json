@@ -34,6 +34,11 @@
     "@openzeppelin/contracts": "^4.8.2",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
+<<<<<<< HEAD
+=======
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.3",
+>>>>>>> 3ca0a445574d773abd784ac183c7e0bb4edd7918
     "ethers": "^5.6.4",
     "express": "^4.18.2",
     "flutterwave-node-v3": "^1.0.11",

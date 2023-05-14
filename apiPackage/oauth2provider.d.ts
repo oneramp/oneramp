@@ -1,1 +1,1 @@
-declare module 'oauth2provider';
+declare module "oauth2provider"
