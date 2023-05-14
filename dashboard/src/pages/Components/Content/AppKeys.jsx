@@ -78,7 +78,7 @@ const AppKeys = () => {
     <div className="flex flex-col flex-1">
       <h1 className="text-2xl">API KEYS for {store.storeName} </h1>
 
-      <div className="flex flex-col w-1/2 my-8">
+      <div className="flex flex-col w-full my-8">
         <div className="flex flex-col">
           <label htmlFor="publicKey">Public key</label>
           <div className="flex flex-row items-center justify-between w-full h-12 pl-4 mt-2 rounded-md outline-none cursor-text bg-neutral-100">
@@ -92,7 +92,7 @@ const AppKeys = () => {
           </div>
         </div>
 
-        <div className="flex flex-col my-8">
+        <div className="flex flex-col w-full my-8">
           <div
             onClick={toggleReveal}
             className="flex flex-row items-center cursor-pointer"
