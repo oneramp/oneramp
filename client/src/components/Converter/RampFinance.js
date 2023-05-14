@@ -6,11 +6,10 @@ import { Grid } from "@mui/material"
 import { TextField, ThemeProvider } from "@mui/material"
 import { theme } from "../../Theme"
 import TabView from "./TabPanel"
-import { useLocation, useNavigate } from "react-router-dom"
+
 import { useProvider, useSigner } from "wagmi"
-import { parseEther } from "ethers/lib/utils.js"
+// import { parseEther } from "ethers/lib/utils.js"
 import OneRamp from "oneramp"
-import { set } from "mongoose"
 
 const currencies = [
   {
@@ -36,11 +35,8 @@ const countries = [
 ]
 
 export default function RampFinance() {
-  const navigate = useNavigate()
-  const location = useLocation()
-
   const provider = useProvider()
-  const { data: signer, isError, isLoading } = useSigner()
+  const { data: signer } = useSigner()
   const clientPub = "RMPPUBK-cacbc4ef3f9703a3429b-X"
   const secretKey = "RMPSEC-a2fd9f528ef158d4f7e8b55741f9ce34e9bb6892-X"
 
