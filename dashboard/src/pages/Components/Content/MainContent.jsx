@@ -1,6 +1,7 @@
 import AppKeys from "./AppKeys"
 import Home from "./Home"
 import Stores from "./Stores"
+import Transactions from "./Transactions"
 
 const MainContent = ({ activeTab, setActive }) => {
   switch (activeTab) {
@@ -8,8 +9,8 @@ const MainContent = ({ activeTab, setActive }) => {
       return <Home />
     case "stores":
       return <Stores />
-    // case "transactions":
-    //   return <TransactionSummary />
+    case "transactions":
+      return <Transactions />
     case "apiKeys":
       return <AppKeys />
     default:
