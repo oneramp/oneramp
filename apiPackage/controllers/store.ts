@@ -83,10 +83,12 @@ async function getStoreTransactions(req: Request, res: Response) {
 
 async function getCreds(req: Request, res: Response) {
   try {
+    console.log(req.body)
     const creds = await storeCredsModel.findOne({
-      clientId: req.body.clientId,
-      secret: req.body.secret,
+      clientId: 'RMPPUBK-5c097ab5011bb9b4123a51050042eddf-X',
+      secret:'RMPSEC-939a0f08ccecb7cafd70eaf075a00fa1727fa60a08507a68943ea2e0b08138cf-X'
     })
+    console.log(creds)
     res.json(creds)
   } catch (err: any) {
     res.status(500).json({ message: err.message })

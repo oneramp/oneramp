@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ethers_1 = require("ethers");
 const abi_json_1 = __importDefault(require("./abi.json"));
 const abit_json_1 = __importDefault(require("./abit.json"));
-const transactions_1 = require("./actions/transactions");
 const address_1 = __importDefault(require("./src/utils/address"));
 const request_1 = __importDefault(require("./src/utils/request"));
 function getAllAddresses(addresses) {
@@ -97,9 +96,9 @@ class OneRamp {
             asset: "cUSD",
             status: "Success",
         };
-        const newTx = await (0, transactions_1.createTransaction)(newTransaction);
+        // const newTx = await createTransaction(newTransaction);
         // await createTransaction(newTransaction);
-        console.log("New transaction created:", newTx);
+        // console.log("New transaction created:", newTx);
         return;
         // Initiate Flutterwave payment.
         // await initiatePayment(phoneNumber, 60000, "UGX")

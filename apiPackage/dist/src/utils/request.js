@@ -3,19 +3,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const connectDB_1 = __importDefault(require("../../config/connectDB"));
-const storeCredsModel_1 = __importDefault(require("../../models/storeCredsModel"));
 const TransactionModel_1 = __importDefault(require("../../models/TransactionModel"));
 const constants_1 = __importDefault(require("./constants"));
+const getStoreAuthCreds_1 = require("../../shared/getStoreAuthCreds");
 class Request {
     constructor() {
         this.apiUrl = constants_1.default;
     }
     async db(data) {
         try {
+            // console.log(data)
             // const result = await axios.post(`${this.apiUrl}/creds`, data)
-            await (0, connectDB_1.default)();
-            const result = await storeCredsModel_1.default.findOne({ clientId: data.clientId, secret: data.secret });
+            // await connectDB()
+            // const result = await StoreCreds.findOne({ clientId: data.clientId, secret: data.secret })
+            const result = await (0, getStoreAuthCreds_1.getStoreAuthCreds)(data.clientId, data.secret);
+            // console.log(result)
             if (result === null || result === void 0 ? void 0 : result.store) {
                 return {
                     status: 200,
@@ -45,7 +47,7 @@ class Request {
     async createTransaction(data) {
         try {
             // const result = await axios.post(`${this.apiUrl}/transactions`, data)
-            await (0, connectDB_1.default)();
+            // await connectDB()
             const newTx = new TransactionModel_1.default(data);
             const result = await newTx.save();
             if (result.data) {
