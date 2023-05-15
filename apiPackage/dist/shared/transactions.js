@@ -6,13 +6,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createTransaction = void 0;
 const axios_1 = __importDefault(require("axios"));
 const apiURL_1 = require("../config/apiURL");
+const currencyConvertor_1 = require("../utils/currencyConvertor");
 const createTransaction = async (txData) => {
     try {
+        // Convert the currency from here...
+        const fiat = await (0, currencyConvertor_1.currencyConvertor)(txData.amount, "USD", "UGX");
+        console.log("====================================");
+        console.log(fiat);
+        console.log("====================================");
         const newTransaction = {
             store: txData.store,
             txHash: txData.txHash,
             amount: txData.amount,
-            fiat: txData.fiat,
+            fiat: fiat,
             phone: txData.phone,
             asset: txData.asset,
             status: txData.status,

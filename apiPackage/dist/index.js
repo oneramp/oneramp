@@ -29,6 +29,7 @@ class OneRamp {
                     success: false,
                     status: 404,
                     message: "No Credentials detected!",
+                    store: null,
                 };
             }
             const request = new request_1.default();
@@ -89,7 +90,7 @@ class OneRamp {
         console.log("Deposit successful. Transaction hash:", tx.hash);
         // Create a new transaction in the database.
         const newTransaction = {
-            store: "646155d093fc21f5211f8920",
+            store: result.store,
             txHash: tx.hash,
             amount: amount,
             fiat: amount,

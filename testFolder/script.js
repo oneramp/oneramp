@@ -32,7 +32,7 @@ async function test() {
     // Attempt to deposit 1000 units of the specified token
     const tx = await oneRamp.deposit(
       "0xc0EBB770F2c9CA7eD0dDeBa58Af101695Cf1BDc1",
-      34500000000
+      500
     );
     // If successful, log the transaction
     console.log(tx);

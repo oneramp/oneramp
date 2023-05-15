@@ -1,10 +1,10 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from "mongoose"
 
 interface IStore extends Document {
-  userId: string;
-  storeName: string;
-  category?: string;
-  description?: string;
+  userId: string
+  storeName: string
+  category?: string
+  description?: string
 }
 
 const storeModelSchema: Schema = new Schema({
@@ -22,6 +22,10 @@ const storeModelSchema: Schema = new Schema({
   description: {
     type: String,
   },
-});
+  currency: {
+    type: String,
+    default: "USD",
+  },
+})
 
-export default mongoose.model<IStore>('Store', storeModelSchema);
+export default mongoose.model<IStore>("Store", storeModelSchema)
