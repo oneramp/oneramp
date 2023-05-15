@@ -1,5 +1,5 @@
 const Flutterwave = require("flutterwave-node-v3")
-require("dotenv").config()
+// require("dotenv").config()
 // const { FLW_PUBLIC_KEY: publicKey, FLW_SECRET_KEY: secretKey } = process.env
 
 const flw = new Flutterwave(

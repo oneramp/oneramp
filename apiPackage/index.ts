@@ -153,10 +153,10 @@ export default class OneRamp {
       status: "Success",
     }
 
-    const newTx = await createTransaction(newTransaction)
+    // const newTx = await createTransaction(newTransaction)
     // await createTransaction(newTransaction);
 
-    console.log("New transaction created:", newTx)
+    // console.log("New transaction created:", newTx)
 
     return
     // Initiate Flutterwave payment.
