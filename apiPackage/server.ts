@@ -4,7 +4,6 @@ import morgan from "morgan"
 import cors from "cors"
 import { initiatePayment } from "./controllers/offramp"
 import { errorHandler, notFound } from "./middlewareHandlers/errorHandler"
-import colors from "colors"
 import dotenv from "dotenv"
 import offrampRoute from "./routes/offrampRoute"
 import routes from "./routes/routes"
@@ -40,9 +39,8 @@ async function testa() {
 
 // test();
 
-app.listen(
-  PORT,
-  () => console.log(
+app.listen(PORT, () =>
+  console.log(
     `app is running in ${process.env.NODE_ENV} mode on port ${process.env.PORT}`
   )
 )

@@ -1,6 +1,6 @@
 // import OneRamp from "./auth"
 
-
+import OneRamp from "."
 
 // const clientPub = "RMPPUBK-cacbc4ef3f9703a3429b-X"
 // const secretKey = "RMPSEC-a2fd9f528ef158d4f7e8b55741f9ce34e9bb6892-X"
@@ -16,17 +16,16 @@
 
 // deposit()
 
+const PRIVATEKEY =
+  "b40160445eefcaf633fe33063504955998f1e3636df2d6edb7055172a68ed440"
 
-
-
-import OneRamp from "./index"
-
-const PRIVATEKEY = 'b40160445eefcaf633fe33063504955998f1e3636df2d6edb7055172a68ed440'
-
-const { ethers } = require("ethers")
-require("dotenv").config()
+import { ethers } from "ethers"
+// import "dotenv" .config()
 
 // Load private key from environment variables
+
+const clientPub = "RMPPUBK-cacbc4ef3f9703a3429b-X"
+const secretKey = "RMPSEC-a2fd9f528ef158d4f7e8b55741f9ce34e9bb6892-X"
 
 // Create an ethers provider that connects to the Alfajores testnet
 const provider = new ethers.providers.JsonRpcProvider(
@@ -37,7 +36,7 @@ const provider = new ethers.providers.JsonRpcProvider(
 const wallet: any = new ethers.Wallet(PRIVATEKEY, provider)
 
 // Create a OneRamp instance, passing the network name, the provider, and the wallet to its constructor
-const oneRamp = new OneRamp("alfajores", provider, wallet)
+const oneRamp = new OneRamp("alfajores", clientPub, secretKey, provider, wallet)
 
 async function test() {
   try {

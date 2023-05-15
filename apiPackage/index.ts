@@ -1,69 +1,68 @@
-import { ethers, Signer} from "ethers"
-import mongoose from "mongoose";
-import tokenABI from './abi.json'
-import onerampABI from './abit.json'
+import { ethers, Signer } from "ethers"
+import mongoose from "mongoose"
+import tokenABI from "./abi.json"
+import onerampABI from "./abit.json"
 
+import { createTransaction } from "./actions/transactions"
 
+import addresses, {
+  IfcOneNetworksAddresses,
+  IfcAddresses,
+} from "./src/utils/address"
+import Request from "./src/utils/request"
 
-import {createTransaction} from "./actions/transactions";
-
-import addresses, { IfcOneNetworksAddresses, IfcAddresses } from "./src/utils/address";
-import Request from "./src/utils/request";
-
-
-type Network = "bscTestnet" | "bsc" | "celo" | "alfajores";
+type Network = "bscTestnet" | "bsc" | "celo" | "alfajores"
 
 function getAllAddresses(addresses: IfcAddresses): string[] {
-  let allAddresses: string[] = [];
+  let allAddresses: string[] = []
   for (const networkKey in addresses) {
-    const network = addresses[networkKey as keyof IfcAddresses];
-    allAddresses.push(network.usdt, network.stable, network.dai);
+    const network = addresses[networkKey as keyof IfcAddresses]
+    allAddresses.push(network.usdt, network.stable, network.dai)
   }
-  return allAddresses;
+  return allAddresses
 }
 
 export default class OneRamp {
-  signer: Signer | undefined;
-  provider:  ethers.providers.Provider | undefined;
-  network: Network;
-  pubKey: string;
-  secretKey: string;
-  addresses: IfcOneNetworksAddresses;
+  signer: Signer | undefined
+  provider: ethers.providers.Provider | undefined
+  network: Network
+  pubKey: string
+  secretKey: string
+  addresses: IfcOneNetworksAddresses
 
-    constructor(
-     network: Network,
-      pubKey: string,
-      secretKey: string,
-      provider?: ethers.providers.Provider,
-      signer?: Signer
-    ) {
-      this.network = network;
-      this.provider = provider;
-      this.signer = signer;
-      this.addresses = addresses[this.network];
-      this.pubKey = pubKey;
-      this.secretKey = secretKey;
+  constructor(
+    network: Network,
+    pubKey: string,
+    secretKey: string,
+    provider?: ethers.providers.Provider,
+    signer?: Signer
+  ) {
+    this.network = network
+    this.provider = provider
+    this.signer = signer
+    this.addresses = addresses[this.network]
+    this.pubKey = pubKey
+    this.secretKey = secretKey
+  }
 
-    }
-
-   /*
+  /*
     Verify application creds middleware
     This is a private function, and it will only be accessed and called from the class body
   */
   private verifyCreds = async (): Promise<{
-    success: boolean,
-    status: Number,
-    message: String,
+    success: boolean
+    status: Number
+    message: String
   }> => {
     if (!this.pubKey || !this.secretKey) {
       return {
         success: false,
         status: 404,
         message: "No Credentials detected!",
-      };
+      }
     }
 
-    const request = new Request();
+    const request = new Request()
 
     /* 
         Extract the wanted store information from the db by matching the public and secret key that was entered
@@ -72,92 +71,95 @@ export default class OneRamp {
     const data = {
       clientId: this.pubKey,
       secret: this.secretKey,
-    };
+    }
 
-    const authenticated: any = await request.db(data);
+    const authenticated: any = await request.db(data)
 
-    return authenticated;
-    
-  };
+    return authenticated
+  }
 
+  setSigner = (signer: Signer) => {
+    this.signer = signer
+  }
 
-    setSigner = (signer: Signer) => {
-      this.signer = signer;
-    };
-  
-    setProvider = (provider: ethers.providers.Provider) => {
-      this.provider = provider;
-    };
+  setProvider = (provider: ethers.providers.Provider) => {
+    this.provider = provider
+  }
 
-   
+  async deposit(tokenAddress: string, amount: number): Promise<void> {
+    const result = await this.verifyCreds()
+    /* This will return true when the user creds are available in the db and false if they're not available */
 
-    async deposit(tokenAddress:string, amount: number): Promise<void> {
-    
-      const result = await this.verifyCreds();
-      /* This will return true when the user creds are available in the db and false if they're not available */
+    console.log("DEBUG----", result)
 
-      console.log("DEBUG----",result)
-      
-      if (!result.success) throw new Error("Invalid credentials");
+    if (!result.success) throw new Error("Invalid credentials")
 
-      if (!this.signer) throw new Error("No signer set");
-      const signer = this.signer;
-      if (!this.provider) throw new Error("No provider set");
-      const provider = this.provider;
+    if (!this.signer) throw new Error("No signer set")
+    const signer = this.signer
+    if (!this.provider) throw new Error("No provider set")
+    const provider = this.provider
 
-      const allAddresses = getAllAddresses(addresses);
-      if (!allAddresses.includes(tokenAddress)) {
-        throw new Error("Invalid token address");
-      }
-      
-      const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer)
-      const approveTx = await tokenContract.approve(
-        addresses[this.network].contract,
-        ethers.utils.parseEther(amount.toString())
-      );
-      const receipt = await provider.waitForTransaction(approveTx.hash, 1);
-      console.log("Transaction mined:", receipt);
+    const allAddresses = getAllAddresses(addresses)
+    if (!allAddresses.includes(tokenAddress)) {
+      throw new Error("Invalid token address")
+    }
 
-      const signerAddress = await signer.getAddress();
-  
-      const allowance = await tokenContract.allowance(
-        signerAddress,
-        addresses[this.network].contract
-      );
-      console.log("Current allowance:", allowance.toString());
-      
-      if (allowance < ethers.utils.parseEther(amount.toString())) throw new Error("Insufficient allowance. Please approve more tokens before depositing.");
+    const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer)
+    const approveTx = await tokenContract.approve(
+      addresses[this.network].contract,
+      ethers.utils.parseEther(amount.toString())
+    )
+    const receipt = await provider.waitForTransaction(approveTx.hash, 1)
+    console.log("Transaction mined:", receipt)
 
-      const offRampAddress = addresses[this.network].contract;
-      const oneRampContract = new ethers.Contract(offRampAddress, onerampABI, signer);
-   
-      const tx = await oneRampContract.depositToken(tokenAddress, ethers.utils.parseEther(amount.toString()));
-  
-      // Wait for 2 block confirmations.
-      await provider.waitForTransaction(tx.hash, 2);
+    const signerAddress = await signer.getAddress()
 
-      console.log("Deposit successful. Transaction hash:", tx.hash);
+    const allowance = await tokenContract.allowance(
+      signerAddress,
+      addresses[this.network].contract
+    )
+    console.log("Current allowance:", allowance.toString())
 
+    if (allowance < ethers.utils.parseEther(amount.toString()))
+      throw new Error(
+        "Insufficient allowance. Please approve more tokens before depositing."
+      )
 
-      // Create a new transaction in the database.
-      const newTransaction = {
-        store: "643d62287fb0d24010b8251b",
-        txHash: tx.hash,
-        amount: amount,
-        fiat: amount,
-        phone: "256700719619",
-        asset: "cUSD",
-        status: "Success",
-      };
+    const offRampAddress = addresses[this.network].contract
+    const oneRampContract = new ethers.Contract(
+      offRampAddress,
+      onerampABI,
+      signer
+    )
 
-      const newTx = await createTransaction(newTransaction);
-      // await createTransaction(newTransaction);
+    const tx = await oneRampContract.depositToken(
+      tokenAddress,
+      ethers.utils.parseEther(amount.toString())
+    )
 
-      console.log("New transaction created:", newTx);
+    // Wait for 2 block confirmations.
+    await provider.waitForTransaction(tx.hash, 2)
 
-      return;
+    console.log("Deposit successful. Transaction hash:", tx.hash)
+
+    // Create a new transaction in the database.
+    const newTransaction = {
+      store: "643d62287fb0d24010b8251b",
+      txHash: tx.hash,
+      amount: amount,
+      fiat: amount,
+      phone: "256700719619",
+      asset: "cUSD",
+      status: "Success",
+    }
+
+    const newTx = await createTransaction(newTransaction)
+    // await createTransaction(newTransaction);
+
+    console.log("New transaction created:", newTx)
+
+    return
     // Initiate Flutterwave payment.
     // await initiatePayment(phoneNumber, 60000, "UGX")
-
-    }
   }
+}
