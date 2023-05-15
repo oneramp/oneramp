@@ -1,6 +1,4 @@
 // Import necessary modules
-
-// const OneRamp = require("./node_modules/oneramp/dist/index.js").default
 const OneRamp = require("oneramp").default;
 const { ethers } = require("ethers");
 require("dotenv").config();
@@ -16,7 +14,7 @@ const provider = new ethers.providers.JsonRpcProvider(
 // Create a wallet using the private key and the provider
 const wallet = new ethers.Wallet(testPrivateKey, provider);
 
-const clientPub = "RMPPUBK-cacbc4ef3f9903a3429b-X";
+const clientPub = "RMPPUBK-cacbc4ef3f9703a3429b-X";
 const secretKey = "RMPSEC-a2fd9f528ef158d4f7e8b55741f9ce34e9bb6892-X";
 
 // Create a OneRamp instance, passing the network name, the provider, and the wallet to its constructor
