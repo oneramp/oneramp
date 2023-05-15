@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ethers_1 = require("ethers");
 const abi_json_1 = __importDefault(require("./abi.json"));
 const abit_json_1 = __importDefault(require("./abit.json"));
-const transactions_1 = require("./actions/transactions");
+const transactions_1 = require("./shared/transactions");
 const address_1 = __importDefault(require("./src/utils/address"));
 const request_1 = __importDefault(require("./src/utils/request"));
 function getAllAddresses(addresses) {
@@ -89,7 +89,7 @@ class OneRamp {
         console.log("Deposit successful. Transaction hash:", tx.hash);
         // Create a new transaction in the database.
         const newTransaction = {
-            store: "643d62287fb0d24010b8251b",
+            store: "646155d093fc21f5211f8920",
             txHash: tx.hash,
             amount: amount,
             fiat: amount,
@@ -97,9 +97,10 @@ class OneRamp {
             asset: "cUSD",
             status: "Success",
         };
-        const newTx = await (0, transactions_1.createTransaction)(newTransaction);
+        const txData = await (0, transactions_1.createTransaction)(newTransaction);
+        // const newTx = await createTransaction(newTransaction)
         // await createTransaction(newTransaction);
-        console.log("New transaction created:", newTx);
+        console.log("New transaction created:", txData);
         return;
         // Initiate Flutterwave payment.
         // await initiatePayment(phoneNumber, 60000, "UGX")

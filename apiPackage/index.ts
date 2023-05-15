@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 import tokenABI from "./abi.json"
 import onerampABI from "./abit.json"
 
-import { createTransaction } from "./actions/transactions"
+import { createTransaction } from "./shared/transactions"
 
 import addresses, {
   IfcOneNetworksAddresses,
@@ -53,12 +53,14 @@ export default class OneRamp {
     success: boolean
     status: Number
     message: String
+    store: string | null
   }> => {
     if (!this.pubKey || !this.secretKey) {
       return {
         success: false,
         status: 404,
         message: "No Credentials detected!",
+        store: null,
       }
     }
 
@@ -144,7 +146,7 @@ export default class OneRamp {
 
     // Create a new transaction in the database.
     const newTransaction = {
-      store: "643d62287fb0d24010b8251b",
+      store: result.store,
       txHash: tx.hash,
       amount: amount,
       fiat: amount,
@@ -153,10 +155,12 @@ export default class OneRamp {
       status: "Success",
     }
 
+    const txData = await createTransaction(newTransaction)
+
     // const newTx = await createTransaction(newTransaction)
     // await createTransaction(newTransaction);
 
-    // console.log("New transaction created:", newTx)
+    console.log("New transaction created:", txData)
 
     return
     // Initiate Flutterwave payment.
