@@ -3,8 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTransactions = exports.initiatePayment = exports.test = exports.offRampCreated = void 0;
 const offRamp = require("../models/offRampModel");
 const Flutterwave = require("flutterwave-node-v3");
-require("dotenv").config();
-const { PUB_KEY: publicKey, SEC_KEY: secretKey } = process.env;
 const flw = new Flutterwave("FLWPUBK_TEST-5b06239b4debbe2260254fff9f0c9dd1-X", "FLWSECK_TEST-a9d419f1df20ab1c648c2c8add3f4072-X");
 async function initiatePayment(phoneNumber, intocurrency, currency) {
     try {
