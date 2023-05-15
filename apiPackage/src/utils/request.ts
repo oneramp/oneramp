@@ -1,12 +1,8 @@
-import axios from "axios"
 import { getStoreAuthCreds } from "../../shared/getStoreAuthCreds"
 import connectDB from "../../config/connectDB"
 import StoreCreds from "../../models/storeCredsModel"
 import TransactionModel from "../../models/TransactionModel"
 import apiUrl from "./constants"
-import { getCreds } from "../../controllers/store"
-
-// connectDB()
 
 class Request {
   apiUrl: string
@@ -22,10 +18,6 @@ class Request {
       // const result = await StoreCreds.findOne({ clientId: data.clientId, secret: data.secret })
 
       const result = await getStoreAuthCreds(data.clientId, data.secret)
-
-      console.log("====================================")
-      console.log(result)
-      console.log("====================================")
 
       if (result?.store) {
         return {

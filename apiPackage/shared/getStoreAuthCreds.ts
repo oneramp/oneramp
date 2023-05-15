@@ -9,20 +9,14 @@ export const getStoreAuthCreds = async (clientId: string, secret: string) => {
       secret: secret,
     }
 
-    const response = await fetch(apiURL, {
+    const response = await fetch(`${apiURL}/creds`, {
       method: "POST",
       body: JSON.stringify(data),
     })
 
     const result: any = await response.json()
 
-    console.log(result)
-
     const storeCreds = await result.json()
-
-    console.log("====================================")
-    console.log(storeCreds)
-    console.log("====================================")
 
     return storeCreds
   } catch (error) {

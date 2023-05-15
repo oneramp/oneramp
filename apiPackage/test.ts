@@ -1,7 +1,5 @@
 // import OneRamp from "./auth"
 
-import OneRamp from "."
-
 // const clientPub = "RMPPUBK-cacbc4ef3f9703a3429b-X"
 // const secretKey = "RMPSEC-a2fd9f528ef158d4f7e8b55741f9ce34e9bb6892-X"
 
@@ -20,10 +18,10 @@ const PRIVATEKEY =
   "b40160445eefcaf633fe33063504955998f1e3636df2d6edb7055172a68ed440"
 
 import { ethers } from "ethers"
+import OneRamp from "."
 // import "dotenv" .config()
 
 // Load private key from environment variables
-
 const clientPub = "RMPPUBK-cacbc4ef3f9703a3429b-X"
 const secretKey = "RMPSEC-a2fd9f528ef158d4f7e8b55741f9ce34e9bb6892-X"
 
