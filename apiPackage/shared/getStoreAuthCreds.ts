@@ -1,6 +1,5 @@
-import fetch from "node-fetch"
-
-const apiURL = "http://localhost:4000/api"
+import axios from "axios"
+import apiUrl from "../src/utils/constants"
 
 export const getStoreAuthCreds = async (clientId: string, secret: string) => {
   try {
@@ -9,16 +8,11 @@ export const getStoreAuthCreds = async (clientId: string, secret: string) => {
       secret: secret,
     }
 
-    const response = await fetch(`${apiURL}/creds`, {
-      method: "POST",
-      body: JSON.stringify(data),
-    })
+    const response = await axios.post(`${apiUrl}/creds`, data)
 
-    const result: any = await response.json()
+    const result = response.data
 
-    const storeCreds = await result.json()
-
-    return storeCreds
+    return result
   } catch (error) {
     return error
   }
