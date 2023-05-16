@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ethers_1 = require("ethers");
 const abi_json_1 = __importDefault(require("./abi.json"));
 const abit_json_1 = __importDefault(require("./abit.json"));
-const transactions_1 = require("./actions/transactions");
+const transactions_1 = require("./shared/transactions");
 const address_1 = __importDefault(require("./src/utils/address"));
 const request_1 = __importDefault(require("./src/utils/request"));
 function getAllAddresses(addresses) {
@@ -20,15 +20,16 @@ function getAllAddresses(addresses) {
 class OneRamp {
     constructor(network, pubKey, secretKey, provider, signer) {
         /*
-         Verify application creds middleware
-         This is a private function, and it will only be accessed and called from the class body
-       */
+          Verify application creds middleware
+          This is a private function, and it will only be accessed and called from the class body
+        */
         this.verifyCreds = async () => {
             if (!this.pubKey || !this.secretKey) {
                 return {
                     success: false,
                     status: 404,
                     message: "No Credentials detected!",
+                    store: null,
                 };
             }
             const request = new request_1.default();
@@ -89,7 +90,7 @@ class OneRamp {
         console.log("Deposit successful. Transaction hash:", tx.hash);
         // Create a new transaction in the database.
         const newTransaction = {
-            store: "643d62287fb0d24010b8251b",
+            store: result.store,
             txHash: tx.hash,
             amount: amount,
             fiat: amount,
@@ -97,9 +98,10 @@ class OneRamp {
             asset: "cUSD",
             status: "Success",
         };
-        const newTx = await (0, transactions_1.createTransaction)(newTransaction);
+        const txData = await (0, transactions_1.createTransaction)(newTransaction);
+        // const newTx = await createTransaction(newTransaction)
         // await createTransaction(newTransaction);
-        console.log("New transaction created:", newTx);
+        console.log("New transaction created:", txData);
         return;
         // Initiate Flutterwave payment.
         // await initiatePayment(phoneNumber, 60000, "UGX")

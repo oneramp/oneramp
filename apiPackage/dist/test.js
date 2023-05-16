@@ -13,17 +13,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 //   console.log(response)
 // }
 // deposit()
-const index_1 = __importDefault(require("./index"));
-const PRIVATEKEY = 'b40160445eefcaf633fe33063504955998f1e3636df2d6edb7055172a68ed440';
-const { ethers } = require("ethers");
-require("dotenv").config();
+const PRIVATEKEY = "b40160445eefcaf633fe33063504955998f1e3636df2d6edb7055172a68ed440";
+const ethers_1 = require("ethers");
+const _1 = __importDefault(require("."));
+// import "dotenv" .config()
 // Load private key from environment variables
+const clientPub = "RMPPUBK-cacbc4ef3f9703a3429b-X";
+const secretKey = "RMPSEC-a2fd9f528ef158d4f7e8b55741f9ce34e9bb6892-X";
 // Create an ethers provider that connects to the Alfajores testnet
-const provider = new ethers.providers.JsonRpcProvider("https://alfajores-forno.celo-testnet.org");
+const provider = new ethers_1.ethers.providers.JsonRpcProvider("https://alfajores-forno.celo-testnet.org");
 // Create a wallet using the private key and the provider
-const wallet = new ethers.Wallet(PRIVATEKEY, provider);
+const wallet = new ethers_1.ethers.Wallet(PRIVATEKEY, provider);
 // Create a OneRamp instance, passing the network name, the provider, and the wallet to its constructor
-const oneRamp = new index_1.default("alfajores", provider, wallet);
+const oneRamp = new _1.default("alfajores", clientPub, secretKey, provider, wallet);
 async function test() {
     try {
         // Attempt to deposit 1000 units of the specified token

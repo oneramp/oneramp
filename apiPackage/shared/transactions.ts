@@ -1,5 +1,5 @@
 import axios from "axios"
-import { apiURL } from "../config/apiURL"
+import apiUrl from "../src/utils/constants"
 import { currencyConvertor } from "../utils/currencyConvertor"
 
 export const createTransaction = async (txData: any) => {
@@ -21,7 +21,7 @@ export const createTransaction = async (txData: any) => {
       status: txData.status,
     }
 
-    const response = await axios.post(`${apiURL}/tx/create`, newTransaction)
+    const response = await axios.post(`${apiUrl}/tx/create`, newTransaction)
 
     const result = response.data
 

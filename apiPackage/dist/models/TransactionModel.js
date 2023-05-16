@@ -53,6 +53,10 @@ const TransactionSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 const TransactionModel = mongoose_1.default.model(`Transaction`, TransactionSchema);
 exports.default = TransactionModel;

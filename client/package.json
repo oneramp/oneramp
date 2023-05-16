@@ -11,7 +11,7 @@
     "@rainbow-me/rainbowkit": "^0.12.7",
     "aos": "^2.3.4",
     "ethers": "^5.7.2",
-    "oneramp": "^1.2.3",
+    "oneramp": "^1.2.5",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
     "react": "^18.2.0",

@@ -3,8 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const connectDB_1 = __importDefault(require("../../config/connectDB"));
-const storeCredsModel_1 = __importDefault(require("../../models/storeCredsModel"));
+const getStoreAuthCreds_1 = require("../../shared/getStoreAuthCreds");
 const TransactionModel_1 = __importDefault(require("../../models/TransactionModel"));
 const constants_1 = __importDefault(require("./constants"));
 class Request {
@@ -14,14 +13,15 @@ class Request {
     async db(data) {
         try {
             // const result = await axios.post(`${this.apiUrl}/creds`, data)
-            await (0, connectDB_1.default)();
-            const result = await storeCredsModel_1.default.findOne({ clientId: data.clientId, secret: data.secret });
+            // await connectDB()
+            // const result = await StoreCreds.findOne({ clientId: data.clientId, secret: data.secret })
+            const result = await (0, getStoreAuthCreds_1.getStoreAuthCreds)(data.clientId, data.secret);
             if (result === null || result === void 0 ? void 0 : result.store) {
                 return {
                     status: 200,
                     success: true,
                     message: "User credentials valid ",
-                    store: result.store
+                    store: result.store,
                 };
             }
             else {
@@ -29,7 +29,7 @@ class Request {
                     status: 404,
                     success: false,
                     message: "Invalid Credentials",
-                    store: null
+                    store: null,
                 };
             }
         }
@@ -45,7 +45,6 @@ class Request {
     async createTransaction(data) {
         try {
             // const result = await axios.post(`${this.apiUrl}/transactions`, data)
-            await (0, connectDB_1.default)();
             const newTx = new TransactionModel_1.default(data);
             const result = await newTx.save();
             if (result.data) {

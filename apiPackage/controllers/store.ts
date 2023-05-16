@@ -54,6 +54,10 @@ async function getStore(req: Request, res: Response) {
 async function getStoreCreds(req: Request, res: Response) {
   try {
     const creds = await storeCredsModel.findOne({ store: req.params.storeId })
+    // const creds = await storeCredsModel.findOne({
+    //   clientId: req.params.clientId,
+    //   secret: req.params.secret,
+    // })
     res.json(creds)
   } catch (err: any) {
     res.status(500).json({ message: err.message })
@@ -62,8 +66,6 @@ async function getStoreCreds(req: Request, res: Response) {
 
 async function getStoreTransactions(req: Request, res: Response) {
   try {
-    console.log(req.params.storeId)
-
     const store = await storeModel.findById(req.params.storeId)
 
     if (!store) {
@@ -72,7 +74,7 @@ async function getStoreTransactions(req: Request, res: Response) {
 
     const transactions = await TransactionModel.find({
       store: req.params.storeId,
-    })
+    }).sort({ createdAt: -1 })
 
     return res.status(200).json(transactions)
   } catch (err: any) {

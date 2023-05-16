@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router } from "express"
 import {
   getUserStore,
   createStore,
@@ -7,27 +7,31 @@ import {
   getStoreCreds,
   getCreds,
   getStoreTransactions,
-} from '../controllers/store';
+} from "../controllers/store"
+import { createTransactionAPI } from "../controllers/transactions"
 
-const router = Router();
+const router = Router()
 
 // STORE ROUTER
 // GET all stores owned by a userId
-router.get('/stores/:userId', getUserStore);
+router.get("/stores/:userId", getUserStore)
 
 // Get store using store Id
-router.get('/store/:storeId', getStore);
+router.get("/store/:storeId", getStore)
 
 // CREATE a new store
-router.post('/stores', createStore);
+router.post("/stores", createStore)
 
 // delete
-router.delete('/store/:storeId', removeStore);
+router.delete("/store/:storeId", removeStore)
 
 // Store creds
-router.get('/creds/:storeId', getStoreCreds);
+router.get("/creds/:storeId", getStoreCreds)
 
-router.post('/creds/', getCreds);
-router.get('/store/tx/:storeId', getStoreTransactions);
+router.post("/creds/", getCreds)
+router.get("/store/tx/:storeId", getStoreTransactions)
 
-export default router;
+// Tx
+router.post("/tx/create", createTransactionAPI)
+
+export default router

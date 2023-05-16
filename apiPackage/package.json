@@ -2,7 +2,7 @@
   "name": "oneramp",
   "target": "es6",
   "moduleResolution": "node",
-  "version": "1.2.3",
+  "version": "1.2.5",
   "description": "crypto on and offramping api for sub-saharan africa",
   "main": "./dist/index.js",
   "scripts": {
@@ -30,17 +30,17 @@
   },
   "homepage": "https://github.com/oneramp/oneramp#readme",
   "dependencies": {
-    "@ethersproject/providers": "^5.7.2",
-    "@openzeppelin/contracts": "^4.8.2",
     "axios": "^1.4.0",
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
+    "currency-converter-lt": "^2.0.0-beta.0",
+    "easy-currencies": "^1.7.0",
     "ethers": "^5.6.4",
     "express": "^4.18.2",
     "mongoose": "^7.0.2",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.22",
-    "oauth2provider": "^0.0.2"
+    "nodemon": "^2.0.22"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",

@@ -1,2 +1,2 @@
-declare const apiUrl = "http://localhost:4000/api";
+declare const apiUrl = "https://b52a-197-239-12-197.ngrok-free.app/api";
 export default apiUrl;
