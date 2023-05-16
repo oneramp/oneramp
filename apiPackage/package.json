@@ -7,7 +7,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "start": "nodemon server.ts",
-    "build: "nodemon server.ts",
+    "build": "nodemon server.ts",
     "build-typeScript": "tsc",
     "clean": "rimraf dist",
     "build:clean": "yarn clean && yarn build",
