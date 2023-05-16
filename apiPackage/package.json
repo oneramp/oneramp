@@ -36,6 +36,7 @@
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "currency-converter-lt": "^2.0.0-beta.0",
+    "dotenv": "^16.0.3",
     "easy-currencies": "^1.7.0",
     "ethers": "^5.6.4",
     "express": "^4.18.2",
