@@ -11,12 +11,5 @@
     "typeRoots": ["./node_modules/@types", "./types"]
   },
   "include": ["src", "index.ts", "auth.ts", "testflw.mjs", "test.ts"],
-  "exclude": [
-    "node_modules",
-    "**/hardhat.config.ts",
-    "**/config",
-    "**/controllers",
-    "**/models",
-    "**/routes"
-  ]
+  "exclude": ["node_modules", "**/hardhat.config.ts"]
 }

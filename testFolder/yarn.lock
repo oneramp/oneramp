@@ -521,7 +521,7 @@ node-fetch@^3.2.0:
     formdata-polyfill "^4.0.10"
 
 "oneramp@file:../apiPackage":
-  version "1.2.4"
+  version "1.2.5"
   resolved "file:../apiPackage"
   dependencies:
     axios "^1.4.0"
