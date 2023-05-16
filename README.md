@@ -1,68 +1,61 @@
-# oneramp
+# OneRamp
 
-A simple NPM package for interacting with on-chain deposits in various networks using the OneRamp class.
+OneRamp is a utility package that helps facilitate token deposits in various blockchain networks. It provides a set of tools to interact with blockchain tokens in a more accessible and abstracted way, providing a simple interface to approve, deposit and keep track of transactions.
 
 ## Installation
 
-To install the package, run the following command:
+To use OneRamp in your project, you will need to install it via npm:
 
-```bash
+```
 npm install oneramp
-
 ```
 
 ## Usage
 
-First, import the OneRamp class from the oneramp package:
+Import the OneRamp class from the package and create a new instance by providing the necessary parameters:
 
 ```javascript
-const OneRamp = require("oneramp")
+import OneRamp from 'oneramp';
 
+const ramp = new OneRamp(
+  network, // Network type - "bscTestnet" | "bsc" | "celo" | "alfajores"
+  pubKey,  // Public key
+  secretKey, // Secret key
+  provider, // (Optional) ethers.provider
+  signer // (Optional) Signer
+);
 ```
 
-Then, create a new instance of the OneRamp class by providing a provider and signer:
+You can then use the `deposit` method to deposit a specific amount of a token to a specific address:
 
 ```javascript
-const provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/YOUR-PROJECT-ID");
-const signer = new ethers.Wallet("YOUR-PRIVATE-KEY", provider);
-
-const oneRamp = new OneRamp(process.env.PUBLIC_KEY, process.env.SECRET_KEY, provider, signer);
+ramp.deposit(tokenAddress, amount)
+  .then(() => console.log('Deposit successful'))
+  .catch(err => console.error('Error during deposit:', err));
 ```
 
-Use the deposit method to deposit tokens:
+## API
 
-```javascript
-(async () => {
-  const chainId = 1; // Ethereum Mainnet
-  const phoneNumber = "+1234567890";
-  const fiatAmount = 100;
-  const tokenAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F"; // DAI
-  const cryptoAmount = ethers.utils.parseUnits("10", 18); // 10 DAI
+### `constructor(network: Network, pubKey: string, secretKey: string, provider?: ethers.providers.Provider, signer?: Signer)`
 
-  await oneRamp.deposit(chainId, phoneNumber, fiatAmount, tokenAddress, cryptoAmount);
-})();
-```
+Creates a new instance of OneRamp.
 
-## Parameters for the deposit method
+### `setSigner(signer: Signer)`
 
-1. `chainId` (number): The chain ID of the network where the deposit will be made. 
-This determines the contract address used for    depositing.
-2. `phoneNumber (string)`: The phone number for initiating the payment.
-3. `fiatAmount (number)`: The amount of fiat currency to be converted.
-4. `tokenAddress (string)`: The address of the token to be deposited.
-5. `cryptoAmount (BigNumber)`: The amount of cryptocurrency to be deposited.
+Sets the signer for the OneRamp instance.
 
-## Supported Networks
+### `setProvider(provider: ethers.providers.Provider)`
 
-Ethereum Mainnet (chainId: 1)
-Binance Smart Chain (chainId: 56)
-Polygon (chainId: 137)
+Sets the provider for the OneRamp instance.
+
+### `deposit(tokenAddress: string, amount: number)`
+
+Deposits a specific amount of a token to a specific address. 
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+We welcome contributions from the community. If you wish to contribute, please take a moment to review our contributing guidelines.
 
 ## License
 
-MIT
-
+OneRamp is [MIT licensed](./LICENSE).

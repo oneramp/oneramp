@@ -4,11 +4,9 @@ import morgan from "morgan"
 import cors from "cors"
 
 import { errorHandler, notFound } from "./middlewareHandlers/errorHandler"
-import offrampRoute from "./routes/offrampRoute"
+// import offrampRoute from "./routes/offrampRoute"
 import routes from "./routes/routes"
 import connectDB from "./config/connectDB"
-
-
 
 connectDB()
 
@@ -20,7 +18,7 @@ app.get("/", (req: Request, res: Response) => {
 })
 
 //implementation of routing
-app.use("/api", offrampRoute)
+// app.use("/api", offrampRoute)
 app.use("/api", routes)
 
 app.use(errorHandler)
@@ -28,15 +26,10 @@ app.use(notFound)
 
 const PORT: number = 4000
 
-
-
 // testa();
 
 // test();
 
-app.listen(
-  PORT,
-  () => console.log(
-    `app is running in development mode on port 4000`
-  )
+app.listen(PORT, () =>
+  console.log(`app is running in development mode on port 4000`)
 )
