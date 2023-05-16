@@ -18,12 +18,13 @@ const Layout = ({ children, setActiveTab, activeTab }) => {
         <link rel="icon" href="/favicon.png" />
       </Head>
       <Navbar picture={user?.picture} />
-      <div className="flex h-screen">
+      <div className="relative flex h-screen">
         {/* Left Sidebar */}
+        <div className="flex w-1/6 h-full bg-white" />
         <Sidebar setActiveTab={setActiveTab} activeTab={activeTab} />
 
         {/* Main Content */}
-        <div className="w-5/6 overflow-auto">{children}</div>
+        <div className="w-5/6 mt-16 overflow-auto">{children}</div>
       </div>
     </>
   )
