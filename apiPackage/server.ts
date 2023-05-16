@@ -5,7 +5,7 @@ import cors from "cors"
 import { errorHandler, notFound } from "./middlewareHandlers/errorHandler"
 
 
-import offrampRoute from "./routes/offrampRoute"
+// import offrampRoute from "./routes/offrampRoute"
 import routes from "./routes/routes"
 import connectDB from "./config/connectDB"
 
@@ -21,7 +21,7 @@ app.get("/", (req: Request, res: Response) => {
 })
 
 //implementation of routing
-app.use("/api", offrampRoute)
+// app.use("/api", offrampRoute)
 app.use("/api", routes)
 
 app.use(errorHandler)

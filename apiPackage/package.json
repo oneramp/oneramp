@@ -2,7 +2,7 @@
   "name": "oneramp",
   "target": "es6",
   "moduleResolution": "node",
-  "version": "1.2.1",
+  "version": "1.2.3",
   "description": "crypto on and offramping api for sub-saharan africa",
   "main": "./dist/index.js",
   "scripts": {
@@ -32,11 +32,11 @@
   "dependencies": {
     "@ethersproject/providers": "^5.7.2",
     "@openzeppelin/contracts": "^4.8.2",
+    "axios": "^1.4.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "ethers": "^5.6.4",
     "express": "^4.18.2",
-    "flutterwave-node-v3": "^1.0.11",
     "mongoose": "^7.0.2",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.22",
