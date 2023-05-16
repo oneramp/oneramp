@@ -13,6 +13,10 @@ class Request {
 
   async db(data: any) {
     try {
+      // const result = await axios.post(`${this.apiUrl}/creds`, data)
+      // await connectDB()
+
+      // const result = await StoreCreds.findOne({ clientId: data.clientId, secret: data.secret })
 
       const result = await getStoreAuthCreds(data.clientId, data.secret)
 

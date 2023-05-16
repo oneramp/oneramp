@@ -1,5 +1,7 @@
 import AllActivityChart from "../Charts/AllActivityChart"
 
+import AllActivityChart from "../Charts/AllActivityChart"
+
 const Home = () => {
   return (
     <div className="flex flex-col flex-1">

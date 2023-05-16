@@ -29,6 +29,10 @@ const TransactionSchema: Schema = new Schema({
     type: String,
     required: true,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 })
 
 const TransactionModel: any = mongoose.model(`Transaction`, TransactionSchema)

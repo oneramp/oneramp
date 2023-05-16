@@ -8,6 +8,7 @@ import {
   getCreds,
   getStoreTransactions,
 } from "../controllers/store"
+import { createTransactionAPI } from "../controllers/transactions"
 
 const router = Router()
 
@@ -29,5 +30,8 @@ router.get("/creds/:storeId", getStoreCreds)
 
 router.post("/creds/", getCreds)
 router.get("/store/tx/:storeId", getStoreTransactions)
+
+// Tx
+router.post("/tx/create", createTransactionAPI)
 
 export default router
