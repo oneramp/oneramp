@@ -1,19 +1,28 @@
 import { APIURL } from "@/apiUrl"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"
 
 const AppKeys = () => {
   const [showSecret, setShowSecret] = useState(false)
+  
+  const [ localStorageId, setLocalStorageId ] = useState(null) 
+  
+  useEffect(() => {
+  if (typeof window !== 'undefined') {
+      // Perform localStorage action
+      setLocalStorageId(localStorage.getItem("activeStore"))
+    }
+  },[])
 
   const {
     isLoading,
     error,
     data: store,
-  } = useQuery(["store", localStorage.getItem("activeStore")], () =>
+  } = useQuery(["store", localStorageId], () =>
     axios
-      .get(`${APIURL}/store/${localStorage.getItem("activeStore")}`)
+      .get(`${APIURL}/store/${localStorageId}`)
       .then((res) => res.data)
       .catch((err) => err.message)
   )
@@ -22,9 +31,9 @@ const AppKeys = () => {
     isLoading: loadingKeys,
     error: errorKeys,
     data: storeKeys,
-  } = useQuery(["creds", localStorage.getItem("activeStore")], () =>
+  } = useQuery(["creds", localStorageId], () =>
     axios
-      .get(`${APIURL}/creds/${localStorage.getItem("activeStore")}`)
+      .get(`${APIURL}/creds/${localStorageId}`)
       .then((res) => res.data)
       .catch((err) => err.message)
   )
