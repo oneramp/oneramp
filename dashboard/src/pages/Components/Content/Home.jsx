@@ -23,7 +23,9 @@ const Home = () => {
         <h5 className="my-2 text-xs font-light">Total revenue moved</h5>
 
         {!allLoading && !errAllActivity && (
-          <h1 className="text-2xl">UGX {allActivity?.data.total}</h1>
+          <h1 className="text-2xl">
+            UGX {allActivity?.data.total.toLocaleString()}
+          </h1>
         )}
 
         <h5 className="text-xs font-light">
