@@ -8,14 +8,14 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"
 const AppKeys = () => {
   const [showSecret, setShowSecret] = useState(false)
   
-  const [ localStorageId, setLocalStorageId ] = useState(null) 
+  const [ localStorageId, setLocalStorageId ] = useState(null)
   
   useEffect(() => {
-  if (typeof window !== 'undefined') {
-      // Perform localStorage action
-      setLocalStorageId(localStorage.getItem("activeStore"))
-    }
-  },[])
+    let value
+    // Get the value from local storage if it exists
+    value = localStorage.getItem("activeStore") || ""
+    setLocalStorageId(value)
+  }, [])
 
   const {
     isLoading,
