@@ -12,7 +12,7 @@ const connectDB = async (): Promise<void> => {
     console.log(`MongoDB connected: ${connection.connection.host}`)
   } catch (error: any) {
     console.error(`ERROR: ${error.message}`)
-    process.exit(1)
+    return error
   }
 }
 

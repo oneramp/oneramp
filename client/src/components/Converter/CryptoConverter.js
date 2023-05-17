@@ -7,6 +7,7 @@ import { TextField, ThemeProvider } from "@mui/material"
 import { theme } from "../../Theme"
 import TabView from "./TabPanel"
 import { useLocation, useNavigate } from "react-router-dom"
+// import BuyView from "../Tabs/BuyView"
 
 const currencies = [
   {
@@ -83,7 +84,6 @@ export default function CryptoConverter() {
     setcValue(inputValue)
     setCashValue((inputValue * rate).toFixed(2))
   }
-
   function BuyView() {
     return (
       <div className='flexCenter flexColumn'>
@@ -179,7 +179,6 @@ export default function CryptoConverter() {
       </div>
     )
   }
-
   function SellView() {
     return (
       <div className='flexCenter flexColumn'>

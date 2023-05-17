@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Link } from "react-scroll"
 // Components
@@ -14,7 +14,11 @@ import {
 // import Networks from "../../utils/networks"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { useLocation, useNavigate } from "react-router-dom"
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz"
+import SwapView from "../Tabs/SwapView"
 export default function Wallet() {
+  const [isVisible, setIsVisible] = useState(false)
+  const swapViewRef = useRef()
   const navigate = useNavigate()
   const location = useLocation()
   const [y, setY] = useState(window.scrollY)
@@ -25,6 +29,26 @@ export default function Wallet() {
       window.removeEventListener("scroll", () => setY(window.scrollY))
     }
   }, [y])
+  useEffect(() => {
+    // Define the click handler
+    const handleClickOutside = (event) => {
+      if (
+        // Check if the click was outside the SwapView and we are in desktop view
+        swapViewRef.current &&
+        !swapViewRef.current.contains(event.target)
+      ) {
+        setIsVisible(false)
+      }
+    }
+
+    // Attach the click handler
+    document.addEventListener("mousedown", handleClickOutside)
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
   const { address, isConnected } = useAccount()
 
   function handleClick() {
@@ -32,9 +56,10 @@ export default function Wallet() {
       navigate("/")
     }
   }
+  const onClick = () => {
+    setIsVisible(!isVisible)
+  }
 
-  // const { disconnect } = useDisconnect()
-  // const { openConnectModal } = useConnectModal()
   return (
     <>
       <Wrapper
@@ -51,36 +76,59 @@ export default function Wallet() {
             />
           </Link>
           <UlWrapperRight className='flexNullCenter'>
-            {/* <li className='semiBold font15 pointer'>
-              <Networks />
-            </li> */}
             <li className='semiBold font15 pointer flexCenter'>
               {address && isConnected ? (
-                <ConnectButton
-                  accountStatus={{
-                    smallScreen: "avatar",
-                    largeScreen: "full",
-                  }}
-                  showBalance={false}
-                />
+                <>
+                  <div style={containerStyle}>
+                    <SwapHorizIcon style={iconStyle} onClick={onClick} />
+                    {isVisible && (
+                      <div
+                        style={{ position: "absolute", top: 100 }}
+                        ref={swapViewRef}
+                      >
+                        <SwapView />
+                      </div>
+                    )}
+                  </div>
+                  <ConnectButton
+                    accountStatus={{
+                      smallScreen: "avatar",
+                      largeScreen: "full",
+                    }}
+                    showBalance={false}
+                  />
+                </>
               ) : (
                 <ConnectButton />
               )}
             </li>
           </UlWrapperRight>
           <MobileRightWrapper>
-            {/* <li className='semiBold font15 pointer'>
-              <Networks />
-            </li> */}
             <li className='semiBold font15 pointer flexCenter'>
               {address && isConnected ? (
-                <ConnectButton
-                  accountStatus='avatar'
-                  showBalance={false}
-                  chainStatus='icon'
-                />
+                <>
+                  <div style={containerStyle}>
+                    <SwapHorizIcon style={iconStyle} onClick={onClick} />
+                    {isVisible && (
+                      <div
+                        style={{ position: "absolute", top: 100 }}
+                        ref={swapViewRef}
+                      >
+                        <SwapView />
+                      </div>
+                    )}
+                  </div>
+
+                  <ConnectButton
+                    accountStatus='avatar'
+                    showBalance={false}
+                    chainStatus='icon'
+                  />
+                </>
               ) : (
-                <ConnectButton />
+                <>
+                  <ConnectButton />
+                </>
               )}
             </li>
           </MobileRightWrapper>
@@ -125,4 +173,20 @@ export const getEllipsisTxt = (str, n = 6) => {
     return `${str.slice(0, 2)}...${str.slice(str.length - n)}`
   }
   return ""
+}
+const containerStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  background: "#fff",
+  borderRadius: "50%",
+  border: "1px solid #000",
+  width: "40px",
+  height: "40px",
+  cursor: "pointer",
+  marginRight: "10px",
+}
+
+const iconStyle = {
+  color: "#000",
 }

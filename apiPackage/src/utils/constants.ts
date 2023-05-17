@@ -1,5 +1,5 @@
 
 
-const apiUrl  = "http://localhost:4000/api"
+const apiUrl  = "https://oneramp-production.up.railway.app/api"
 
 export  default apiUrl

@@ -1,8 +1,8 @@
 import { getStoreAuthCreds } from "../../shared/getStoreAuthCreds"
+import connectDB from "../../config/connectDB"
+import StoreCreds from "../../models/storeCredsModel"
 import TransactionModel from "../../models/TransactionModel"
 import apiUrl from "./constants"
-
-
 
 class Request {
   apiUrl: string
@@ -13,11 +13,14 @@ class Request {
 
   async db(data: any) {
     try {
+      // const result = await axios.post(`${this.apiUrl}/creds`, data)
+      // await connectDB()
+
+      // const result = await StoreCreds.findOne({ clientId: data.clientId, secret: data.secret })
 
       const result = await getStoreAuthCreds(data.clientId, data.secret)
 
       if (result?.store) {
-
         return {
           status: 200,
           success: true,
@@ -45,7 +48,6 @@ class Request {
   async createTransaction(data: any) {
     try {
       // const result = await axios.post(`${this.apiUrl}/transactions`, data)
-
 
       const newTx = new TransactionModel(data)
 
