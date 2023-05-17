@@ -11,8 +11,10 @@ const AppKeys = () => {
   const [ localStorageId, setLocalStorageId ] = useState(null)
   
   useEffect(() => {
+    let value
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-      setLocalStorageId(localStorage.getItem("activeStore"))
+      value = localStorage.getItem("activeStore")
+      setLocalStorageId(value)
     }
   }, [])
 
