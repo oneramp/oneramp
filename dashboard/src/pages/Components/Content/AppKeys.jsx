@@ -11,10 +11,10 @@ const AppKeys = () => {
   const [ localStorageId, setLocalStorageId ] = useState(null)
   
   useEffect(() => {
-    let value
-    // Get the value from local storage if it exists
-    value = localStorage.getItem("activeStore") || ""
-    setLocalStorageId(value)
+    if (typeof window !== 'undefined') {
+      // Perform localStorage action
+      setLocalStorageId(localStorage.getItem("activeStore"))
+    }
   }, [])
 
   const {
