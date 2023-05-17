@@ -24,7 +24,7 @@ const Home = () => {
 
         {!allLoading && !errAllActivity && (
           <h1 className="text-2xl">
-            UGX {allActivity?.data.total.toLocaleString()}
+            UGX {allActivity?.data?.total.toLocaleString()}
           </h1>
         )}
 
