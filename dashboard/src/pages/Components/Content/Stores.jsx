@@ -6,12 +6,22 @@ import Link from "next/link"
 import { AiOutlinePlus } from "react-icons/ai"
 import LoadingPage from "../LoadingPage"
 import ErrorPage from "../ErrorPage"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const Stores = () => {
   const { user, error: authUserError, isLoading: authUserLoading } = useUser()
+  
+  const [ localStorageId, setLocalStorageId ] = useState(null) 
 
   const [activeStore, setActiveStore] = useState(null)
+  
+  useEffect(() => {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+
+      // Perform localStorage action
+      setLocalStorageId(localStorage.getItem("activeStore"))
+    }
+  },[])
 
   const { isLoading, error, data } = useQuery(["userStores", user.sub], () =>
     axios
@@ -51,7 +61,7 @@ const Stores = () => {
               <h1 className="text-lg font-medium">{store.storeName}</h1>
               <p className="text-xs font-light text-neutral-400">{store._id}</p>
             </div>
-            {localStorage.getItem("activeStore") == store._id ? (
+            {localStorageId == store._id ? (
               <div className="flex items-center justify-center w-full py-2 text-sm text-red-500 rounded-md bg-neutral-50">
                 Active
               </div>

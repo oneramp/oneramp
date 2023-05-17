@@ -8,7 +8,6 @@
   "scripts": {
     "start": "nodemon server.ts",
     "build": "tsc",
-    "build-typeScript": "tsc",
     "clean": "rimraf dist",
     "build:clean": "yarn clean && yarn build",
     "format:check": "prettier --check \"**/*.ts\"",
@@ -31,6 +30,8 @@
   },
   "homepage": "https://github.com/oneramp/oneramp#readme",
   "dependencies": {
+    "@ethersproject/providers": "^5.7.2",
+    "@openzeppelin/contracts": "^4.8.2",
     "axios": "^1.4.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
@@ -42,6 +43,7 @@
     "express": "^4.18.2",
     "mongoose": "^7.0.2",
     "morgan": "^1.10.0",
+    "node-fetch": "2",
     "nodemon": "^2.0.22",
     "rimraf": "^5.0.0"
   },

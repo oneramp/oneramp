@@ -22,7 +22,7 @@ function getAllAddresses(addresses: IfcAddresses): string[] {
   return allAddresses
 }
 
-export default class OneRamp {
+export class OneRamp {
   signer: Signer | undefined
   provider: ethers.providers.Provider | undefined
   network: Network
