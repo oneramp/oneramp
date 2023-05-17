@@ -1,3 +1,4 @@
+"use client"
 import { APIURL } from "@/apiUrl"
 import { useUser } from "@auth0/nextjs-auth0/client"
 import { useQuery } from "@tanstack/react-query"
