@@ -16,7 +16,8 @@ const Stores = () => {
   const [activeStore, setActiveStore] = useState(null)
   
   useEffect(() => {
-  if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+
       // Perform localStorage action
       setLocalStorageId(localStorage.getItem("activeStore"))
     }
