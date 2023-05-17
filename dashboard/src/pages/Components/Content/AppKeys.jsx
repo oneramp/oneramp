@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import { APIURL } from "@/apiUrl"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
