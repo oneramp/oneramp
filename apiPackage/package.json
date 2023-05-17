@@ -8,6 +8,7 @@
   "scripts": {
     "start": "nodemon server.ts",
     "build": "tsc",
+    "build-typeScript": "tsc",
     "clean": "rimraf dist",
     "build:clean": "yarn clean && yarn build",
     "format:check": "prettier --check \"**/*.ts\"",
@@ -35,12 +36,14 @@
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "currency-converter-lt": "^2.0.0-beta.0",
+    "dotenv": "^16.0.3",
     "easy-currencies": "^1.7.0",
     "ethers": "^5.6.4",
     "express": "^4.18.2",
     "mongoose": "^7.0.2",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "rimraf": "^5.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
