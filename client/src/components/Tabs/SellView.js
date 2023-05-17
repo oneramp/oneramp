@@ -36,10 +36,11 @@ export default function SellView(signer) {
   const location = useLocation()
 
   const [rate, setRate] = useState(0)
+  // eslint-disable-next-line
   const [value, setValue] = useState(0)
   const [cvalue, setcValue] = useState(0)
   const [cashValue, setCashValue] = useState(0)
-
+  // eslint-disable-next-line
   const [cryptoValue, setCryptoValue] = useState(0)
   // eslint-disable-next-line
   const [exchangeRates, setExchangeRates] = useState({})

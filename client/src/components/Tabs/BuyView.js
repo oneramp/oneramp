@@ -36,7 +36,9 @@ function BuyView() {
 
   const [rate, setRate] = useState(0)
   const [value, setValue] = useState(0)
+  // eslint-disable-next-line
   const [cvalue, setcValue] = useState(0)
+  // eslint-disable-next-line
   const [cashValue, setCashValue] = useState(0)
 
   const [cryptoValue, setCryptoValue] = useState(0)
@@ -75,6 +77,7 @@ function BuyView() {
     setValue(inputValue)
     setCryptoValue((inputValue / rate).toFixed(2))
   }
+  // eslint-disable-next-line
   const handleSellChange = (event) => {
     // Get input value from "event"
     let inputValue = event.target.value
