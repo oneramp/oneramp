@@ -8,7 +8,17 @@ import {
   getCreds,
   getStoreTransactions,
 } from "../controllers/store"
-import { createTransactionAPI } from "../controllers/transactions"
+import {
+  createDeposit,
+  createTransactionAPI,
+  createWithdraw,
+  getAllActivity,
+  getDeposits,
+  getWithdraw,
+  removeActivity,
+  removeDeposits,
+  removeWithdraws,
+} from "../controllers/transactions"
 
 const router = Router()
 
@@ -33,5 +43,18 @@ router.get("/store/tx/:storeId", getStoreTransactions)
 
 // Tx
 router.post("/tx/create", createTransactionAPI)
+
+// Analytics
+router.get("/activity/:storeId", getAllActivity)
+
+router.get("/deposit/:storeId", getDeposits)
+router.post("/deposit/create", createDeposit)
+
+router.get("/withdraw/:storeId", getWithdraw)
+router.post("/withdraw/create", createWithdraw)
+
+router.get("/del/deposit/:storeId", removeDeposits)
+router.get("/del/withdraw/:storeId", removeWithdraws)
+router.get("/del/activity/:storeId", removeActivity)
 
 export default router

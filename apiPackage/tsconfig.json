@@ -13,10 +13,6 @@
   "include": ["src", "index.ts", "auth.ts", "testflw.mjs", "test.ts"],
   "exclude": [
     "node_modules",
-    "**/hardhat.config.ts",
-    "**/config",
-    "**/controllers",
-    "**/models",
-    "**/routes"
+    "**/hardhat.config.ts"
   ]
 }
