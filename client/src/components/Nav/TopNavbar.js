@@ -82,6 +82,30 @@ export default function TopNavbar() {
                 className='radius8 lightBg2'
                 style={{
                   padding: "10px 15px",
+                  color: "#000",
+                  backgroundColor: "#fff",
+                  border: "1px solid #000",
+                }}
+                // onClick={handleClick}
+              >
+                <a
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  href='https://onerampdashboard.vercel.app/'
+                  // style={{ padding: "10px 30px 10px 0" }}
+                >
+                  Get Started
+                </a>
+              </li>
+            </li>
+            <li
+              className='semiBold font15 pointer flexCenter'
+              style={{ marginLeft: "10px" }}
+            >
+              <li
+                className='radius8 lightBg2'
+                style={{
+                  padding: "10px 15px",
                   color: "#fff",
                   backgroundColor: "#000",
                 }}
