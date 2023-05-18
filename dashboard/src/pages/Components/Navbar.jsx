@@ -9,10 +9,10 @@ const Navbar = ({ picture }) => {
   }
 
   return (
-    <div className="text-gray-100 px-5 shadow-sm">
+    <div className="absolute top-0 left-0 right-0 z-20 h-16 px-5 text-gray-100 bg-white shadow-sm">
       <div className="flex flex-wrap items-center justify-between p-4">
         <div className="flex items-center cursor-pointer">
-          <img src="/oneramp.svg" alt="Logo" className="mr-2 h-full w-24" />
+          <img src="/oneramp.svg" alt="Logo" className="w-24 h-full mr-2" />
         </div>
         <div className="relative">
           <div
@@ -20,23 +20,23 @@ const Navbar = ({ picture }) => {
             onClick={handleToggleDropdown}
           >
             {picture && (
-              <div className="h-8 w-8 rounded-full bg-gray-400 relative">
+              <div className="relative w-8 h-8 bg-gray-400 rounded-full">
                 <img
                   src={picture}
                   alt={"User picture"}
-                  className="h-full w-8 rounded-full"
+                  className="w-8 h-full rounded-full"
                 />
               </div>
             )}
           </div>
           {isDropdownOpen && (
-            <div className="absolute bg-white text-gray-900 right-0 mt-2 py-2 w-48 rounded-lg shadow-xl z-10">
+            <div className="absolute right-0 z-10 w-48 py-2 mt-2 text-gray-900 bg-white rounded-lg shadow-xl">
               <a href="/" className="block px-4 py-2 text-sm hover:bg-gray-300">
                 Profile
               </a>
               <Link
                 href="/api/auth/logout"
-                className="block w-full text-left px-4 flex-row  py-2 text-sm hover:bg-gray-300"
+                className="flex-row block w-full px-4 py-2 text-sm text-left hover:bg-gray-300"
               >
                 Logout
               </Link>

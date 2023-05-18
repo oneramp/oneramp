@@ -12,6 +12,7 @@ const currencies = [
   {
     value: "CUSD",
     label: "CUSD",
+    address: "0xc0EBB770F2c9CA7eD0dDeBa58Af101695Cf1BDc1",
   },
 
   {
