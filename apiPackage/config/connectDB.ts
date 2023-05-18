@@ -9,6 +9,7 @@ const connectDB = async (): Promise<void> => {
     const connection = await mongoose.connect(MONGO_URI, {
       serverSelectionTimeoutMS: 30000,
     } as ConnectOptions)
+    
     console.log(`MongoDB connected: ${connection.connection.host}`)
   } catch (error: any) {
     console.error(`ERROR: ${error.message}`)

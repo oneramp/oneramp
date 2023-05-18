@@ -89,7 +89,7 @@ export default function SellView() {
     const tx = await offRamp.approve(selectedTokenAddress, cvalue)
 
     console.log("selectedTokenAddress", selectedTokenAddress)
-
+    setIsApproved(tx)
     return tx
   }
   async function handleOfframp() {
@@ -230,7 +230,7 @@ export default function SellView() {
         {isApproved ? (
           <FullButton title='OFFRAMP' action={handleOfframp} />
         ) : (
-          <FullButton title='Approve' action={handleApprove} />
+          <FullButton title='APPROVE' action={handleApprove} />
         )}
       </ThemeProvider>
     </div>
