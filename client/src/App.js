@@ -19,14 +19,10 @@ import {
 import { trustWallet } from "@rainbow-me/rainbowkit/wallets"
 import { WagmiConfig, configureChains, createClient } from "wagmi"
 import { alchemyProvider } from "wagmi/providers/alchemy"
-import {
-  mainnet,
-  polygon,
-  bsc,
-  bscTestnet,
-  celo,
-  celoAlfajores,
-} from "wagmi/chains"
+// import { infuraProvider } from "wagmi/providers/infura"
+// Import CELO chain information
+import { Alfajores, Celo } from "@celo/rainbowkit-celo/chains"
+import { bsc, bscTestnet } from "wagmi/chains"
 import { ToastContainer, Zoom, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
@@ -41,13 +37,14 @@ import {
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets"
 const { chains, provider } = configureChains(
-  [mainnet, polygon, bsc, bscTestnet, celo, celoAlfajores],
+  [bsc, bscTestnet, Alfajores, Celo],
   [
+    publicProvider(),
     jsonRpcProvider({
       rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }),
     }),
     alchemyProvider({ apiKey: "EPipXybe2a8n7lGnabv01Wia92Sz5J2Y" }),
-    publicProvider(),
+    // infuraProvider({ apiKey: "26e72a10855f4d949647a2802b9d17de" }),
   ]
 )
 const projectId = "EPipXybe2a8n7lGnabv01Wia92Sz5J2Y"

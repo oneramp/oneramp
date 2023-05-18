@@ -1,5 +1,4 @@
 import { ethers, Signer } from "ethers"
-import mongoose from "mongoose"
 import tokenABI from "./abi.json"
 import onerampABI from "./abit.json"
 
@@ -165,5 +164,112 @@ export default class OneRamp {
     return
     // Initiate Flutterwave payment.
     // await initiatePayment(phoneNumber, 60000, "UGX")
+  }
+}
+
+export class offramp {
+  signer: Signer | undefined
+  provider: ethers.providers.Provider | undefined
+  network: Network
+  addresses: IfcOneNetworksAddresses
+
+  constructor(
+    network: Network,
+    provider?: ethers.providers.Provider,
+    signer?: Signer
+  ) {
+    this.network = network
+    this.provider = provider
+    this.signer = signer
+    this.addresses = addresses[this.network]
+  }
+
+
+  setSigner = (signer: Signer) => {
+    this.signer = signer
+  }
+
+  setProvider = (provider: ethers.providers.Provider) => {
+    this.provider = provider
+  }
+
+  async approve(tokenAddress: string, amount: number): Promise<boolean> {
+    if (!this.signer) throw new Error("No signer set")
+    const signer = this.signer
+    if (!this.provider) throw new Error("No provider set")
+    const provider = this.provider
+
+    const allAddresses = getAllAddresses(addresses)
+    if (!allAddresses.includes(tokenAddress)) {
+      throw new Error("Invalid token address")
+    }
+
+    const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer)
+    const approveTx = await tokenContract.approve(
+      addresses[this.network].contract,
+      ethers.utils.parseEther(amount.toString())
+    )
+    const receipt = await provider.waitForTransaction(approveTx.hash, 1)
+    console.log("Transaction mined:", receipt)
+    return true
+  }
+
+  async deposit(tokenAddress: string, amount: number, phoneNumber: string): Promise<any> {
+
+    if (!this.signer) throw new Error("No signer set")
+    const signer = this.signer
+    if (!this.provider) throw new Error("No provider set")
+    const provider = this.provider
+
+    const allAddresses = getAllAddresses(addresses)
+    if (!allAddresses.includes(tokenAddress)) {
+      throw new Error("Invalid token address")
+    }
+
+    const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer)
+
+    const signerAddress = await signer.getAddress()
+
+    const allowance = await tokenContract.allowance(
+      signerAddress,
+      addresses[this.network].contract
+    )
+    // console.log("Current allowance:", allowance.toString()) 
+
+    if (allowance < ethers.utils.parseEther(amount.toString()))
+      throw new Error(
+        "Insufficient allowance. Please approve more tokens before depositing."
+      )
+
+    const offRampAddress = addresses[this.network].contract
+    const oneRampContract = new ethers.Contract(
+      offRampAddress,
+      onerampABI,
+      signer
+    )
+
+    const tx = await oneRampContract.depositToken(
+      tokenAddress,
+      ethers.utils.parseEther(amount.toString())
+    )
+
+    // Wait for 2 block confirmations.
+    await provider.waitForTransaction(tx.hash, 2)
+
+    console.log("Deposit successful. Transaction hash:", tx.hash)
+
+    const newTransaction = {
+      store: "64650d747b7e3975e9ee91c4",
+      txHash: tx.hash,
+      amount: amount,
+      fiat: amount,
+      phone: phoneNumber,
+      asset: "cUSD",
+      status: "Success",
+    }
+
+
+    return newTransaction
+ 
   }
 }

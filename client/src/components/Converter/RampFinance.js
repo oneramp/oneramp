@@ -3,39 +3,8 @@ import { Box } from "@mui/system"
 import TabView from "./TabPanel"
 import SellView from "../Tabs/SellView"
 import BuyView from "../Tabs/BuyView"
-import { useProvider, useSigner } from "wagmi"
-import OneRamp from "oneramp"
 
 export default function RampFinance() {
-  const provider = useProvider()
-  const { data: signer } = useSigner()
-  const clientPub = "RMPPUBK-cacbc4ef3f9703a3429b-X"
-  const secretKey = "RMPSEC-a2fd9f528ef158d4f7e8b55741f9ce34e9bb6892-X"
-
-  async function handleClick() {
-    const oneRamp = new OneRamp("alfajores", clientPub, secretKey)
-
-    if (signer) {
-      oneRamp.setSigner(signer)
-    }
-
-    if (provider) {
-      oneRamp.setProvider(provider)
-    }
-    try {
-      // Attempt to deposit 1000 units of the specified token
-      const tx = await oneRamp.deposit(
-        "0xc0EBB770F2c9CA7eD0dDeBa58Af101695Cf1BDc1",
-        34500000000
-      )
-      // If successful, log the transaction
-      console.log(tx)
-    } catch (error) {
-      // If an error occurs, log it
-      console.error("Error depositing:", error)
-    }
-  }
-
   return (
     <>
       <Box
@@ -67,7 +36,7 @@ export default function RampFinance() {
         >
           {/* ----- */}
 
-          <TabView children={[SellView(handleClick), BuyView()]} />
+          <TabView children={[SellView(), BuyView()]} />
 
           {/* ----- */}
           <div className='blue_gradient' />

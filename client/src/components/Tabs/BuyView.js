@@ -15,8 +15,17 @@ const currencies = [
   },
 
   {
-    value: "CELO",
-    label: "CELO",
+    value: "USDT",
+    label: "USDT",
+  },
+  {
+    value: "USDC",
+    label: "USDC",
+  },
+
+  {
+    value: "DAI",
+    label: "DAI",
   },
 ]
 const countries = [
@@ -24,10 +33,13 @@ const countries = [
     value: "UGX",
     label: "UG",
   },
-
   {
     value: "KES",
     label: "KE",
+  },
+  {
+    value: "NGN",
+    label: "NG",
   },
 ]
 function BuyView() {

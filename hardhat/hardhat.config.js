@@ -13,22 +13,32 @@ module.exports = {
   },
   networks: {
     alfajores: {
-      url: "https://alfajores-forno.celo-testnet.org",
-      // url: "https://celo-hackathon.lavanet.xyz/celo-alfajores/http",
+      url: `https://celo-mainnet.infura.io/v3/${process.env.INFURA_KEY}`,
       accounts: [process.env.PRIVATE_KEY],
       chainId: 44787,
     },
     celo: {
-      url: "https://forno.celo.org",
-      // url: "https://celo-hackathon.lavanet.xyz/celo/http",
+      url: `https://celo-alfajores.infura.io/v3/${process.env.INFURA_KEY}`,
       accounts: [process.env.PRIVATE_KEY],
       chainId: 42220,
+    },
+    bsc: {
+      url: "https://bsc-dataseed.binance.org",
+      accounts: [process.env.PRIVATE_KEY],
+      chainId: 56,
+    },
+    bscTestnet: {
+      url: "https://data-seed-prebsc-2-s1.binance.org:8545",
+      accounts: [process.env.PRIVATE_KEY],
+      chainId: 97,
     },
   },
   etherscan: {
     apiKey: {
       alfajores: process.env.CELOSCAN_API_KEY,
       celo: process.env.CELOSCAN_API_KEY,
+      bscTestnet: process.env.BSCSCAN_API_KEY,
+      bsc: process.env.BSCSCAN_API_KEY,
     },
     customChains: [
       {

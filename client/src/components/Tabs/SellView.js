@@ -5,20 +5,10 @@ import { Box } from "@mui/system"
 import { Grid } from "@mui/material"
 import { TextField, ThemeProvider } from "@mui/material"
 import { theme } from "../../Theme"
+import { useSigner, useProvider } from "wagmi"
+import addresses from "../../utils/addresses"
+import { offramp } from "oneramp"
 
-import { useLocation, useNavigate } from "react-router-dom"
-
-const currencies = [
-  {
-    value: "CUSD",
-    label: "CUSD",
-  },
-
-  {
-    value: "CELO",
-    label: "CELO",
-  },
-]
 const countries = [
   {
     value: "UGX",
@@ -30,10 +20,15 @@ const countries = [
     label: "KE",
   },
 ]
-
-export default function SellView(signer) {
-  const navigate = useNavigate()
-  const location = useLocation()
+const countryPhonePrefixes = {
+  UGX: "+256",
+  KES: "+254",
+  NGN: "+234",
+  // add other countries here as needed
+}
+export default function SellView() {
+  const provider = useProvider()
+  const { data: signer } = useSigner()
 
   const [rate, setRate] = useState(0)
   // eslint-disable-next-line
@@ -44,9 +39,13 @@ export default function SellView(signer) {
   const [cryptoValue, setCryptoValue] = useState(0)
   // eslint-disable-next-line
   const [exchangeRates, setExchangeRates] = useState({})
-  const [selectedCurrency, setSelectedCurrency] = useState("CUSD")
+  const [selectedToken, setSelectedToken] = useState("CUSD")
   // eslint-disable-next-line
   const [selectedCountry, setSelectedCountry] = useState("UGX")
+  const [tokens, setTokens] = useState([])
+  const [phonePrefix, setPhonePrefix] = useState("+256") // Default to UG
+  const [phoneNumber, setPhoneNumber] = useState("")
+  const [isApproved, setIsApproved] = useState(false)
 
   useEffect(() => {
     fetch("https://open.er-api.com/v6/latest/USD")
@@ -57,25 +56,60 @@ export default function SellView(signer) {
       })
       .catch((error) => console.error("Error fetching exchange rates:", error))
   }, [selectedCountry])
+  useEffect(() => {
+    if (provider) {
+      async function setTokensList() {
+        let network = await provider.getNetwork()
+        let chainId = network.chainId
+        let tokenList = addresses[chainId].tokens
+        if (Object.keys(tokenList).length > 0) {
+          setSelectedToken(Object.keys(tokenList)[0])
+        }
+        setTokens(tokenList)
+      }
 
-  function handleClick() {
-    if (location.pathname !== "/ramp") {
-      navigate("/ramp")
+      setTokensList()
     }
-  }
-  const handleCurrencyChange = (event) => {
-    setSelectedCurrency(event.target.value)
-  }
-  const handleCountryChange = (event) => {
-    setSelectedCountry(event.target.value)
-  }
+  }, [signer, provider])
 
-  const handleChange = (event) => {
-    // Get input value from "event"
-    let inputValue = event.target.value
-    // Display USD equivalent
-    setValue(inputValue)
-    setCryptoValue((inputValue / rate).toFixed(2))
+  async function handleApprove() {
+    if (!signer && !provider) return
+    const offRamp = new offramp("bscTestnet")
+    offRamp.setSigner(signer)
+    offRamp.setProvider(provider)
+    if (phoneNumber === phonePrefix) {
+      alert("Please enter your phone number")
+      return
+    }
+
+    // Here is where you get the address of the selected token.
+    const selectedTokenAddress = tokens[selectedToken]
+
+    // Use selectedTokenAddress in your approveToken function
+    const tx = await offRamp.approve(selectedTokenAddress, cvalue)
+
+    console.log("selectedTokenAddress", selectedTokenAddress)
+
+    return tx
+  }
+  async function handleOfframp() {
+    if (!signer && !provider) return
+    const offRamp = new offramp("bscTestnet")
+    offRamp.setSigner(signer)
+    offRamp.setProvider(provider)
+
+    // Here is where you get the address of the selected token.
+    const selectedTokenAddress = tokens[selectedToken]
+
+    // Use selectedTokenAddress in your approveToken function
+    const tx = await offRamp.deposit(selectedTokenAddress, cvalue, phoneNumber)
+
+    console.log("transaction", tx)
+    setIsApproved(false)
+    return tx
+  }
+  const handleTokenChange = (event) => {
+    setSelectedToken(event.target.value)
   }
   const handleSellChange = (event) => {
     // Get input value from "event"
@@ -84,6 +118,21 @@ export default function SellView(signer) {
     setcValue(inputValue)
     setCashValue((inputValue * rate).toFixed(2))
   }
+  const handleCountryChange = (event) => {
+    setSelectedCountry(event.target.value)
+    setPhonePrefix(countryPhonePrefixes[event.target.value])
+  }
+  const handlePhoneNumberChange = (event) => {
+    // Get the input value without the prefix
+    const rawNum = event.target.value.replace(phonePrefix, "")
+
+    // Limit input to 9 digits and only allow numbers
+    const onlyNums = rawNum.replace(/[^0-9]/g, "")
+    if (onlyNums.length <= 9) {
+      setPhoneNumber(phonePrefix + onlyNums)
+    }
+  }
+
   return (
     <div className='flexCenter flexColumn'>
       <ThemeProvider theme={theme}>
@@ -98,15 +147,15 @@ export default function SellView(signer) {
               fullWidth
               type='number'
               defaultValue='CUSD'
-              onChange={handleCurrencyChange}
+              onChange={handleTokenChange}
               SelectProps={{
                 native: true,
               }}
               variant='outlined'
             >
-              {currencies.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+              {Object.keys(tokens).map((tokenName) => (
+                <option key={tokenName} value={tokenName}>
+                  {tokenName}
                 </option>
               ))}
             </TextField>
@@ -154,34 +203,35 @@ export default function SellView(signer) {
           <Grid item xs={8}>
             <TextField
               fullWidth
-              onChange={handleChange}
+              onChange={handlePhoneNumberChange}
               className='inputRounded'
-              defaultValue={1}
-              value={cashValue}
-              type='number'
+              value={phoneNumber}
+              type='tel'
               variant='outlined'
-              disabled
             />
           </Grid>
         </Grid>
         {cvalue > 0 ? (
           <Box sx={{ fontSize: 20, textAlign: "center", py: 2 }}>
             {cvalue}
-            {selectedCurrency}={" "}
+            {selectedToken}={" "}
             <b>
               {selectedCountry} {cashValue}
             </b>
           </Box>
         ) : (
           <Box sx={{ fontSize: 20, textAlign: "center", py: 2 }}>
-            1{selectedCurrency}={" "}
+            1{selectedToken}={" "}
             <b>
               {selectedCountry} {rate}
             </b>
           </Box>
         )}
-
-        <FullButton title='Approve' action={handleClick} />
+        {isApproved ? (
+          <FullButton title='OFFRAMP' action={handleOfframp} />
+        ) : (
+          <FullButton title='Approve' action={handleApprove} />
+        )}
       </ThemeProvider>
     </div>
   )
