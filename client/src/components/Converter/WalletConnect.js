@@ -29,26 +29,7 @@ export default function Wallet() {
       window.removeEventListener("scroll", () => setY(window.scrollY))
     }
   }, [y])
-  useEffect(() => {
-    // Define the click handler
-    const handleClickOutside = (event) => {
-      if (
-        // Check if the click was outside the SwapView and we are in desktop view
-        swapViewRef.current &&
-        !swapViewRef.current.contains(event.target)
-      ) {
-        setIsVisible(false)
-      }
-    }
 
-    // Attach the click handler
-    document.addEventListener("mousedown", handleClickOutside)
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [])
   const { address, isConnected } = useAccount()
 
   function handleClick() {
@@ -108,7 +89,11 @@ export default function Wallet() {
               {address && isConnected ? (
                 <>
                   <div style={containerStyle}>
-                    <SwapHorizIcon style={iconStyle} onClick={onClick} />
+                    <SwapHorizIcon
+                      className='swap-icon'
+                      style={iconStyle}
+                      onClick={onClick}
+                    />
                     {isVisible && (
                       <div
                         style={{ position: "absolute", top: 100 }}

@@ -7,7 +7,10 @@ import { TextField, ThemeProvider } from "@mui/material"
 import { theme } from "../../Theme"
 import { useSigner, useProvider } from "wagmi"
 import addresses from "../../utils/addresses"
-import { offramp } from "oneramp"
+// import { offramp } from "oneramp"
+import { ethers } from "ethers"
+import { erc20ABI } from "wagmi"
+import abi from "../../utils/abit.json"
 
 const countries = [
   {
@@ -46,6 +49,7 @@ export default function SellView() {
   const [phonePrefix, setPhonePrefix] = useState("+256") // Default to UG
   const [phoneNumber, setPhoneNumber] = useState("")
   const [isApproved, setIsApproved] = useState(false)
+  const [isContractAddress, setIsContractAddress] = useState("false")
 
   useEffect(() => {
     fetch("https://open.er-api.com/v6/latest/USD")
@@ -62,6 +66,7 @@ export default function SellView() {
         let network = await provider.getNetwork()
         let chainId = network.chainId
         let tokenList = addresses[chainId].tokens
+        setIsContractAddress(addresses[chainId].contract)
         if (Object.keys(tokenList).length > 0) {
           setSelectedToken(Object.keys(tokenList)[0])
         }
@@ -74,9 +79,10 @@ export default function SellView() {
 
   async function handleApprove() {
     if (!signer && !provider) return
-    const offRamp = new offramp("bscTestnet")
-    offRamp.setSigner(signer)
-    offRamp.setProvider(provider)
+
+    // const offRamp = new offramp("bscTestnet")
+    // offRamp.setSigner(signer)
+    // offRamp.setProvider(provider)
     if (phoneNumber === phonePrefix) {
       alert("Please enter your phone number")
       return
@@ -86,25 +92,37 @@ export default function SellView() {
     const selectedTokenAddress = tokens[selectedToken]
 
     // Use selectedTokenAddress in your approveToken function
-    const tx = await offRamp.approve(selectedTokenAddress, cvalue)
-
-    console.log("selectedTokenAddress", selectedTokenAddress)
+    const contract = new ethers.Contract(selectedTokenAddress, erc20ABI, signer)
+    const tx = await contract.approve(
+      selectedTokenAddress,
+      ethers.utils.parseEther(cvalue.toString())
+    )
+    // const tx = await offRamp.approve(selectedTokenAddress, cvalue)
+    console.log("transaction", tx)
     setIsApproved(tx)
     return tx
   }
   async function handleOfframp() {
     if (!signer && !provider) return
-    const offRamp = new offramp("bscTestnet")
-    offRamp.setSigner(signer)
-    offRamp.setProvider(provider)
+    // const offRamp = new offramp("bscTestnet")
+    // offRamp.setSigner(signer)
+    // offRamp.setProvider(provider)
 
     // Here is where you get the address of the selected token.
     const selectedTokenAddress = tokens[selectedToken]
 
+    const contract = new ethers.Contract(isContractAddress, abi, signer)
+    const tx = await contract.depositToken(
+      selectedTokenAddress,
+      ethers.utils.parseEther(cvalue.toString())
+    )
     // Use selectedTokenAddress in your approveToken function
-    const tx = await offRamp.deposit(selectedTokenAddress, cvalue, phoneNumber)
 
-    console.log("transaction", tx)
+    // const tx = await offRamp.deposit(selectedTokenAddress, cvalue, phoneNumber)
+    await provider.waitForTransaction(tx.hash, 2)
+    console.log("Deposit successful. Transaction hash:", tx.hash)
+
+    // console.log("transaction", tx)
     setIsApproved(false)
     return tx
   }
