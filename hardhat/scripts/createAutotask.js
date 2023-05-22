@@ -23,7 +23,7 @@ async function main() {
   console.log("Autotask created with ID ", autotaskId)
   appendFileSync(
     ".env",
-    `\nCELO_TESTNET_AUTOTASK_ID="${autotaskId}\n Autotask_created_with_ID: ${autotaskId}"`,
+    `\nBSC_TESTNET_AUTOTASK_ID="${autotaskId}`,
     function (err) {
       if (err) throw err
     }

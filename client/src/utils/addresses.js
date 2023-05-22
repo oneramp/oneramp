@@ -1,0 +1,33 @@
+const addresses = {
+  42220: {
+    contract: "0x1fC72f58a675ac93980E597cE6Da531d40b24c60",
+    tokens: {
+      CUSD: "0xc0EBB770F2c9CA7eD0dDeBa58Af101695Cf1BDc1",
+    },
+  },
+  44787: {
+    contract: "0x1fC72f58a675ac93980E597cE6Da531d40b24c60",
+    tokens: {
+      CUSD: "0xc0EBB770F2c9CA7eD0dDeBa58Af101695Cf1BDc1",
+    },
+  },
+  56: {
+    contract: "0x0CcB0071e8B8B716A2a5998aB4d97b83790873Fe",
+    tokens: {
+      USDT: "0x02De4766C272abc10Bc88c220D214A26960a7e92",
+      BUSD: "0xc0EBB770F2c9CA7eD0dDeBa58Af101695Cf1BDc1",
+      USDC: "0xc0EBB770F2c9CA7eD0dDeBa58Af101695Cf1BDc1",
+    },
+  },
+  97: {
+    contract: "0x9bD1Dd6A2D2d377467490D15AB2131968C1BfF09",
+    tokens: {
+      USDT: "0x711f93dda8Fb716e4126E8a5249707d583E219DE",
+      BUSD: "0x6f7434e055b8C33a59f2b1504A5d8cC197d7dE55",
+      USDC: "0xC435B79FD4819CC1a81c696182439cEEa7E65c9A",
+      DAI: "0xC435B79FD4819CC1a81c696182439cEEa7E65c9A",
+    },
+  },
+}
+
+export default addresses
