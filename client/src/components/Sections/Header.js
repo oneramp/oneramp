@@ -42,7 +42,13 @@ export default function Header() {
             // data-aos-offset="150"
           >
             <BtnWrapper>
-              <FullButton title='Get Started' />
+              <a
+                href='https://onerampdashboard.vercel.app/'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <FullButton title='Get Started' />
+              </a>
             </BtnWrapper>
           </div>
         </div>

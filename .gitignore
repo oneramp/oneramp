@@ -8,8 +8,10 @@ typechain-types
 # Hardhat files
 cache
 artifacts
+.DS_Store
 
 
 out
 .idea
 .next
+.gitmodules

@@ -24,18 +24,16 @@ export default function SwapView() {
 
   const jsonRpcUrlMap = {
     42220: [
-      "https://celo-mainnet.infura.io/v3/${26e72a10855f4d949647a2802b9d17de",
+      "https://celo-mainnet.infura.io/v3/26e72a10855f4d949647a2802b9d17de",
     ],
     44787: [
-      "https://celo-alfajores.infura.io/v3/${26e72a10855f4d949647a2802b9d17de",
+      "https://celo-alfajores.infura.io/v3/26e72a10855f4d949647a2802b9d17de",
     ],
-    1: ["https://mainnet.infura.io/v3/${26e72a10855f4d949647a2802b9d17de"],
-    5: ["https://goerli.infura.io/v3/${26e72a10855f4d949647a2802b9d17de"],
-    11155111: [
-      "https://sepolia.infura.io/v3/${26e72a10855f4d949647a2802b9d17de",
-    ],
-    97: ["https://data-seed-prebsc-2-s1.binance.org:8545/>"],
-    56: ["https://bsc-dataseed.binance.org/>"],
+    1: ["https://mainnet.infura.io/v3/26e72a10855f4d949647a2802b9d17de"],
+    5: ["https://goerli.infura.io/v3/26e72a10855f4d949647a2802b9d17de"],
+    11155111: ["https://sepolia.infura.io/v3/26e72a10855f4d949647a2802b9d17de"],
+    97: ["https://data-seed-prebsc-2-s1.binance.org:8545"],
+    56: ["https://bsc-dataseed.binance.org"],
   }
 
   return (
@@ -52,6 +50,7 @@ export default function SwapView() {
             theme={theme}
             hideConnectionUI={true}
             onConnectWalletClick={() => openConnectModal}
+            defaultChainId={56}
           />
         )}
       </div>

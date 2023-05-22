@@ -1,5 +1,5 @@
 // Import necessary modules
-const OneRamp = require("oneramp").default;
+const { OneRamp } = require("oneramp");
 const { ethers } = require("ethers");
 require("dotenv").config();
 
@@ -14,9 +14,9 @@ const provider = new ethers.providers.JsonRpcProvider(
 // Create a wallet using the private key and the provider
 const wallet = new ethers.Wallet(testPrivateKey, provider);
 
-const clientPub = "RMPPUBK-5c097ab5011bb9b4123a51050042eddf-X";
+const clientPub = "RMPPUBK-bd302602683155cbd7e93f46f409e11a-X";
 const secretKey =
-  "RMPSEC-939a0f08ccecb7cafd70eaf075a00fa1727fa60a08507a68943ea2e0b08138cf-X";
+  "RMPSEC-9bbb9f6f597ef5709f0695cb4a04e22793db3857fb53ed63d33426f9e5d1d40b-X";
 
 // Create a OneRamp instance, passing the network name, the provider, and the wallet to its constructor
 const oneRamp = new OneRamp(
@@ -32,7 +32,7 @@ async function test() {
     // Attempt to deposit 1000 units of the specified token
     const tx = await oneRamp.deposit(
       "0xc0EBB770F2c9CA7eD0dDeBa58Af101695Cf1BDc1",
-      66600000000
+      500
     );
     // If successful, log the transaction
     console.log(tx);

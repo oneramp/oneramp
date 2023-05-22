@@ -1,61 +1,53 @@
-# OneRamp
+# ONERAMP
 
-OneRamp is a utility package that helps facilitate token deposits in various blockchain networks. It provides a set of tools to interact with blockchain tokens in a more accessible and abstracted way, providing a simple interface to approve, deposit and keep track of transactions.
+## Oneramp - Crypto Off and On Ramp for Sub-Saharan Africa
 
-## Installation
+---
 
-To use OneRamp in your project, you will need to install it via npm:
+https://github.com/oneramp/oneramp/assets/60871378/df7dd224-3fb2-4c50-a423-32feca55b986
 
-```
-npm install oneramp
-```
+---
 
-## Usage
+Welcome to Oneramp, a revolutionary crypto off-ramp and on-ramp solution designed specifically for Sub-Saharan Africa. Built on the Binance Smart Chain (BSC) testnet, Oneramp empowers users to seamlessly convert BSC stablecoins into local fiat currencies, providing a bridge between the crypto world and traditional financial systems in the region.
 
-Import the OneRamp class from the package and create a new instance by providing the necessary parameters:
+Oneramp offers a user-friendly interface and a range of features to facilitate easy and secure transactions. The platform includes an inbuilt Uniswap swapping widget, allowing users to effortlessly swap their tokens for BSC stablecoins. These stablecoins can then be off-ramped on Oneramp, enabling users to receive local fiat money directly into their accounts.
 
-```javascript
-import OneRamp from 'oneramp';
+Oneramp Also offers an [api](https://www.npmjs.com/package/oneramp) and [dashboard](https://onerampdashboard.vercel.app) to allow custodial wallet businesses and custodail wallet developers an easy way to offramp and onramp their clients while monitoring the transaction activity on their dashboards
 
-const ramp = new OneRamp(
-  network, // Network type - "bscTestnet" | "bsc" | "celo" | "alfajores"
-  pubKey,  // Public key
-  secretKey, // Secret key
-  provider, // (Optional) ethers.provider
-  signer // (Optional) Signer
-);
-```
+## Market Opportunity Analysis
 
-You can then use the `deposit` method to deposit a specific amount of a token to a specific address:
+The growing adoption of cryptocurrency in Sub-Saharan Africa presents a significant market opportunity. As evidenced by the [Chainalysis report](https://blog.chainalysis.com/reports/sub-saharan-africa-cryptocurrency-geography-report-2022-preview/#:~:text=Sub%2Dsaharan%20Africa%20accounts%20for,growth%20over%20the%20year%20prior.), the region accounts for a substantial portion of micro crypto payment transactions, with 80% of such transactions occurring there. This data highlights the demand and potential for a crypto off-ramping solution in Sub-Saharan Africa.
 
-```javascript
-ramp.deposit(tokenAddress, amount)
-  .then(() => console.log('Deposit successful'))
-  .catch(err => console.error('Error during deposit:', err));
-```
+Additionally, considering that daily financial transactions in the region still heavily rely on traditional fiat currency for the exchange of goods and services, Oneramp's ability to bridge the gap between crypto and local fiat money is crucial. By providing a secure and efficient method for converting BSC stablecoins into local fiat currencies, Oneramp taps into the market need for seamless crypto transactions within the existing financial landscape.
 
-## API
+## Key Features
 
-### `constructor(network: Network, pubKey: string, secretKey: string, provider?: ethers.providers.Provider, signer?: Signer)`
+1. **Crypto Off-Ramp**: Oneramp enables users to convert BSC stablecoins into local fiat money, facilitating easy withdrawal and direct deposit into users' local bank accounts.
 
-Creates a new instance of OneRamp.
+2. **Crypto On-Ramp**: Users can convert local fiat currency into BSC stablecoins, providing a convenient way to enter the crypto space and access the benefits of digital assets.
 
-### `setSigner(signer: Signer)`
+3. **Inbuilt Uniswap Swapping Widget**: Oneramp includes a user-friendly swapping widget powered by Uniswap, allowing users to effortlessly swap their tokens for BSC stablecoins.
 
-Sets the signer for the OneRamp instance.
+4. **Security and Trust**: Oneramp prioritizes the security of user funds and data. The platform implements robust security measures and follows industry best practices to ensure a safe and trustworthy environment for transactions.
 
-### `setProvider(provider: ethers.providers.Provider)`
+## How It Works
 
-Sets the provider for the OneRamp instance.
+1. **Account Creation**: Users start by creating an account on Oneramp, providing the necessary information and completing the verification process. this is expecially important for businesss and developers who intend to use oneramp api for offramping their clientile
 
-### `deposit(tokenAddress: string, amount: number)`
+2. **Off-Ramp to Fiat**: users can directly connect their wallet addresses and initiate off-ramping transactions to convert them into local fiat currency. The funds will be directly deposited into the user's mobile number as this is the most convient means to transactions in sub-saharan africa.
 
-Deposits a specific amount of a token to a specific address. 
+3. **onramping**: Users can deposit fiat money for BSC stablecoins.
 
-## Contributing
+4. **Swap Tokens**: Oneramp's inbuilt Uniswap swapping widget allows users to swap their tokens for BSC stablecoins.
 
-We welcome contributions from the community. If you wish to contribute, please take a moment to review our contributing guidelines.
+5. **Off-Ramp to Fiat**: Once stablecoins are acquired, users can initiate off-ramping transactions to convert them into local fiat currency. The funds will be directly deposited into the user's mobile number as this is the most convient means to transactions in sub-saharan africa.
 
-## License
+## Next Steps
 
-OneRamp is [MIT licensed](./LICENSE).
+As an ambitious entrepreneur, our next steps for Oneramp include:
+
+1. **Mainnet Launch**: We are actively working towards launching Oneramp on the Binance Smart Chain mainnet, ensuring a seamless and secure experience for our users.
+
+2. **Expansion to More Countries**: We plan to expand our services to more countries within Sub-Saharan Africa, tapping into the growing demand for crypto off and on-ramping solutions in the region.
+
+3. **Partnerships with Local Financial institutions**: We inetend to partner with local financial institutions to be able to provide liguidity for offramping and onramping of the users
