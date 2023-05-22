@@ -42,11 +42,18 @@ export async function createTransactionAPI(req: Request, res: Response) {
     const transaction = new TransactionModel(newTransaction)
     const result = await transaction.save()
 
+    const dateObj = new Date()
+    const day = dateObj.getDate()
+    const month = dateObj
+      .toLocaleString("default", { month: "short" })
+      .slice(0, 3)
+
     // Create a deposit modal
     const deposit = new DepositsModel({
       store: req.body.store,
       amount: req.body.amount,
       asset: req.body.asset,
+      date: `${day}, ${month}`,
     })
 
     await deposit.save()

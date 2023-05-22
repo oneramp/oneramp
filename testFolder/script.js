@@ -1,5 +1,5 @@
 // Import necessary modules
-const { OneRamp } = require("oneramp")
+const OneRamp = require("oneramp").default
 const { ethers } = require("ethers")
 require("dotenv").config()
 
