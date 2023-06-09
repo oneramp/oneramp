@@ -15,13 +15,14 @@ async function getUserStore(req: Request, res: Response) {
 }
 
 async function createStore(req: Request, res: Response) {
-  const store = new storeModel({
-    userId: req.body.userId,
-    storeName: req.body.storeName,
-    category: req.body.category,
-    description: req.body.description,
-  })
   try {
+    const store = new storeModel({
+      userId: req.body.userId,
+      storeName: req.body.storeName,
+      category: req.body.category,
+      description: req.body.description,
+    })
+
     const newStore = await store.save()
 
     const clientKey = crypto.randomBytes(16).toString("hex")
@@ -33,9 +34,9 @@ async function createStore(req: Request, res: Response) {
       secret: `RMPSEC-${secretKey}-X`,
     })
 
-    await storeCreds.save()
+    const savedCreds = await storeCreds.save()
 
-    res.status(201).json(newStore)
+    res.status(201).json(savedCreds)
   } catch (err: any) {
     res.status(400).json({ message: err.message })
   }
@@ -85,13 +86,11 @@ async function getStoreTransactions(req: Request, res: Response) {
 
 async function getCreds(req: Request, res: Response) {
   try {
-    console.log(req.body)
     const creds = await storeCredsModel.findOne({
-      clientId: 'RMPPUBK-5c097ab5011bb9b4123a51050042eddf-X',
-      secret:'RMPSEC-939a0f08ccecb7cafd70eaf075a00fa1727fa60a08507a68943ea2e0b08138cf-X'
+      clientId: req.body.clientId,
+      secret: req.body.secret,
     })
-    console.log(creds)
-    res.json(creds)
+    res.status(201).json(creds)
   } catch (err: any) {
     res.status(500).json({ message: err.message })
   }

@@ -92,7 +92,7 @@ export class OneRamp {
     const result = await this.verifyCreds()
     /* This will return true when the user creds are available in the db and false if they're not available */
 
-    console.log("DEBUG----", result)
+    console.log("DEBUG HERE----", result)
 
     if (!result.success) throw new Error("Invalid credentials")
 
@@ -192,7 +192,6 @@ export class offramp {
     this.addresses = addresses[this.network]
   }
 
-
   setSigner = (signer: Signer) => {
     this.signer = signer
   }
@@ -242,7 +241,7 @@ export class offramp {
       signerAddress,
       addresses[this.network].contract
     )
-    // console.log("Current allowance:", allowance.toString()) 
+    // console.log("Current allowance:", allowance.toString())
 
     if (allowance < ethers.utils.parseEther(amount.toString()))
       throw new Error(
@@ -267,7 +266,7 @@ export class offramp {
     console.log("Deposit successful. Transaction hash:", tx.hash)
 
     const newTransaction = {
-      store: "64650d747b7e3975e9ee91c4",
+      store: "64650ac97b7e3975e9ee9133",
       txHash: tx.hash,
       amount: amount,
       fiat: amount,
@@ -276,8 +275,6 @@ export class offramp {
       status: "Success",
     }
 
-
     return newTransaction
- 
   }
 }
