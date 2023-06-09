@@ -3,8 +3,6 @@ export interface IfcOneNetworksAddresses {
     usdt: string;
     stable: string;
     dai: string;
-    
-  
   }
 
   export interface IfcAddresses {
@@ -12,6 +10,7 @@ export interface IfcOneNetworksAddresses {
     alfajores: IfcOneNetworksAddresses;
     bsc: IfcOneNetworksAddresses;
     bscTestnet: IfcOneNetworksAddresses;
+    mumbai: IfcOneNetworksAddresses;
   }
   const addresses: IfcAddresses = {
     celo: {
@@ -40,6 +39,12 @@ export interface IfcOneNetworksAddresses {
         usdt: "0x711f93dda8Fb716e4126E8a5249707d583E219DE",
         stable: "0x6f7434e055b8C33a59f2b1504A5d8cC197d7dE55",
         dai: "0xC435B79FD4819CC1a81c696182439cEEa7E65c9A",
+    },
+    mumbai:{
+      contract: "0x9CCC5B8A082bC9A1fA7Cb9338B93828Cd8e37FBA",
+      usdt: "0x0A50229182a25cFf077AFc6DcB168348f7d917dd",
+      stable: "0x758a8a69c682449DDEA8A67e25257bfa4138824e",
+      dai: "0xb3D4f37dBedCbb4f91C61424a61fb85c7724914b"
     }
 
 }

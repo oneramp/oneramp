@@ -32,6 +32,10 @@ module.exports = {
       accounts: [process.env.PRIVATE_KEY],
       chainId: 97,
     },
+    polygonMumbai: {
+      url: `https://neat-clean-pool.matic-testnet.discover.quiknode.pro/${process.env.QUICKNODE_API_KEY_MUMBAI}/`,
+      accounts: [process.env.PRIVATE_KEY],
+    },
   },
   etherscan: {
     apiKey: {
@@ -39,6 +43,7 @@ module.exports = {
       celo: process.env.CELOSCAN_API_KEY,
       bscTestnet: process.env.BSCSCAN_API_KEY,
       bsc: process.env.BSCSCAN_API_KEY,
+      polygonMumbai: process.env.POLYGONSCAN_API_KEY,
     },
     customChains: [
       {

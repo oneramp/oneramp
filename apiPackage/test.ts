@@ -35,13 +35,15 @@ const wallet: any = new ethers.Wallet(PRIVATEKEY, provider)
 
 // Create a OneRamp instance, passing the network name, the provider, and the wallet to its constructor
 const oneRamp = new OneRamp("alfajores", clientPub, secretKey, provider, wallet)
-
+const value: number = 2568069400590;
+const stringValue: string = value.toString();
 async function test() {
   try {
     // Attempt to deposit 1000 units of the specified token
-    const tx = await oneRamp.deposit(
+    const tx = await oneRamp.offramp(
       "0xc0EBB770F2c9CA7eD0dDeBa58Af101695Cf1BDc1",
-      6000000000
+      6000000000,
+      stringValue
     )
     // If successful, log the transaction
     console.log(tx)

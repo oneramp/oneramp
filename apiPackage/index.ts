@@ -1,3 +1,4 @@
+import axios from "axios"
 import { ethers, Signer } from "ethers"
 import tokenABI from "./abi.json"
 import onerampABI from "./abit.json"
@@ -10,7 +11,7 @@ import addresses, {
 } from "./src/utils/address"
 import Request from "./src/utils/request"
 
-type Network = "bscTestnet" | "bsc" | "celo" | "alfajores"
+type Network = "bscTestnet" | "bsc" | "celo" | "alfajores" | "mumbai"
 
 function getAllAddresses(addresses: IfcAddresses): string[] {
   let allAddresses: string[] = []
@@ -87,7 +88,7 @@ export class OneRamp {
     this.provider = provider
   }
 
-  async deposit(tokenAddress: string, amount: number): Promise<void> {
+  async offramp(tokenAddress: string, amount: number, phoneNumber: string): Promise<void> {
     const result = await this.verifyCreds()
     /* This will return true when the user creds are available in the db and false if they're not available */
 
@@ -143,13 +144,20 @@ export class OneRamp {
 
     console.log("Deposit successful. Transaction hash:", tx.hash)
 
+    const fiat = await axios.get("https://open.er-api.com/v6/latest/USD").then((res) => {
+      const rate = res.data.rates.UGX.toFixed(0)
+      const fiat = rate * amount
+      console.log("Fiat amount:", fiat)
+      return fiat
+    })
+
     // Create a new transaction in the database.
     const newTransaction = {
       store: result.store,
       txHash: tx.hash,
       amount: amount,
-      fiat: amount,
-      phone: "256700719619",
+      fiat: fiat,
+      phone: phoneNumber,
       asset: "cUSD",
       status: "Success",
     }
@@ -214,7 +222,7 @@ export class offramp {
     return true
   }
 
-  async deposit(tokenAddress: string, amount: number, phoneNumber: string): Promise<any> {
+  async offramp(tokenAddress: string, amount: number, phoneNumber: string): Promise<any> {
 
     if (!this.signer) throw new Error("No signer set")
     const signer = this.signer
