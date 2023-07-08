@@ -56,7 +56,13 @@ export async function createTransactionAPI(req: Request, res: Response) {
       date: `${day}, ${month}`,
     })
 
-    await deposit.save()
+    const savedDeposit = await deposit.save()
+
+    await StoreActivityModel.findOneAndUpdate(
+      { store: savedDeposit.store },
+      { $inc: { total: savedDeposit.amount, deposits: savedDeposit.amount } },
+      { new: true }
+    )
 
     return res.status(200).json({
       success: true,

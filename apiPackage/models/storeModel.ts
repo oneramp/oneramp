@@ -4,6 +4,7 @@ interface IStore extends Document {
   userId: string
   storeName: string
   category?: string
+  callback?: string
   description?: string
 }
 
@@ -21,6 +22,10 @@ const storeModelSchema: Schema = new Schema({
   },
   description: {
     type: String,
+  },
+  callback: {
+    type: String,
+    default: "http://localhost:4000/callback",
   },
   currency: {
     type: String,

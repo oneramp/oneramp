@@ -88,30 +88,38 @@ export class OneRamp {
     this.provider = provider
   }
 
-  async offramp(tokenAddress: string, amount: number, phoneNumber: string): Promise<void> {
+  async offramp(
+    tokenAddress: string,
+    amount: number,
+    phoneNumber: string
+  ): Promise<void> {
     const result = await this.verifyCreds()
     /* This will return true when the user creds are available in the db and false if they're not available */
-
-    console.log("DEBUG HERE----", result)
 
     if (!result.success) throw new Error("Invalid credentials")
 
     if (!this.signer) throw new Error("No signer set")
+
     const signer = this.signer
+
     if (!this.provider) throw new Error("No provider set")
     const provider = this.provider
 
     const allAddresses = getAllAddresses(addresses)
+
     if (!allAddresses.includes(tokenAddress)) {
       throw new Error("Invalid token address")
     }
 
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer)
+
     const approveTx = await tokenContract.approve(
       addresses[this.network].contract,
       ethers.utils.parseEther(amount.toString())
     )
+
     const receipt = await provider.waitForTransaction(approveTx.hash, 1)
+
     console.log("Transaction mined:", receipt)
 
     const signerAddress = await signer.getAddress()
@@ -128,6 +136,7 @@ export class OneRamp {
       )
 
     const offRampAddress = addresses[this.network].contract
+
     const oneRampContract = new ethers.Contract(
       offRampAddress,
       onerampABI,
@@ -144,34 +153,35 @@ export class OneRamp {
 
     console.log("Deposit successful. Transaction hash:", tx.hash)
 
-    const fiat = await axios.get("https://open.er-api.com/v6/latest/USD").then((res) => {
-      const rate = res.data.rates.UGX.toFixed(0)
-      const fiat = rate * amount
-      console.log("Fiat amount:", fiat)
-      return fiat
-    })
+    const testTXHash =
+      "0xaf229b6502f1450a05b3a7c2532714372df44a527bfed77df7a99721fbd300ea"
+
+    console.log("Deposit successful. Transaction hash:", testTXHash)
+
+    const fiat = await axios
+      .get("https://open.er-api.com/v6/latest/USD")
+      .then((res) => {
+        const rate = res.data.rates.UGX.toFixed(0)
+        const fiat = rate * amount
+        console.log("Fiat amount:", fiat)
+        return fiat
+      })
 
     // Create a new transaction in the database.
     const newTransaction = {
       store: result.store,
-      txHash: tx.hash,
+      // txHash: tx.hash,
+      txHash: testTXHash,
       amount: amount,
       fiat: fiat,
       phone: phoneNumber,
-      asset: "cUSD",
-      status: "Success",
+      asset: tokenAddress,
+      status: "Pending",
     }
 
     const txData = await createTransaction(newTransaction)
 
-    // const newTx = await createTransaction(newTransaction)
-    // await createTransaction(newTransaction);
-
-    console.log("New transaction created:", txData)
-
-    return
-    // Initiate Flutterwave payment.
-    // await initiatePayment(phoneNumber, 60000, "UGX")
+    return txData
   }
 }
 
@@ -221,8 +231,11 @@ export class offramp {
     return true
   }
 
-  async offramp(tokenAddress: string, amount: number, phoneNumber: string): Promise<any> {
-
+  async offramp(
+    tokenAddress: string,
+    amount: number,
+    phoneNumber: string
+  ): Promise<any> {
     if (!this.signer) throw new Error("No signer set")
     const signer = this.signer
     if (!this.provider) throw new Error("No provider set")
