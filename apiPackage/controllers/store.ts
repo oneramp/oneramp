@@ -10,6 +10,7 @@ import DepositsModel from "../models/DespositModel"
 import storeModel from "../models/storeModel"
 import UserModel from "../models/UserModel"
 import { encrypt } from "../encrypt/encrypt"
+import AppKycModel from "../models/AppKycModel"
 
 const ENCRYPTION_KEY: any = process.env.ENCRYPTION_KEY
 
@@ -151,6 +152,36 @@ async function getStore(req: any, res: Response) {
   }
 }
 
+async function addStoreKYCEmail(req: any, res: Response) {
+  try {
+    const { storeId, email } = req.body
+
+    const kyc = new AppKycModel({
+      storeId: storeId,
+      email: email,
+      requireKyc: true,
+    })
+
+    const saved = await kyc.save()
+
+    return res.status(200).json({ success: true, response: saved })
+  } catch (err: any) {
+    res.status(500).json({ message: err.message })
+  }
+}
+
+async function getStoreKYC(req: any, res: Response) {
+  try {
+    const { storeId } = req.params
+
+    const kyc = await AppKycModel.findOne({ storeId: storeId })
+
+    return res.status(200).json({ success: true, response: kyc })
+  } catch (err: any) {
+    res.status(500).json({ message: err.message })
+  }
+}
+
 async function getStoreCreds(req: Request, res: Response) {
   try {
     const creds = await storeCredsModel.findOne({ store: req.params.storeId })
@@ -237,6 +268,11 @@ async function getCreds(req: Request, res: Response) {
       clientId: req.body.clientId,
       secret: req.body.secret,
     })
+
+    console.log("====================================")
+    console.log(creds)
+    console.log("====================================")
+
     res.status(201).json(creds)
   } catch (err: any) {
     res.status(500).json({ message: err.message })
@@ -294,4 +330,6 @@ export {
   getTransactions,
   confirmTransaction,
   addStoreCallback,
+  addStoreKYCEmail,
+  getStoreKYC,
 }

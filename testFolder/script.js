@@ -26,10 +26,11 @@ async function test() {
     // Attempt to deposit 1000 units of the specified token
     const tx = await oneRamp.offramp(
       "0x0A50229182a25cFf077AFc6DcB168348f7d917dd",
-      25,
+      15,
       "256700719619"
     );
     // If successful, log the transaction
+
     console.log(tx);
   } catch (error) {
     // If an error occurs, log it
@@ -37,5 +38,19 @@ async function test() {
   }
 }
 
+async function getQuote() {
+  try {
+    const quote = await oneRamp.quote(
+      100,
+      "0x0A50229182a25cFf077AFc6DcB168348f7d917dd"
+    );
+
+    console.log(quote);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// getQuote();
 // Run the test function
 test();

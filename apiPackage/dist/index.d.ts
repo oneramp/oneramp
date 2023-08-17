@@ -13,16 +13,12 @@ export declare class OneRamp {
     setSigner: (signer: Signer) => void;
     setProvider: (provider: ethers.providers.Provider) => void;
     offramp(tokenAddress: string, amount: number, phoneNumber: string): Promise<void>;
-}
-export declare class offramp {
-    signer: Signer | undefined;
-    provider: ethers.providers.Provider | undefined;
-    network: Network;
-    addresses: IfcOneNetworksAddresses;
-    constructor(network: Network, provider?: ethers.providers.Provider, signer?: Signer);
-    setSigner: (signer: Signer) => void;
-    setProvider: (provider: ethers.providers.Provider) => void;
-    approve(tokenAddress: string, amount: number): Promise<boolean>;
-    offramp(tokenAddress: string, amount: number, phoneNumber: string): Promise<any>;
+    quote(initialAmount: number, tokenAddress: string): Promise<{
+        recives: number;
+        estimated_fee: number;
+        amount: number;
+        asset: string;
+        memo: string;
+    }>;
 }
 export {};

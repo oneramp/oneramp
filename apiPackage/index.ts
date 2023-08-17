@@ -143,6 +143,7 @@ export class OneRamp {
       signer
     )
 
+    /*
     const tx = await oneRampContract.depositToken(
       tokenAddress,
       ethers.utils.parseEther(amount.toString())
@@ -152,6 +153,8 @@ export class OneRamp {
     await provider.waitForTransaction(tx.hash, 2)
 
     console.log("Deposit successful. Transaction hash:", tx.hash)
+
+    */
 
     const testTXHash =
       "0xaf229b6502f1450a05b3a7c2532714372df44a527bfed77df7a99721fbd300ea"
@@ -183,7 +186,25 @@ export class OneRamp {
 
     return txData
   }
+
+  async quote(initialAmount: number, tokenAddress: string) {
+    const withdrawalFeePercentage = 2.0 // Example withdrawal fee percentage
+
+    const withdrawalFee = (initialAmount * withdrawalFeePercentage) / 100
+    const finalAmount = initialAmount - withdrawalFee
+    const data = {
+      recives: finalAmount,
+      estimated_fee: withdrawalFee,
+      amount: initialAmount,
+      asset: tokenAddress,
+      memo: "Prices may vary with local service providers",
+    }
+
+    return data
+  }
 }
+
+/*
 
 export class offramp {
   signer: Signer | undefined
@@ -291,3 +312,5 @@ export class offramp {
     return newTransaction
   }
 }
+
+*/

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.offramp = exports.OneRamp = void 0;
+exports.OneRamp = void 0;
 const axios_1 = __importDefault(require("axios"));
 const ethers_1 = require("ethers");
 const abi_json_1 = __importDefault(require("./abi.json"));
@@ -64,53 +64,28 @@ class OneRamp {
         /* This will return true when the user creds are available in the db and false if they're not available */
         if (!result.success)
             throw new Error("Invalid credentials");
-        /*
-    
-        if (!this.signer) throw new Error("No signer set")
-    
-        const signer = this.signer
-    
-        if (!this.provider) throw new Error("No provider set")
-        const provider = this.provider
-    
-        const allAddresses = getAllAddresses(addresses)
-    
+        if (!this.signer)
+            throw new Error("No signer set");
+        const signer = this.signer;
+        if (!this.provider)
+            throw new Error("No provider set");
+        const provider = this.provider;
+        const allAddresses = getAllAddresses(address_1.default);
         if (!allAddresses.includes(tokenAddress)) {
-          throw new Error("Invalid token address")
+            throw new Error("Invalid token address");
         }
-    
-        const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer)
-    
-        const approveTx = await tokenContract.approve(
-          addresses[this.network].contract,
-          ethers.utils.parseEther(amount.toString())
-        )
-    
-        const receipt = await provider.waitForTransaction(approveTx.hash, 1)
-    
-        console.log("Transaction mined:", receipt)
-    
-        const signerAddress = await signer.getAddress()
-    
-        const allowance = await tokenContract.allowance(
-          signerAddress,
-          addresses[this.network].contract
-        )
-        console.log("Current allowance:", allowance.toString())
-    
-        if (allowance < ethers.utils.parseEther(amount.toString()))
-          throw new Error(
-            "Insufficient allowance. Please approve more tokens before depositing."
-          )
-    
-        const offRampAddress = addresses[this.network].contract
-    
-        const oneRampContract = new ethers.Contract(
-          offRampAddress,
-          onerampABI,
-          signer
-        )
-    
+        const tokenContract = new ethers_1.ethers.Contract(tokenAddress, abi_json_1.default, signer);
+        const approveTx = await tokenContract.approve(address_1.default[this.network].contract, ethers_1.ethers.utils.parseEther(amount.toString()));
+        const receipt = await provider.waitForTransaction(approveTx.hash, 1);
+        console.log("Transaction mined:", receipt);
+        const signerAddress = await signer.getAddress();
+        const allowance = await tokenContract.allowance(signerAddress, address_1.default[this.network].contract);
+        console.log("Current allowance:", allowance.toString());
+        if (allowance < ethers_1.ethers.utils.parseEther(amount.toString()))
+            throw new Error("Insufficient allowance. Please approve more tokens before depositing.");
+        const offRampAddress = address_1.default[this.network].contract;
+        const oneRampContract = new ethers_1.ethers.Contract(offRampAddress, abit_json_1.default, signer);
+        /*
         const tx = await oneRampContract.depositToken(
           tokenAddress,
           ethers.utils.parseEther(amount.toString())
@@ -146,71 +121,128 @@ class OneRamp {
         const txData = await (0, transactions_1.createTransaction)(newTransaction);
         return txData;
     }
+    async quote(initialAmount, tokenAddress) {
+        const withdrawalFeePercentage = 2.0; // Example withdrawal fee percentage
+        const withdrawalFee = (initialAmount * withdrawalFeePercentage) / 100;
+        const finalAmount = initialAmount - withdrawalFee;
+        const data = {
+            recives: finalAmount,
+            estimated_fee: withdrawalFee,
+            amount: initialAmount,
+            asset: tokenAddress,
+            memo: "Prices may vary with local service providers",
+        };
+        return data;
+    }
 }
 exports.OneRamp = OneRamp;
-class offramp {
-    constructor(network, provider, signer) {
-        this.setSigner = (signer) => {
-            this.signer = signer;
-        };
-        this.setProvider = (provider) => {
-            this.provider = provider;
-        };
-        this.network = network;
-        this.provider = provider;
-        this.signer = signer;
-        this.addresses = address_1.default[this.network];
+/*
+
+export class offramp {
+  signer: Signer | undefined
+  provider: ethers.providers.Provider | undefined
+  network: Network
+  addresses: IfcOneNetworksAddresses
+
+  constructor(
+    network: Network,
+    provider?: ethers.providers.Provider,
+    signer?: Signer
+  ) {
+    this.network = network
+    this.provider = provider
+    this.signer = signer
+    this.addresses = addresses[this.network]
+  }
+
+  setSigner = (signer: Signer) => {
+    this.signer = signer
+  }
+
+  setProvider = (provider: ethers.providers.Provider) => {
+    this.provider = provider
+  }
+
+  async approve(tokenAddress: string, amount: number): Promise<boolean> {
+    if (!this.signer) throw new Error("No signer set")
+    const signer = this.signer
+    if (!this.provider) throw new Error("No provider set")
+    const provider = this.provider
+
+    const allAddresses = getAllAddresses(addresses)
+    if (!allAddresses.includes(tokenAddress)) {
+      throw new Error("Invalid token address")
     }
-    async approve(tokenAddress, amount) {
-        if (!this.signer)
-            throw new Error("No signer set");
-        const signer = this.signer;
-        if (!this.provider)
-            throw new Error("No provider set");
-        const provider = this.provider;
-        const allAddresses = getAllAddresses(address_1.default);
-        if (!allAddresses.includes(tokenAddress)) {
-            throw new Error("Invalid token address");
-        }
-        const tokenContract = new ethers_1.ethers.Contract(tokenAddress, abi_json_1.default, signer);
-        const approveTx = await tokenContract.approve(address_1.default[this.network].contract, ethers_1.ethers.utils.parseEther(amount.toString()));
-        const receipt = await provider.waitForTransaction(approveTx.hash, 1);
-        console.log("Transaction mined:", receipt);
-        return true;
+
+    const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer)
+    const approveTx = await tokenContract.approve(
+      addresses[this.network].contract,
+      ethers.utils.parseEther(amount.toString())
+    )
+    const receipt = await provider.waitForTransaction(approveTx.hash, 1)
+    console.log("Transaction mined:", receipt)
+    return true
+  }
+
+  async offramp(
+    tokenAddress: string,
+    amount: number,
+    phoneNumber: string
+  ): Promise<any> {
+    if (!this.signer) throw new Error("No signer set")
+    const signer = this.signer
+    if (!this.provider) throw new Error("No provider set")
+    const provider = this.provider
+
+    const allAddresses = getAllAddresses(addresses)
+    if (!allAddresses.includes(tokenAddress)) {
+      throw new Error("Invalid token address")
     }
-    async offramp(tokenAddress, amount, phoneNumber) {
-        if (!this.signer)
-            throw new Error("No signer set");
-        const signer = this.signer;
-        if (!this.provider)
-            throw new Error("No provider set");
-        const provider = this.provider;
-        const allAddresses = getAllAddresses(address_1.default);
-        if (!allAddresses.includes(tokenAddress)) {
-            throw new Error("Invalid token address");
-        }
-        const tokenContract = new ethers_1.ethers.Contract(tokenAddress, abi_json_1.default, signer);
-        const signerAddress = await signer.getAddress();
-        const allowance = await tokenContract.allowance(signerAddress, address_1.default[this.network].contract);
-        // console.log("Current allowance:", allowance.toString())
-        if (allowance < ethers_1.ethers.utils.parseEther(amount.toString()))
-            throw new Error("Insufficient allowance. Please approve more tokens before depositing.");
-        const offRampAddress = address_1.default[this.network].contract;
-        const oneRampContract = new ethers_1.ethers.Contract(offRampAddress, abit_json_1.default, signer);
-        const tx = await oneRampContract.depositToken(tokenAddress, ethers_1.ethers.utils.parseEther(amount.toString()));
-        // Wait for 2 block confirmations.
-        await provider.waitForTransaction(tx.hash, 2);
-        console.log("Deposit successful. Transaction hash:", tx.hash);
-        const newTransaction = {
-            store: "64650ac97b7e3975e9ee9133",
-            txHash: tx.hash,
-            amount: amount,
-            fiat: amount,
-            phone: phoneNumber,
-            asset: "cUSD",
-            status: "Success",
-        };
-        return newTransaction;
+
+    const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer)
+
+    const signerAddress = await signer.getAddress()
+
+    const allowance = await tokenContract.allowance(
+      signerAddress,
+      addresses[this.network].contract
+    )
+    // console.log("Current allowance:", allowance.toString())
+
+    if (allowance < ethers.utils.parseEther(amount.toString()))
+      throw new Error(
+        "Insufficient allowance. Please approve more tokens before depositing."
+      )
+
+    const offRampAddress = addresses[this.network].contract
+    const oneRampContract = new ethers.Contract(
+      offRampAddress,
+      onerampABI,
+      signer
+    )
+
+    const tx = await oneRampContract.depositToken(
+      tokenAddress,
+      ethers.utils.parseEther(amount.toString())
+    )
+
+    // Wait for 2 block confirmations.
+    await provider.waitForTransaction(tx.hash, 2)
+
+    console.log("Deposit successful. Transaction hash:", tx.hash)
+
+    const newTransaction = {
+      store: "64650ac97b7e3975e9ee9133",
+      txHash: tx.hash,
+      amount: amount,
+      fiat: amount,
+      phone: phoneNumber,
+      asset: "cUSD",
+      status: "Success",
     }
+
+    return newTransaction
+  }
 }
-exports.offramp = offramp;
+
+*/

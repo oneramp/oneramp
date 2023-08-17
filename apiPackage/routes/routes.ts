@@ -13,6 +13,8 @@ import {
   getTransactions,
   confirmTransaction,
   addStoreCallback,
+  addStoreKYCEmail,
+  getStoreKYC,
 } from "../controllers/store"
 import {
   createDeposit,
@@ -27,6 +29,7 @@ import {
 } from "../controllers/transactions"
 import { authenticateToken } from "../middlewareHandlers/authToken"
 import { createUser, login } from "../controllers/auth"
+import { githubAuth } from "../middlewareHandlers/githubAuth"
 
 const router = Router()
 
@@ -77,5 +80,9 @@ router.post("/withdraw/create", createWithdraw)
 router.get("/del/deposit/:storeId", removeDeposits)
 router.get("/del/withdraw/:storeId", removeWithdraws)
 router.get("/del/activity/:storeId", removeActivity)
+
+// APP KYC
+router.post("/kyc", addStoreKYCEmail)
+router.get("/kyc/:storeId", getStoreKYC)
 
 export default router

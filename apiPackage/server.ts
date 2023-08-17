@@ -10,6 +10,7 @@ import { errorHandler, notFound } from "./middlewareHandlers/errorHandler"
 // import offrampRoute from "./routes/offrampRoute"
 import routes from "./routes/routes"
 import connectDB from "./config/connectDB"
+import router from "./api/routes"
 
 dotenv.config({ path: path.join(__dirname, "/.env") })
 
@@ -29,6 +30,7 @@ app.get("/", (req: Request, res: Response) => {
 //implementation of routing
 
 app.use("/api", routes)
+app.use("/0x/api", router)
 
 app.use(errorHandler)
 app.use(notFound)
