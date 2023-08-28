@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const getStoreAuthCreds_1 = require("../../shared/getStoreAuthCreds");
+const backendCalls_1 = require("../../shared/backendCalls");
 const TransactionModel_1 = __importDefault(require("../../models/TransactionModel"));
 const constants_1 = __importDefault(require("./constants"));
 class Request {
@@ -12,10 +12,7 @@ class Request {
     }
     async db(data) {
         try {
-            // const result = await axios.post(`${this.apiUrl}/creds`, data)
-            // await connectDB()
-            // const result = await StoreCreds.findOne({ clientId: data.clientId, secret: data.secret })
-            const result = await (0, getStoreAuthCreds_1.getStoreAuthCreds)(data.clientId, data.secret);
+            const result = await (0, backendCalls_1.getStoreAuthCreds)(data.clientId, data.secret);
             if (result === null || result === void 0 ? void 0 : result.store) {
                 return {
                     status: 200,
@@ -40,6 +37,32 @@ class Request {
                 success: false,
                 message: "Failed to reach the server",
             };
+        }
+    }
+    async kycApproved(data) {
+        try {
+            const result = await this.db(data);
+            if (!result.success) {
+                return new Error("Store not found");
+            }
+            const requiresKYC = await (0, backendCalls_1.getStoreKYCStatus)(result.store, data);
+            if (!requiresKYC.success) {
+                return new Error("Store KYC status not found");
+            }
+            return requiresKYC.response;
+        }
+        catch (error) {
+            console.log(error);
+            return error;
+        }
+    }
+    async createKYC(data, credentials) {
+        try {
+            const result = await (0, backendCalls_1.createStoreUserKYC)(data, credentials);
+            return result;
+        }
+        catch (error) {
+            return error.message;
         }
     }
     async createTransaction(data) {

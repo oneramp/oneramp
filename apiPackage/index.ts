@@ -10,25 +10,28 @@ import addresses, {
   IfcAddresses,
 } from "./src/utils/address"
 import Request from "./src/utils/request"
+import { KYCFormI } from "./types"
+import { uuid } from "uuidv4"
 
 type Network = "bscTestnet" | "bsc" | "celo" | "alfajores" | "mumbai"
+type Token =
+  | "stable"
+  | "usdt"
+  | "dai"
+  | "0xc0EBB770F2c9CA7eD0dDeBa58Af101695Cf1BDc1"
 
-function getAllAddresses(addresses: IfcAddresses): string[] {
-  let allAddresses: string[] = []
-  for (const networkKey in addresses) {
-    const network = addresses[networkKey as keyof IfcAddresses]
-    allAddresses.push(network.usdt, network.stable, network.dai)
-  }
-  return allAddresses
+function getTokenAddress(tokenName: Token, network: Network) {
+  const tokenAddress = addresses[network][tokenName]
+  return tokenAddress
 }
 
 export class OneRamp {
-  signer: Signer | undefined
+  private signer: Signer | undefined
   provider: ethers.providers.Provider | undefined
   network: Network
-  pubKey: string
-  secretKey: string
-  addresses: IfcOneNetworksAddresses
+  private pubKey: string
+  private secretKey: string
+  private addresses: IfcOneNetworksAddresses
 
   constructor(
     network: Network,
@@ -80,21 +83,54 @@ export class OneRamp {
     return authenticated
   }
 
-  setSigner = (signer: Signer) => {
+  private async requiresUserKYCApproved(): Promise<any> {
+    const request = new Request()
+
+    const data = {
+      clientId: this.pubKey,
+      secret: this.secretKey,
+    }
+
+    const approved = await request.kycApproved(data)
+    return approved
+  }
+
+  private async createUserKYC(data: KYCFormI): Promise<KYCFormI | undefined> {
+    const request = new Request()
+
+    const credentials = {
+      client: this.pubKey,
+      secret: this.secretKey,
+    }
+
+    const created = await request.createKYC(data, credentials)
+
+    return created
+  }
+
+  private setSigner = (signer: Signer) => {
     this.signer = signer
   }
 
-  setProvider = (provider: ethers.providers.Provider) => {
+  private setProvider = (provider: ethers.providers.Provider) => {
     this.provider = provider
   }
 
   async offramp(
-    tokenAddress: string,
+    token: Token,
     amount: number,
     phoneNumber: string
   ): Promise<void> {
     const result = await this.verifyCreds()
     /* This will return true when the user creds are available in the db and false if they're not available */
+
+    // Verify if the user app requires KYC approved for the user here...
+    const requiresKYC = await this.requiresUserKYCApproved()
+
+    if (requiresKYC)
+      throw new Error(
+        "User has not completed/approved their KYC " + requiresKYC
+      )
 
     if (!result.success) throw new Error("Invalid credentials")
 
@@ -105,12 +141,13 @@ export class OneRamp {
     if (!this.provider) throw new Error("No provider set")
     const provider = this.provider
 
-    const allAddresses = getAllAddresses(addresses)
+    const tokenAddress = getTokenAddress(token, this.network)
 
-    if (!allAddresses.includes(tokenAddress)) {
-      throw new Error("Invalid token address")
+    if (!tokenAddress) {
+      throw new Error("Services for this token not supported")
     }
 
+    /*
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer)
 
     const approveTx = await tokenContract.approve(
@@ -120,7 +157,7 @@ export class OneRamp {
 
     const receipt = await provider.waitForTransaction(approveTx.hash, 1)
 
-    console.log("Transaction mined:", receipt)
+    // console.log("Transaction mined:", receipt)
 
     const signerAddress = await signer.getAddress()
 
@@ -128,7 +165,7 @@ export class OneRamp {
       signerAddress,
       addresses[this.network].contract
     )
-    console.log("Current allowance:", allowance.toString())
+    // console.log("Current allowance:", allowance.toString())
 
     if (allowance < ethers.utils.parseEther(amount.toString()))
       throw new Error(
@@ -143,7 +180,6 @@ export class OneRamp {
       signer
     )
 
-    /*
     const tx = await oneRampContract.depositToken(
       tokenAddress,
       ethers.utils.parseEther(amount.toString())
@@ -152,21 +188,19 @@ export class OneRamp {
     // Wait for 2 block confirmations.
     await provider.waitForTransaction(tx.hash, 2)
 
-    console.log("Deposit successful. Transaction hash:", tx.hash)
+    // console.log("Deposit successful. Transaction hash:", tx.hash)
+  */
 
-    */
+    const testTXHash = uuid()
 
-    const testTXHash =
-      "0xaf229b6502f1450a05b3a7c2532714372df44a527bfed77df7a99721fbd300ea"
-
-    console.log("Deposit successful. Transaction hash:", testTXHash)
+    // console.log("Deposit successful. Transaction hash:", testTXHash)
 
     const fiat = await axios
       .get("https://open.er-api.com/v6/latest/USD")
       .then((res) => {
         const rate = res.data.rates.UGX.toFixed(0)
         const fiat = rate * amount
-        console.log("Fiat amount:", fiat)
+        // console.log("Fiat amount:", fiat)
         return fiat
       })
 
@@ -177,8 +211,9 @@ export class OneRamp {
       txHash: testTXHash,
       amount: amount,
       fiat: fiat,
+      network: this.network,
       phone: phoneNumber,
-      asset: tokenAddress,
+      asset: token,
       status: "Pending",
     }
 
@@ -187,7 +222,7 @@ export class OneRamp {
     return txData
   }
 
-  async quote(initialAmount: number, tokenAddress: string) {
+  async quote(initialAmount: number, token: Token) {
     const withdrawalFeePercentage = 2.0 // Example withdrawal fee percentage
 
     const withdrawalFee = (initialAmount * withdrawalFeePercentage) / 100
@@ -196,12 +231,41 @@ export class OneRamp {
       recives: finalAmount,
       estimated_fee: withdrawalFee,
       amount: initialAmount,
-      asset: tokenAddress,
+      asset: token,
       memo: "Prices may vary with local service providers",
     }
 
     return data
   }
+
+  /* 
+    This document will allow app create KYC links for their user for verifications
+    This can only be used under the condition that the user has enabled Require KYC verification for their app
+  */
+  async createKYCVerification(kycData: KYCFormI) {
+    const result = await this.verifyCreds()
+    /* This will return true when the user creds are available in the db and false if they're not available */
+
+    // Verify if the user app requires KYC approved for the user here...
+    const requiresKYC = await this.requiresUserKYCApproved()
+
+    if (!requiresKYC)
+      throw new Error(
+        "App doesnot require users to complete/approve their KYC to make transactions "
+      )
+
+    if (!result.success) throw new Error("Invalid credentials")
+
+    // Creates the User's KYC request form here basing on the their payout address
+    const createdKYCRequest = await this.createUserKYC(kycData)
+
+    return createdKYCRequest
+  }
+
+  /*
+    This method returns all the store's active transactions
+  */
+  async getTransactions() {}
 }
 
 /*

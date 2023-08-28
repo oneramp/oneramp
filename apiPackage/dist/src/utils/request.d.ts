@@ -1,7 +1,8 @@
+import { CredentialsI, KYCFormI, UserCreds } from "../../types";
 declare class Request {
     apiUrl: string;
     constructor();
-    db(data: any): Promise<{
+    db(data: UserCreds): Promise<{
         status: number;
         success: boolean;
         message: string;
@@ -12,6 +13,8 @@ declare class Request {
         message: string;
         store?: undefined;
     }>;
+    kycApproved(data: UserCreds): Promise<unknown>;
+    createKYC(data: KYCFormI, credentials: CredentialsI): Promise<any>;
     createTransaction(data: any): Promise<{
         status: number;
         success: boolean;

@@ -1,4 +1,9 @@
-import { getStoreAuthCreds } from "../../shared/getStoreAuthCreds"
+import {
+  createStoreUserKYC,
+  getStoreAuthCreds,
+  getStoreKYCStatus,
+} from "../../shared/backendCalls"
+import { CredentialsI, KYCFormI, UserCreds } from "../../types"
 import connectDB from "../../config/connectDB"
 import StoreCreds from "../../models/storeCredsModel"
 import TransactionModel from "../../models/TransactionModel"
@@ -11,13 +16,8 @@ class Request {
     this.apiUrl = apiUrl
   }
 
-  async db(data: any) {
+  async db(data: UserCreds) {
     try {
-      // const result = await axios.post(`${this.apiUrl}/creds`, data)
-      // await connectDB()
-
-      // const result = await StoreCreds.findOne({ clientId: data.clientId, secret: data.secret })
-
       const result = await getStoreAuthCreds(data.clientId, data.secret)
 
       if (result?.store) {
@@ -42,6 +42,37 @@ class Request {
         success: false,
         message: "Failed to reach the server",
       }
+    }
+  }
+
+  async kycApproved(data: UserCreds) {
+    try {
+      const result = await this.db(data)
+
+      if (!result.success) {
+        return new Error("Store not found")
+      }
+
+      const requiresKYC = await getStoreKYCStatus(result.store, data)
+
+      if (!requiresKYC.success) {
+        return new Error("Store KYC status not found")
+      }
+
+      return requiresKYC.response
+    } catch (error) {
+      console.log(error)
+
+      return error
+    }
+  }
+
+  async createKYC(data: KYCFormI, credentials: CredentialsI) {
+    try {
+      const result = await createStoreUserKYC(data, credentials)
+      return result
+    } catch (error: any) {
+      return error.message
     }
   }
 

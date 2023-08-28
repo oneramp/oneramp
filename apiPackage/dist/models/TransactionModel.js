@@ -49,6 +49,9 @@ const TransactionSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    network: {
+        type: String,
+    },
     status: {
         type: String,
         required: true,

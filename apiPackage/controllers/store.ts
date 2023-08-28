@@ -1,4 +1,5 @@
 import storeCredsModel from "../models/storeCredsModel"
+import UserKYCModel from "../models/UserKYCModel"
 // import oauth2provider from "oauth2provider"
 import crypto from "crypto"
 import axios from "axios"
@@ -9,10 +10,9 @@ import jwt from "jsonwebtoken"
 import DepositsModel from "../models/DespositModel"
 import storeModel from "../models/storeModel"
 import UserModel from "../models/UserModel"
-import { encrypt } from "../encrypt/encrypt"
-import AppKycModel from "../models/AppKycModel"
-
-const ENCRYPTION_KEY: any = process.env.ENCRYPTION_KEY
+import AppKycModel from "../models/AppKYCModel"
+import { decrypt, encrypt } from "../middlewareHandlers/encryption"
+import { authenticateStoreSecrets } from "../middlewareHandlers/authToken"
 
 async function getUserEmailStore(req: any, res: Response) {
   try {
@@ -44,13 +44,29 @@ async function getActiveStore(req: any, res: Response) {
   }
 }
 
+async function getStorEnv(req: any, res: Response) {
+  try {
+    const { user } = req.user
+
+    const store = await storeModel.findOne({
+      userId: user._id,
+    })
+
+    const storeActivity = await StoreActivityModel.findOne({
+      store: store?._id,
+    })
+
+    res.status(200).json({ success: true, response: storeActivity?.enviroment })
+  } catch (err: any) {
+    res.status(500).json({ message: err.message })
+  }
+}
+
 async function getUserStore(req: any, res: Response) {
   try {
-    // const { user } = req.user
+    const { user } = req.user
 
-    const { userId } = req.params
-
-    const stores = await storeModel.find({ userId: userId })
+    const stores = await storeModel.find({ userId: user.id })
 
     res.json(stores)
   } catch (err: any) {
@@ -113,10 +129,14 @@ async function createStore(req: any, res: Response) {
     const clientKey = crypto.randomBytes(16).toString("hex")
     const secretKey = crypto.randomBytes(32).toString("hex")
 
+    const secret = `RMPSEC-${secretKey}-X`
+
+    const encrypted = await encrypt(secret)
+
     const storeCreds = new storeCredsModel({
       store: newStore._id,
       clientId: `RMPPUBK-${clientKey}-X`,
-      secret: `RMPSEC-${secretKey}-X`,
+      secret: encrypted,
     })
 
     const savedCreds = await storeCreds.save()
@@ -182,13 +202,155 @@ async function getStoreKYC(req: any, res: Response) {
   }
 }
 
-async function getStoreCreds(req: Request, res: Response) {
+async function createStoreUserKYC(req: any, res: Response) {
+  try {
+    const {
+      address,
+      firstName,
+      lastName,
+      nationality,
+      birthDate,
+      email,
+      age,
+      citizenShip,
+      nationalId,
+      fullName,
+    } = req.body
+
+    const { store } = req.store
+
+    // Check if there is a pending KYC request for the same store
+    const existingKYC = await UserKYCModel.findOne({
+      store,
+      email,
+      address,
+    })
+
+    if (existingKYC) {
+      return res.status(400).json({
+        success: false,
+        message: "Duplicate KYC application detected",
+      })
+    }
+
+    const existingPendingKYC = await UserKYCModel.findOne({
+      store,
+      email,
+      address,
+      approvedStatus: "PENDING",
+    })
+
+    if (existingPendingKYC) {
+      return res.status(400).json({
+        success: false,
+        message: "There is a pending KYC request for this store.",
+      })
+    }
+
+    // Create the request KYC approval
+    const userKycReq = new UserKYCModel({
+      store,
+      address,
+      firstName,
+      lastName,
+      nationality,
+      birthDate,
+      email,
+      age,
+      citizenShip,
+      nationalId,
+      fullName,
+    })
+
+    const saved = await userKycReq.save()
+
+    // Send the kyc request email to the store/app admin here....
+    const created = {
+      store: saved.store,
+      firstName: saved.firstName,
+      lastName: saved.lastName,
+      nationality: saved.nationality,
+      birthDate: saved.birthDate,
+      email: saved.email,
+      citizenShip: saved.citizenShip,
+      nationalId: saved.nationalId,
+      fullName: saved.fullName,
+      address: saved.address,
+      approvedStatus: saved.approvedStatus,
+    }
+
+    return res.status(200).json({ success: true, response: created })
+  } catch (err: any) {
+    res.status(500).json({ message: err.message })
+  }
+}
+
+async function getStoreKYCUsers(req: any, res: Response) {
+  try {
+    const { store } = req.params
+
+    const storeUserKYCs = await UserKYCModel.find({
+      store,
+      approvedStatus: "PENDING",
+    })
+
+    return res.status(200).json({ success: true, response: storeUserKYCs })
+  } catch (error: any) {
+    res.status(500).json({ success: false, response: error.message })
+  }
+}
+
+async function rejectUserKYC(req: any, res: Response) {
+  try {
+    const { userId } = req.body
+
+    const updatedKYC = await UserKYCModel.findByIdAndUpdate(
+      userId,
+      { approvedStatus: "REJECTED" },
+      { new: true }
+    )
+
+    if (!updatedKYC) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User KYC record not found" })
+    }
+
+    return res.status(200).json({ success: true, response: updatedKYC })
+  } catch (error: any) {
+    res.status(500).json({ success: false, response: error.message })
+  }
+}
+
+async function getUserStoreKYCDetail(req: any, res: Response) {
+  try {
+    const { user } = req.params
+
+    const storeUserKYCs = await UserKYCModel.findById(user)
+
+    return res.status(200).json({ success: true, response: storeUserKYCs })
+  } catch (error: any) {
+    res.status(500).json({ success: false, response: error.message })
+  }
+}
+
+async function getStoreCreds(req: any, res: Response) {
   try {
     const creds = await storeCredsModel.findOne({ store: req.params.storeId })
+
+    if (!creds)
+      return res
+        .status(404)
+        .json({ success: false, response: "Could not find app creds" })
+
+    // const decryptedSecret = await decrypt(creds?.secret)
+
     // const creds = await storeCredsModel.findOne({
     //   clientId: req.params.clientId,
     //   secret: req.params.secret,
     // })
+    // creds.secret = decryptedSecret
+
     res.json(creds)
   } catch (err: any) {
     res.status(500).json({ message: err.message })
@@ -197,10 +359,10 @@ async function getStoreCreds(req: Request, res: Response) {
 
 async function confirmTransaction(req: any, res: Response) {
   try {
-    const { txId } = req.body
+    const { tx } = req.body
 
     const updatedTransaction = await TransactionModel.findOneAndUpdate(
-      { _id: txId },
+      { _id: tx._id },
       { $set: { status: "Done" } },
       { new: true }
     )
@@ -212,16 +374,16 @@ async function confirmTransaction(req: any, res: Response) {
     // Get the callback (if you need to perform additional actions)
     const store = await storeModel.findById(updatedTransaction.store)
 
-    const eventData = {
-      status: "Successful",
-      data: updatedTransaction,
-    }
+    // const eventData = {
+    //   status: "Successful",
+    //   data: updatedTransaction,
+    // }
 
     const callbackURL: string =
       store?.callback || "http//localhost:4000/callback"
 
     axios
-      .post(callbackURL, eventData)
+      .post(callbackURL, updatedTransaction)
       .then((res) => res.data)
       .catch((err) => err.message)
 
@@ -234,7 +396,10 @@ async function confirmTransaction(req: any, res: Response) {
 
 async function getTransactions(req: any, res: Response) {
   try {
-    const transactions = await TransactionModel.find().sort({ createdAt: -1 })
+    const transactions = await TransactionModel.find().sort({
+      status: -1,
+      createdAt: -1,
+    })
 
     return res.status(200).json(transactions)
   } catch (err: any) {
@@ -262,16 +427,30 @@ async function getStoreTransactions(req: any, res: Response) {
   }
 }
 
-async function getCreds(req: Request, res: Response) {
+async function getCreds(req: any, res: Response) {
+  try {
+    const { store } = req.store
+
+    if (!store) {
+      return res
+        .status(401)
+        .json({ success: false, response: "Invalid credentials" })
+    }
+
+    const creds = await storeCredsModel.findOne({ store })
+
+    res.status(200).json(creds)
+  } catch (err: any) {
+    res.status(500).json({ message: err.message })
+  }
+}
+
+async function getRawStoreCreds(req: Request, res: Response) {
   try {
     const creds = await storeCredsModel.findOne({
       clientId: req.body.clientId,
       secret: req.body.secret,
     })
-
-    console.log("====================================")
-    console.log(creds)
-    console.log("====================================")
 
     res.status(201).json(creds)
   } catch (err: any) {
@@ -300,7 +479,7 @@ async function removeStore(req: Request, res: Response) {
 
 async function addStoreCallback(req: any, res: Response) {
   try {
-    // const { user } = req.user
+    const { user } = req.user
 
     const { storeId, callbackUrl } = req.body
 
@@ -332,4 +511,10 @@ export {
   addStoreCallback,
   addStoreKYCEmail,
   getStoreKYC,
+  createStoreUserKYC,
+  getStoreKYCUsers,
+  getRawStoreCreds,
+  getUserStoreKYCDetail,
+  rejectUserKYC,
+  getStorEnv,
 }
