@@ -75,9 +75,11 @@ class OneRamp {
         const result = await this.verifyCreds();
         /* This will return true when the user creds are available in the db and false if they're not available */
         // Verify if the user app requires KYC approved for the user here...
-        const requiresKYC = await this.requiresUserKYCApproved();
-        if (requiresKYC)
-            throw new Error("User has not completed/approved their KYC " + requiresKYC);
+        // const requiresKYC = await this.requiresUserKYCApproved()
+        // if (requiresKYC)
+        //   throw new Error(
+        //     "User has not completed/approved their KYC " + requiresKYC
+        //   )
         if (!result.success)
             throw new Error("Invalid credentials");
         if (!this.signer)
