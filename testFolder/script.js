@@ -20,9 +20,9 @@ const provider = new ethers.providers.JsonRpcProvider(
 // Create a wallet using the private key and the provider
 const wallet = new ethers.Wallet(testPrivateKey, provider);
 
-const clientPub = "RMPPUBK-0c6beec5ab5f79b4972b2f79ba85720a-X";
+const clientPub = "RMPPUBK-5e36e5afd356f263751e1e63e0db1062-X";
 const secretKey =
-  "RMPSEC-bccbc82f30c24a8c6abb4b714c1352e1bc05c8dbf4cf59cb63af170b990e870d-X";
+  "RMPSEC-a179417380e6ed13f6112979bba7bab6fe709c166171567524872528b7e876ab-X";
 
 // Create a OneRamp instance, passing the network name, the provider, and the wallet to its constructor
 const oneRamp = new OneRamp(
@@ -36,7 +36,7 @@ const oneRamp = new OneRamp(
 async function test() {
   try {
     // Attempt to deposit 1000 units of the specified token
-    const tx = await oneRamp.offramp("stable", 25, "0779280949");
+    const tx = await oneRamp.offramp("stable", 45, "245779280949");
     // If successful, log the transaction
 
     console.log(tx);
