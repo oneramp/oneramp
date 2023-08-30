@@ -1,44 +1,44 @@
-import React from "react"
-import styled from "styled-components"
-import { Link } from "react-scroll"
+import React from "react";
+import styled from "styled-components";
+import { Link } from "react-scroll";
 // Assets
-import CloseIcon from "../../assets/svg/CloseIcon"
-import LogoIcon from "../../assets/svg/logo-light.svg"
-import { Box } from "@mui/system"
-import { navLinks } from "../../data/NavLinks"
-import { useLocation, useNavigate } from "react-router-dom"
+import CloseIcon from "../../assets/svg/CloseIcon";
+import LogoIcon from "../../assets/svg/logo-light.svg";
+import { Box } from "@mui/system";
+import { navLinks } from "../../data/NavLinks";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Sidebar({ sidebarOpen, toggleSidebar }) {
-  const navigate = useNavigate()
-  const location = useLocation()
+  const navigate = useNavigate();
+  const location = useLocation();
   function handleClick() {
     if (location.pathname !== "/ramp") {
-      navigate("/ramp")
+      navigate("/ramp");
     }
   }
   return (
-    <Wrapper className='animate darkBg' sidebarOpen={sidebarOpen}>
-      <SidebarHeader className='flexSpaceCenter'>
-        <div className='flexNullCenter'>
-          <Box component='img' src={LogoIcon} sx={{ height: 45, m: 1 }} />
+    <Wrapper className="animate darkBg" sidebarOpen={sidebarOpen}>
+      <SidebarHeader className="flexSpaceCenter">
+        <div className="flexNullCenter">
+          <Box component="img" src={LogoIcon} sx={{ height: 45, m: 1 }} />
         </div>
         <CloseBtn
           onClick={() => toggleSidebar(!sidebarOpen)}
-          className='animate pointer'
+          className="animate pointer"
         >
           <CloseIcon />
         </CloseBtn>
       </SidebarHeader>
 
-      <UlStyle className='flexNullCenter flexColumn'>
+      <UlStyle className="flexNullCenter flexColumn">
         {navLinks.map((val, i) => {
-          const { label, offset } = val
+          const { label, offset } = val;
           return (
-            <li className='semiBold font15 pointer' key={i}>
+            <li className="semiBold font15 pointer" key={i}>
               <Link
                 onClick={() => toggleSidebar(!sidebarOpen)}
-                activeClass='active'
-                className='whiteColor'
+                activeClass="active"
+                className="whiteColor"
                 style={{ padding: "10px 15px" }}
                 to={label.toLowerCase()}
                 spy={true}
@@ -48,24 +48,24 @@ export default function Sidebar({ sidebarOpen, toggleSidebar }) {
                 {label}
               </Link>
             </li>
-          )
+          );
         })}
       </UlStyle>
-      <UlStyle className='flexSpaceCenter'>
-        <li className='semiBold font15 pointer'>
+      <UlStyle className="flexSpaceCenter">
+        <li className="semiBold font15 pointer">
           <a
-            target='_blank'
-            className='whiteColor'
-            rel='noopener noreferrer'
-            href='https://oneramp.gitbook.io/oneramp-docs/'
+            target="_blank"
+            className="whiteColor"
+            rel="noopener noreferrer"
+            href="https://dashboard.oneramp.io"
             style={{ padding: "10px 30px 10px 0" }}
           >
             API Docs
           </a>
         </li>
-        <li className='semiBold font15 pointer flexCenter'>
+        <li className="semiBold font15 pointer flexCenter">
           <li
-            className='radius8 lightBg2 '
+            className="radius8 lightBg2 "
             style={{
               padding: "10px 15px",
               color: "#fff",
@@ -78,7 +78,7 @@ export default function Sidebar({ sidebarOpen, toggleSidebar }) {
         </li>
       </UlStyle>
     </Wrapper>
-  )
+  );
 }
 
 const Wrapper = styled.nav`
@@ -92,19 +92,19 @@ const Wrapper = styled.nav`
   @media (max-width: 400px) {
     width: 100%;
   }
-`
+`;
 const SidebarHeader = styled.div`
   padding: 20px 0;
-`
+`;
 const CloseBtn = styled.button`
   border: 0px;
   outline: none;
   background-color: transparent;
   padding: 10px;
-`
+`;
 const UlStyle = styled.ul`
   padding: 40px;
   li {
     margin: 20px 0;
   }
-`
+`;
