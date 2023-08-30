@@ -102,24 +102,17 @@ export default function TopNavbar() {
               className="semiBold font15 pointer flexCenter"
               style={{ marginLeft: "10px" }}
             >
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://app.oneramp.io"
-                style={{ padding: "10px 30px 10px 0" }}
+              <li
+                className="radius8 lightBg2"
+                style={{
+                  padding: "10px 15px",
+                  color: "#fff",
+                  backgroundColor: "#000",
+                }}
+                onClick={handleClick}
               >
-                <li
-                  className="radius8 lightBg2"
-                  style={{
-                    padding: "10px 15px",
-                    color: "#fff",
-                    backgroundColor: "#000",
-                  }}
-                  onClick={handleClick}
-                >
-                  Launch App
-                </li>
-              </a>
+                Launch App
+              </li>
             </li>
           </UlWrapperRight>
         </NavInner>
