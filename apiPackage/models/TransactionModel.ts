@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema, Model } from "mongoose"
+import { TransactionI } from "../types"
 
 const TransactionSchema: Schema = new Schema({
   store: {
@@ -25,6 +26,9 @@ const TransactionSchema: Schema = new Schema({
     type: String,
     required: true,
   },
+  network: {
+    type: String,
+  },
   status: {
     type: String,
     required: true,
@@ -35,6 +39,9 @@ const TransactionSchema: Schema = new Schema({
   },
 })
 
-const TransactionModel: any = mongoose.model(`Transaction`, TransactionSchema)
+const TransactionModel: any = mongoose.model<TransactionI>(
+  `Transaction`,
+  TransactionSchema
+)
 
 export default TransactionModel

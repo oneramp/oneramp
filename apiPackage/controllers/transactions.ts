@@ -7,6 +7,8 @@ import TransactionModel from "../models/TransactionModel"
 import DepositsModel from "../models/DespositModel"
 import WithdrawModel from "../models/WithdrawModel"
 import StoreActivityModel from "../models/StoreActivityModel"
+import { EnviromentE } from "../types"
+import { callback } from "../external/calls"
 
 export async function getAllActivity(req: Request, res: Response) {
   try {
@@ -34,6 +36,7 @@ export async function createTransactionAPI(req: Request, res: Response) {
       txHash: req.body.txHash,
       amount: req.body.amount,
       fiat: req.body.fiat,
+      network: req.body.network,
       phone: req.body.phone,
       asset: req.body.asset,
       status: req.body.status,
@@ -56,7 +59,23 @@ export async function createTransactionAPI(req: Request, res: Response) {
       date: `${day}, ${month}`,
     })
 
-    await deposit.save()
+    const savedDeposit = await deposit.save()
+
+    const activity = await StoreActivityModel.findOneAndUpdate(
+      { store: savedDeposit.store },
+      { $inc: { total: savedDeposit.amount, deposits: savedDeposit.amount } },
+      { new: true }
+    )
+
+    // Finds the store's dev enviroment to see if it's in DevMode and automatically calls the callback
+    const enviroment: any = activity?.enviroment
+
+    if (enviroment === "DEV") {
+      setTimeout(function () {
+        // auto call store's callback here
+        callback(result._id)
+      }, 30000) // 30000 milliseconds = 30 seconds
+    }
 
     return res.status(200).json({
       success: true,

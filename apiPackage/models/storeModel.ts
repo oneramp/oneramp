@@ -1,10 +1,17 @@
 import mongoose, { Document, Schema } from "mongoose"
 
+enum EnviromentE {
+  "DEV",
+  "LIVE",
+}
+
 interface IStore extends Document {
   userId: string
   storeName: string
   category?: string
+  callback?: string
   description?: string
+  enviroment: EnviromentE
 }
 
 const storeModelSchema: Schema = new Schema({
@@ -22,9 +29,17 @@ const storeModelSchema: Schema = new Schema({
   description: {
     type: String,
   },
+  callback: {
+    type: String,
+    default: "http://localhost:4000/callback",
+  },
   currency: {
     type: String,
     default: "USD",
+  },
+  enviroment: {
+    type: String,
+    default: "DEV",
   },
 })
 
