@@ -5,6 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OneRamp = void 0;
 const axios_1 = __importDefault(require("axios"));
+const ethers_1 = require("ethers");
+const abi_json_1 = __importDefault(require("./abi.json"));
+const abit_json_1 = __importDefault(require("./abit.json"));
 const transactions_1 = require("./shared/transactions");
 const address_1 = __importDefault(require("./src/utils/address"));
 const request_1 = __importDefault(require("./src/utils/request"));
@@ -92,49 +95,19 @@ class OneRamp {
         if (!tokenAddress) {
             throw new Error("Services for this token not supported");
         }
-        /*
-        const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer)
-    
-        const approveTx = await tokenContract.approve(
-          addresses[this.network].contract,
-          ethers.utils.parseEther(amount.toString())
-        )
-    
-        const receipt = await provider.waitForTransaction(approveTx.hash, 1)
-    
-        // console.log("Transaction mined:", receipt)
-    
-        const signerAddress = await signer.getAddress()
-    
-        const allowance = await tokenContract.allowance(
-          signerAddress,
-          addresses[this.network].contract
-        )
-        // console.log("Current allowance:", allowance.toString())
-    
-        if (allowance < ethers.utils.parseEther(amount.toString()))
-          throw new Error(
-            "Insufficient allowance. Please approve more tokens before depositing."
-          )
-    
-        const offRampAddress = addresses[this.network].contract
-    
-        const oneRampContract = new ethers.Contract(
-          offRampAddress,
-          onerampABI,
-          signer
-        )
-    
-        const tx = await oneRampContract.depositToken(
-          tokenAddress,
-          ethers.utils.parseEther(amount.toString())
-        )
-    
+        const tokenContract = new ethers_1.ethers.Contract(tokenAddress, abi_json_1.default, signer);
+        const approveTx = await tokenContract.approve(address_1.default[this.network].contract, ethers_1.ethers.utils.parseEther(amount.toString()));
+        await provider.waitForTransaction(approveTx.hash, 1);
+        const signerAddress = await signer.getAddress();
+        const allowance = await tokenContract.allowance(signerAddress, address_1.default[this.network].contract);
+        if (allowance < ethers_1.ethers.utils.parseEther(amount.toString()))
+            throw new Error("Insufficient allowance. Please approve more tokens before depositing.");
+        const offRampAddress = address_1.default[this.network].contract;
+        const oneRampContract = new ethers_1.ethers.Contract(offRampAddress, abit_json_1.default, signer);
+        const tx = await oneRampContract.depositToken(tokenAddress, ethers_1.ethers.utils.parseEther(amount.toString()));
         // Wait for 2 block confirmations.
-        await provider.waitForTransaction(tx.hash, 2)
-    
+        await provider.waitForTransaction(tx.hash, 2);
         // console.log("Deposit successful. Transaction hash:", tx.hash)
-      */
         const testTXHash = (0, uuidv4_1.uuid)();
         // console.log("Deposit successful. Transaction hash:", testTXHash)
         const fiat = await axios_1.default

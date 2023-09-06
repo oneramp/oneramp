@@ -1,14 +1,11 @@
-import storeCredsModel from "../models/storeCredsModel"
-import storeModel from "../models/storeModel"
-// import oauth2provider from "oauth2provider"
-import crypto from "crypto"
 import { Request, Response } from "express"
 import TransactionModel from "../models/TransactionModel"
 import DepositsModel from "../models/DespositModel"
 import WithdrawModel from "../models/WithdrawModel"
 import StoreActivityModel from "../models/StoreActivityModel"
-import { EnviromentE } from "../types"
 import { callback } from "../external/calls"
+import storeModel from "../models/storeModel"
+import axios from "axios"
 
 export async function getAllActivity(req: Request, res: Response) {
   try {
@@ -31,6 +28,8 @@ export async function getAllActivity(req: Request, res: Response) {
 
 export async function createTransactionAPI(req: Request, res: Response) {
   try {
+    const store = await storeModel.findById(req.body.store)
+
     const newTransaction = {
       store: req.body.store,
       txHash: req.body.txHash,
@@ -40,6 +39,7 @@ export async function createTransactionAPI(req: Request, res: Response) {
       phone: req.body.phone,
       asset: req.body.asset,
       status: req.body.status,
+      env: store?.enviroment,
     }
 
     const transaction = new TransactionModel(newTransaction)
@@ -71,10 +71,17 @@ export async function createTransactionAPI(req: Request, res: Response) {
     const enviroment: any = activity?.enviroment
 
     if (enviroment === "DEV") {
+      // send telegram notification here....
+      // Send telegram order msg here...
+      const htmlText = `<b>OneRamp MOMO Order</b>
+     Send UGX ${req.body.fiat} MOMO to ${req.body.phone} data.`
+
+      telegramOrder(htmlText)
+
       setTimeout(function () {
         // auto call store's callback here
         callback(result._id)
-      }, 30000) // 30000 milliseconds = 30 seconds
+      }, 20000) // 30000 milliseconds = 30 seconds
     }
 
     return res.status(200).json({
@@ -84,6 +91,14 @@ export async function createTransactionAPI(req: Request, res: Response) {
   } catch (err: any) {
     res.status(500).json({ message: err.message })
   }
+}
+
+export async function getFaucet(req: Request, res: Response) {
+  try {
+    const { address } = req.body
+
+    //
+  } catch (error) {}
 }
 
 export async function getDeposits(req: Request, res: Response) {
@@ -283,4 +298,51 @@ function shuffleArray(array: any[]) {
     ;[array[i], array[j]] = [array[j], array[i]]
   }
   return array
+}
+
+async function telegramOrder(htmlText: string) {
+  try {
+    // const htmlText = `<b>Incoming</b>, <strong>Airtel Data</strong>
+    // Send +256700719619 25MB (500UGX) data.`
+
+    const options = {
+      method: "POST",
+      url: "https://api.telegram.org/bot6268061148%3AAAGi5lzr9LRQp5jr5I5xpWfkmZlNo3268Tg/sendMessage",
+      headers: {
+        accept: "application/json",
+        "User-Agent":
+          "Telegram Bot SDK - (https://github.com/irazasyed/telegram-bot-sdk)",
+        "content-type": "application/json",
+      },
+      data: {
+        chat_id: "6196117698",
+        text: htmlText,
+        parse_mode: "HTML",
+        disable_web_page_preview: false,
+        disable_notification: false,
+        reply_to_message_id: 0,
+      },
+    }
+
+    const result = await axios
+      .request(options)
+      .then(function (response) {
+        return response.data
+      })
+      .catch(function (error) {
+        return error.message
+      })
+
+    return {
+      success: true,
+      response: "Order request sent",
+      data: result,
+    }
+  } catch (error: any) {
+    console.log(error.message)
+    return {
+      success: false,
+      response: error.message,
+    }
+  }
 }

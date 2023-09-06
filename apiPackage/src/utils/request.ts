@@ -26,6 +26,7 @@ class Request {
           success: true,
           message: "User credentials valid ",
           store: result.store,
+          env: result.store.env,
         }
       } else {
         return {
@@ -33,6 +34,7 @@ class Request {
           success: false,
           message: "Invalid Credentials",
           store: null,
+          env: "DEV",
         }
       }
     } catch (error: any) {

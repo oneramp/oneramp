@@ -60,6 +60,10 @@ const TransactionSchema = new mongoose_1.Schema({
         type: Date,
         default: Date.now,
     },
+    env: {
+        type: String,
+        default: "DEV",
+    },
 });
 const TransactionModel = mongoose_1.default.model(`Transaction`, TransactionSchema);
 exports.default = TransactionModel;

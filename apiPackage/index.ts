@@ -154,9 +154,7 @@ export class OneRamp {
       ethers.utils.parseEther(amount.toString())
     )
 
-    const receipt = await provider.waitForTransaction(approveTx.hash, 1)
-
-    // console.log("Transaction mined:", receipt)
+    await provider.waitForTransaction(approveTx.hash, 1)
 
     const signerAddress = await signer.getAddress()
 
@@ -164,7 +162,6 @@ export class OneRamp {
       signerAddress,
       addresses[this.network].contract
     )
-    // console.log("Current allowance:", allowance.toString())
 
     if (allowance < ethers.utils.parseEther(amount.toString()))
       throw new Error(
