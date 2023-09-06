@@ -11,13 +11,13 @@ import { useLocation, useNavigate } from "react-router-dom"
 
 const currencies = [
   {
-    value: "CUSD",
-    label: "CUSD",
+    value: "USDT",
+    label: "USDT",
   },
 
   {
-    value: "CELO",
-    label: "CELO",
+    value: "CUSD",
+    label: "CUSD",
   },
 ]
 const countries = [
@@ -44,7 +44,7 @@ export default function CryptoConverter() {
   const [cryptoValue, setCryptoValue] = useState(0)
   // eslint-disable-next-line
   const [exchangeRates, setExchangeRates] = useState({})
-  const [selectedCurrency, setSelectedCurrency] = useState("CUSD")
+  const [selectedCurrency, setSelectedCurrency] = useState("USDT")
   // eslint-disable-next-line
   const [selectedCountry, setSelectedCountry] = useState("UGX")
 
@@ -151,7 +151,7 @@ export default function CryptoConverter() {
                 select
                 fullWidth
                 type='number'
-                defaultValue='CUSD'
+                defaultValue='USDT'
                 onChange={handleCurrencyChange}
                 SelectProps={{
                   native: true,
@@ -193,7 +193,7 @@ export default function CryptoConverter() {
                 select
                 fullWidth
                 type='number'
-                defaultValue='CUSD'
+                defaultValue='USDT'
                 onChange={handleCurrencyChange}
                 SelectProps={{
                   native: true,

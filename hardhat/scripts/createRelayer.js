@@ -10,7 +10,7 @@ async function run() {
   // create relay using defender client
   const requestParams = {
     name: "onerampTxRelayer",
-    network: "bsctest",
+    network: "mumbai",
     minBalance: BigInt(1e17).toString(),
   }
   const relayer = await relayClient.create(requestParams)
@@ -26,14 +26,14 @@ async function run() {
       2
     )
   )
-  console.log("bscTestnet Relayer ID: ", relayer.relayerId)
+  console.log("mumbai ID: ", relayer.relayerId)
 
   // create and save the api key to .env - needed for sending tx directly
   const { apiKey: relayerKey, secretKey: relayerSecret } =
     await relayClient.createKey(relayer.relayerId)
   appendFileSync(
     ".env",
-    `\nBSC_TESTNET_RELAYER_API_KEY=${relayerKey}\nBSC_TESTNET_RELAYER_API_SECRET=${relayerSecret}\n BSC_TESTNET_Relayer_ID = ${relayer.relayerId}`
+    `\nPOLYGON_MUMBAI_RELAYER_API_KEY=${relayerKey}\nPOLYGON_MUMBAI_RELAYER_API_SECRET=${relayerSecret}\n POLYGON_MUMBAI_Relayer_ID = ${relayer.relayerId}`
   )
 }
 
