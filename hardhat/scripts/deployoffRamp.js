@@ -43,7 +43,7 @@ async function main() {
   await offRampContract.connect(relaySigner).addAllowedToken(token4.address)
 
   appendFileSync(
-    "deployCashout.json",
+    "deployContracts.json",
     `\nBSC_contract=${forwarder.address}\nBSC_token1 =${offRamp.address}\n BSC_token2 : ${token1.address} BSC_token2 : ${token2.address} BSC_token3 : ${token3.address} BSC_token4 : ${token3.address}`
   )
 

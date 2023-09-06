@@ -6,11 +6,11 @@
   "dependencies": {
     "@types/node-fetch": "^2.6.3",
     "dotenv": "^16.0.3",
-    "ethers": "^5.6.4",
-    "toucan-sdk": "^1.0.4-beta"
+    "ethers": "^5.6.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run:test": "yarn unlink oneramp && yarn link oneramp"
   },
   "author": "",
   "license": "ISC"

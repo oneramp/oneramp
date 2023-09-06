@@ -1,4 +1,13 @@
 import mongoose, { Document, Schema, Model } from "mongoose"
+import { EnviromentE } from "../types"
+
+interface StoreActivityI {
+  store: string
+  total: number
+  deposits: number
+  enviroment: EnviromentE
+  withdraws: number
+}
 
 const StoreActivitySchema = new mongoose.Schema({
   store: {
@@ -15,6 +24,10 @@ const StoreActivitySchema = new mongoose.Schema({
     required: true,
     default: 0,
   },
+  enviroment: {
+    type: String,
+    default: "DEV",
+  },
   withdraws: {
     type: Number,
     required: true,
@@ -22,6 +35,9 @@ const StoreActivitySchema = new mongoose.Schema({
   },
 })
 
-const StoreActivityModel = mongoose.model("StoreActivity", StoreActivitySchema)
+const StoreActivityModel = mongoose.model<StoreActivityI>(
+  "StoreActivity",
+  StoreActivitySchema
+)
 
 export default StoreActivityModel

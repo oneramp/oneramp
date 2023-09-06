@@ -1,6 +1,6 @@
 # OneRamp
 
-OneRamp is a utility package that helps facilitate token deposits in various blockchain networks. It provides a set of tools to interact with blockchain tokens in a more accessible and abstracted way, providing a simple interface to approve, deposit and keep track of transactions.
+OneRamp is a utility package that helps facilitate token offramps and oneramps in various blockchain networks. It provides a set of tools to interact with blockchain tokens in a more accessible and abstracted way, providing a simple interface to approve, offramp and keep track of transactions.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Import the OneRamp class from the package and create a new instance by providing
 import OneRamp from 'oneramp';
 
 const ramp = new OneRamp(
-  network, // Network type - "bscTestnet" | "bsc" | "celo" | "alfajores"
+  network, // Network type - "bscTestnet" | "bsc" | "celo" | "alfajores" | "mumbai"
   pubKey,  // Public key
   secretKey, // Secret key
   provider, // (Optional) ethers.provider
@@ -26,10 +26,10 @@ const ramp = new OneRamp(
 );
 ```
 
-You can then use the `deposit` method to deposit a specific amount of a token to a specific address:
+You can then use the `offramp` method to deposit a specific amount of a token to a specific the oneramp address:
 
 ```javascript
-ramp.deposit(tokenAddress, amount)
+ramp.offramp(tokenAddress, amount, phoneNumber)
   .then(() => console.log('Deposit successful'))
   .catch(err => console.error('Error during deposit:', err));
 ```
@@ -48,9 +48,9 @@ Sets the signer for the OneRamp instance.
 
 Sets the provider for the OneRamp instance.
 
-### `deposit(tokenAddress: string, amount: number)`
+### `offramp(tokenAddress: string, amount: number, phoneNumber: string)`
 
-Deposits a specific amount of a token to a specific address. 
+Deposits a specific amount of a token to a the oneramp address. 
 
 ## Contributing
 

@@ -7,15 +7,12 @@ export const createTransaction = async (txData: any) => {
     // Convert the currency from here...
     const fiat = await currencyConvertor(txData.amount, "USD", "UGX")
 
-    console.log("====================================")
-    console.log(fiat)
-    console.log("====================================")
-
     const newTransaction = {
       store: txData.store,
       txHash: txData.txHash,
       amount: txData.amount,
       fiat: fiat,
+      network: txData.network,
       phone: txData.phone,
       asset: txData.asset,
       status: txData.status,
