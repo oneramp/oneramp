@@ -7,11 +7,13 @@ declare class Request {
         success: boolean;
         message: string;
         store: any;
+        env: any;
     } | {
         status: number;
         success: boolean;
         message: string;
         store?: undefined;
+        env?: undefined;
     }>;
     kycApproved(data: UserCreds): Promise<unknown>;
     createKYC(data: KYCFormI, credentials: CredentialsI): Promise<any>;

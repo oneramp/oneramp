@@ -147,7 +147,6 @@ export class OneRamp {
       throw new Error("Services for this token not supported")
     }
 
-    /*
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer)
 
     const approveTx = await tokenContract.approve(
@@ -155,9 +154,7 @@ export class OneRamp {
       ethers.utils.parseEther(amount.toString())
     )
 
-    const receipt = await provider.waitForTransaction(approveTx.hash, 1)
-
-    // console.log("Transaction mined:", receipt)
+    await provider.waitForTransaction(approveTx.hash, 1)
 
     const signerAddress = await signer.getAddress()
 
@@ -165,7 +162,6 @@ export class OneRamp {
       signerAddress,
       addresses[this.network].contract
     )
-    // console.log("Current allowance:", allowance.toString())
 
     if (allowance < ethers.utils.parseEther(amount.toString()))
       throw new Error(
@@ -189,7 +185,6 @@ export class OneRamp {
     await provider.waitForTransaction(tx.hash, 2)
 
     // console.log("Deposit successful. Transaction hash:", tx.hash)
-  */
 
     const testTXHash = uuid()
 

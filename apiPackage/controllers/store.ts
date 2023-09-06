@@ -357,6 +357,32 @@ async function getStoreCreds(req: any, res: Response) {
   }
 }
 
+async function switchStoreEnviroment(req: any, res: Response) {
+  try {
+    const { store, env } = req.body
+
+    const newStore = await storeModel.findByIdAndUpdate(
+      store,
+      { $set: { enviroment: env } },
+      { new: true }
+    )
+
+    await StoreActivityModel.findOneAndUpdate(
+      { store: store },
+      { $set: { enviroment: env } },
+      { new: true }
+    )
+
+    if (!newStore) {
+      return res.status(200).json({ success: false, response: newStore })
+    }
+
+    return res.status(200).json({ success: true, response: newStore })
+  } catch (err: any) {
+    res.status(500).json({ message: err.message })
+  }
+}
+
 async function confirmTransaction(req: any, res: Response) {
   try {
     const { tx } = req.body
@@ -418,6 +444,7 @@ async function getStoreTransactions(req: any, res: Response) {
 
     const transactions = await TransactionModel.find({
       store: req.params.storeId,
+      env: store.enviroment,
     }).sort({ createdAt: -1 })
 
     return res.status(200).json(transactions)
@@ -517,4 +544,5 @@ export {
   getUserStoreKYCDetail,
   rejectUserKYC,
   getStorEnv,
+  switchStoreEnviroment,
 }

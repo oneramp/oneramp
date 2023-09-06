@@ -33,7 +33,7 @@ export interface KYCFormI {
 }
 export declare enum EnviromentE {
     "DEV" = 0,
-    "LIV" = 1
+    "LIVE" = 1
 }
 export interface TransactionI {
     store: string;
