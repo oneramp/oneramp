@@ -20,9 +20,9 @@ const provider = new ethers.providers.JsonRpcProvider(
 // Create a wallet using the private key and the provider
 const wallet = new ethers.Wallet(testPrivateKey, provider);
 
-const clientPub = "RMPPUBK-5e36e5afd356f263751e1e63e0db1062-X";
+const clientPub = "RMPPUBK-f7d679837bbb85199af935f47c1d979b-X";
 const secretKey =
-  "RMPSEC-a179417380e6ed13f6112979bba7bab6fe709c166171567524872528b7e876ab-X";
+  "RMPSEC-6fe263fd17fba0645db076fb7749f9cde2d541ff29597fd4c42720713d355094-X";
 
 // Create a OneRamp instance, passing the network name, the provider, and the wallet to its constructor
 const oneRamp = new OneRamp(
