@@ -115,10 +115,16 @@ export default function Projects() {
                 style={{ margin: "30px 0" }}
               >
                 <div style={{ width: "190px" }}>
-                  <FullButton
-                    title="Get Started"
-                    action={() => alert("clicked")}
-                  />
+                  <a
+                    href="https://dashboard.oneramp.io/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FullButton
+                      title="Get Started"
+                      // action={() => alert("clicked")}
+                    />
+                  </a>
                 </div>
                 <div style={{ width: "190px", marginLeft: "15px" }}>
                   <FullButton
