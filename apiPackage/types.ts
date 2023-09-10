@@ -38,7 +38,7 @@ export interface KYCFormI {
 
 export enum EnviromentE {
   "DEV",
-  "LIV",
+  "LIVE",
 }
 
 export interface TransactionI {

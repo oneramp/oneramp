@@ -21,6 +21,7 @@ import {
   getUserStoreKYCDetail,
   rejectUserKYC,
   getStorEnv,
+  switchStoreEnviroment,
 } from "../controllers/store"
 import {
   createDeposit,
@@ -76,6 +77,7 @@ router.delete("/store/:storeId", authorizeRoute, removeStore)
 
 // Store creds
 router.get("/creds/:storeId", authorizeRoute, getStoreCreds)
+router.post("/switch/", authorizeRoute, switchStoreEnviroment)
 
 router.get("/creds/", authenticateStoreSecrets, getCreds)
 router.get("/store/creds", getRawStoreCreds)

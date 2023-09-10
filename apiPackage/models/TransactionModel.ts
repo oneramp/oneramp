@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema, Model } from "mongoose"
-import { TransactionI } from "../types"
+import { EnviromentE, TransactionI } from "../types"
 
 const TransactionSchema: Schema = new Schema({
   store: {
@@ -36,6 +36,10 @@ const TransactionSchema: Schema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  env: {
+    type: String,
+    default: "DEV",
   },
 })
 
