@@ -9,18 +9,18 @@ import LogoIcon from "../../assets/svg/logo-light.svg";
 import BurgerIcon from "../../assets/svg/BurgerIcon";
 import { Box } from "@mui/system";
 import { navLinks } from "../../data/NavLinks";
-import { useLocation, useNavigate } from "react-router-dom";
+// import { useLocation, useNavigate } from "react-router-dom";
 export default function TopNavbar() {
-  const navigate = useNavigate();
-  const location = useLocation();
+  // const navigate = useNavigate();
+  // const location = useLocation();
   const [y, setY] = useState(window.scrollY);
   const [sidebarOpen, toggleSidebar] = useState(false);
 
-  function handleClick() {
-    if (location.pathname !== "/ramp") {
-      navigate("/ramp");
-    }
-  }
+  // function handleClick() {
+  //   if (location.pathname !== "/ramp") {
+  //     navigate("/ramp");
+  //   }
+  // }
 
   useEffect(() => {
     window.addEventListener("scroll", () => setY(window.scrollY));

@@ -43,7 +43,7 @@ export default function Header() {
           >
             <BtnWrapper>
               <a
-                href='https://onerampdashboard.vercel.app/'
+                href='https://dashboard.oneramp.io'
                 target='_blank'
                 rel='noopener noreferrer'
               >

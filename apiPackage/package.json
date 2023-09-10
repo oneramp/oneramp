@@ -2,7 +2,7 @@
   "name": "oneramp",
   "target": "es6",
   "moduleResolution": "node",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "crypto on and offramping api for sub-saharan africa",
   "main": "./dist/index.js",
   "scripts": {
